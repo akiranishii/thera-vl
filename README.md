@@ -1,4 +1,4 @@
-# Mckay's App Template
+# Thera AI Landing Page
 
 This is a full-stack app template for courses on [Takeoff](https://JoinTakeoff.com/).
 
