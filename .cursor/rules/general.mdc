@@ -1,13 +1,16 @@
 ---
 description: Follow these rules for all requests.
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # Project Instructions
 
-Use specification and guidelines as you build the app.
-
-Write the complete code for every step. Do not get lazy.
+Find the steps in [implementation-plan.md](mdc:implementation-plan.md)
+Use [project-request.md](mdc:project-request.md) and [technical-spec.md](mdc:technical-spec.md) as you build the app.
+Work on whatever step(s) I tell you to work on and only work on those steps at once.
+Write the complete code for those step(s). Do not get lazy.
+Once those steps are done, mark as completed. 
+Then stop, I will give you further instructions. 
 
 Your goal is to completely finish whatever I ask for.
 
