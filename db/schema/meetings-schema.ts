@@ -5,7 +5,7 @@ Defines the database schema for meetings (parallel runs).
 */
 
 import { boolean, integer, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
-import { sessionsTable } from "./sessions-schema"
+import { sessionsTable, SelectSession } from "./sessions-schema"
 import { relations } from "drizzle-orm"
 
 export const meetingStatusEnum = pgEnum("meeting_status", ["pending", "in_progress", "completed", "failed"])
@@ -39,4 +39,9 @@ export const meetingsRelations = relations(meetingsTable, ({ one }) => ({
 }))
 
 export type InsertMeeting = typeof meetingsTable.$inferInsert
-export type SelectMeeting = typeof meetingsTable.$inferSelect 
+export type SelectMeeting = typeof meetingsTable.$inferSelect
+
+// Type that includes the session relation
+export interface MeetingWithSession extends SelectMeeting {
+  session: SelectSession
+} 

@@ -7,7 +7,7 @@ Contains server actions related to meetings in the DB.
 "use server"
 
 import { db } from "@/db/db"
-import { InsertMeeting, SelectMeeting, meetingsTable } from "@/db/schema/meetings-schema"
+import { InsertMeeting, MeetingWithSession, SelectMeeting, meetingsTable } from "@/db/schema/meetings-schema"
 import { sessionsTable } from "@/db/schema/sessions-schema"
 import { ActionState } from "@/types"
 import { auth } from "@clerk/nextjs/server"
@@ -91,7 +91,7 @@ export async function getMeetingsAction(
 
 export async function getMeetingAction(
   id: string
-): Promise<ActionState<SelectMeeting>> {
+): Promise<ActionState<MeetingWithSession>> {
   try {
     const { userId } = await auth()
     
@@ -104,7 +104,7 @@ export async function getMeetingAction(
       with: {
         session: true
       }
-    })
+    }) as MeetingWithSession | null
 
     if (!meeting) {
       return { isSuccess: false, message: "Meeting not found" }
@@ -143,7 +143,7 @@ export async function updateMeetingAction(
       with: {
         session: true
       }
-    })
+    }) as MeetingWithSession | null
 
     if (!meeting) {
       return { isSuccess: false, message: "Meeting not found" }
@@ -187,7 +187,7 @@ export async function deleteMeetingAction(
       with: {
         session: true
       }
-    })
+    }) as MeetingWithSession | null
 
     if (!meeting) {
       return { isSuccess: false, message: "Meeting not found" }
