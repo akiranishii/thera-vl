@@ -660,13 +660,16 @@ sessions on the same or related topics. Focus on:
 
 Be objective in your analysis and specific about the strengths of each session."""
             
-            comparison_prompt = f"""Compare the following brainstorming session summaries and analyze the different perspectives and insights:
-
-{'-' * 40}
-{'\n\n'.join(summaries)}
-{'-' * 40}
-
-Provide a comprehensive comparison highlighting unique contributions from each session and how they complement each other."""
+            # Create the comparison prompt without f-strings
+            separator = "-" * 40
+            summaries_text = "\n\n".join(summaries)
+            comparison_prompt = (
+                "Compare the following brainstorming session summaries and analyze the different perspectives and insights:\n\n" +
+                separator + "\n" +
+                summaries_text + "\n" +
+                separator + "\n\n" +
+                "Provide a comprehensive comparison highlighting unique contributions from each session and how they complement each other."
+            )
             
             comparison_conversation = [{"role": "user", "content": comparison_prompt}]
             
@@ -753,8 +756,5 @@ Provide a comprehensive comparison highlighting unique contributions from each s
             )
 
 async def setup(bot):
-    """Add the cog to the bot"""
-    await bot.add_cog(
-        BrainstormCommands(bot),
-        guilds=[discord.Object(id=guild.id) for guild in bot.guilds]
-    ) 
+    """Add the cog to the bot - Discord.py extension standard"""
+    await bot.add_cog(BrainstormCommands(bot)) 

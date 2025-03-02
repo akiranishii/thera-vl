@@ -17,13 +17,13 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 # Local imports
 from config import Config
-from commands import session_commands, agent_commands, meeting_commands, brainstorm_commands, transcript_commands, help_command
+# We no longer need to import individual command modules since we're using load_extension
 from llm_client import llm_client
 from models import DEFAULT_MODELS
 
 # Set up logging
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,  # Change from INFO to DEBUG for more detailed logs
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger('discord')
@@ -51,6 +51,10 @@ async def on_ready():
     
     for guild in bot.guilds:
         logger.info(f'- {guild.name} (ID: {guild.id})')
+        # Debug: print all members in the guild
+        logger.info(f'Guild {guild.name} has {guild.member_count} members')
+        async for member in guild.fetch_members(limit=None):
+            logger.debug(f'  - {member.name}#{member.discriminator} (ID: {member.id})')
     
     # Initialize LLM client
     logger.info("Checking LLM providers availability:")
@@ -71,33 +75,59 @@ async def on_ready():
         
     # Load command extensions
     try:
-        await session_commands.setup(bot)
-        logger.info("Session commands loaded successfully")
-        
-        await agent_commands.setup(bot)
-        logger.info("Agent commands loaded successfully")
-        
-        await meeting_commands.setup(bot)
-        logger.info("Meeting commands loaded successfully")
-        
-        await brainstorm_commands.setup(bot)
-        logger.info("Brainstorm commands loaded successfully")
-        
-        await transcript_commands.setup(bot)
-        logger.info("Transcript commands loaded successfully")
-        
-        await help_command.setup(bot)
-        logger.info("Help command loaded successfully")
+        # Directly load the commands as modules rather than calling setup manually
+        # This allows Discord.py to handle the extension loading properly
+        await load_extensions()
     except Exception as e:
         logger.error(f"Error loading commands: {e}")
     
     # Sync slash commands with Discord
     try:
-        logger.info("Syncing commands with Discord...")
-        synced = await bot.tree.sync()
-        logger.info(f"Synced {len(synced)} command(s)")
+        await sync_commands()
     except Exception as e:
         logger.error(f"Error syncing commands: {e}")
+
+async def load_extensions():
+    """Load all command extensions"""
+    extensions = [
+        "commands.session_commands",
+        "commands.agent_commands",
+        "commands.meeting_commands",
+        "commands.brainstorm_commands",
+        "commands.transcript_commands",
+        "commands.help_command"
+    ]
+    
+    for extension in extensions:
+        try:
+            await bot.load_extension(extension)
+            logger.info(f"{extension} loaded successfully")
+        except Exception as e:
+            logger.error(f"Error loading {extension}: {e}")
+
+async def sync_commands():
+    """Sync slash commands with Discord"""
+    logger.info("Syncing commands with Discord...")
+    
+    # Debug: print command names in the tree
+    logger.debug("Commands in bot.tree:")
+    for command in bot.tree.get_commands():
+        logger.debug(f"- {command.name}")
+    
+    # Sync to all connected guilds individually for faster updates
+    for guild in bot.guilds:
+        try:
+            guild_commands = await bot.tree.sync(guild=discord.Object(id=guild.id))
+            logger.info(f"Synced {len(guild_commands)} command(s) to guild: {guild.name}")
+        except Exception as e:
+            logger.error(f"Error syncing commands to guild {guild.name}: {e}")
+    
+    # Also sync globally as a backup
+    try:
+        global_commands = await bot.tree.sync()
+        logger.info(f"Synced {len(global_commands)} command(s) globally")
+    except Exception as e:
+        logger.error(f"Error syncing commands globally: {e}")
 
 @bot.event
 async def on_message(message):

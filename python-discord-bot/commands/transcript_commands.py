@@ -11,10 +11,13 @@ from discord.ext import commands
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 
-from db_client import db_client
+from db_client import SupabaseClient
 
 # Set up logging
 logger = logging.getLogger('transcript')
+
+# Create client
+db_client = SupabaseClient()
 
 class TranscriptCommands(commands.Cog):
     """Commands for viewing and managing transcripts from research sessions"""
@@ -336,8 +339,5 @@ class TranscriptCommands(commands.Cog):
             )
 
 async def setup(bot):
-    """Add the cog to the bot"""
-    await bot.add_cog(
-        TranscriptCommands(bot),
-        guilds=[discord.Object(id=guild.id) for guild in bot.guilds]
-    ) 
+    """Add the cog to the bot - Discord.py extension standard"""
+    await bot.add_cog(TranscriptCommands(bot)) 

@@ -604,8 +604,5 @@ class HelpCommand(commands.Cog):
         await interaction.followup.send(embed=embed)
 
 async def setup(bot):
-    """Add the cog to the bot"""
-    await bot.add_cog(
-        HelpCommand(bot),
-        guilds=[discord.Object(id=guild.id) for guild in bot.guilds]
-    ) 
+    """Add the cog to the bot - Discord.py extension standard"""
+    await bot.add_cog(HelpCommand(bot)) 

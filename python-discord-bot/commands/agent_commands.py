@@ -507,8 +507,5 @@ class AgentCommands(commands.Cog):
             )
 
 async def setup(bot):
-    """Add the cog to the bot"""
-    await bot.add_cog(
-        AgentCommands(bot),
-        guilds=[discord.Object(id=guild.id) for guild in bot.guilds]
-    ) 
+    """Add the cog to the bot - Discord.py extension standard"""
+    await bot.add_cog(AgentCommands(bot)) 
