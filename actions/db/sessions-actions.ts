@@ -8,9 +8,10 @@ Contains server actions related to sessions in the DB.
 
 import { db } from "@/db/db"
 import { InsertSession, SelectSession, sessionsTable } from "@/db/schema/sessions-schema"
+import { votesTable } from "@/db/schema/votes-schema"
 import { ActionState } from "@/types"
 import { auth } from "@clerk/nextjs/server"
-import { and, desc, eq, ilike, or, sql } from "drizzle-orm"
+import { and, desc, eq, ilike, or, sql, sum, count } from "drizzle-orm"
 
 export async function createSessionAction(
   session: Omit<InsertSession, "userId">
@@ -267,5 +268,62 @@ export async function checkSessionAccessAction(
       isSuccess: false, 
       message: "Failed to check session access"
     }
+  }
+}
+
+export async function getTopVotedSessionsAction(
+  limit: number = 20
+): Promise<ActionState<{
+  session: SelectSession,
+  votes: {
+    upvotes: number,
+    downvotes: number,
+    total: number
+  }
+}[]>> {
+  try {
+    // Get all public sessions
+    const publicSessions = await db.query.sessions.findMany({
+      where: eq(sessionsTable.isPublic, true)
+    })
+    
+    // For each session, get the vote counts
+    const sessionsWithVotes = await Promise.all(
+      publicSessions.map(async (session) => {
+        // Get vote counts for this session
+        const voteResult = await db
+          .select({
+            upvotes: sql<number>`COALESCE(SUM(CASE WHEN ${votesTable.value} = 1 THEN 1 ELSE 0 END), 0)`,
+            downvotes: sql<number>`COALESCE(SUM(CASE WHEN ${votesTable.value} = -1 THEN 1 ELSE 0 END), 0)`,
+            total: sql<number>`COALESCE(SUM(${votesTable.value}), 0)`
+          })
+          .from(votesTable)
+          .where(eq(votesTable.sessionId, session.id))
+          .then(res => res[0])
+        
+        return {
+          session,
+          votes: {
+            upvotes: voteResult.upvotes || 0,
+            downvotes: voteResult.downvotes || 0,
+            total: voteResult.total || 0
+          }
+        }
+      })
+    )
+    
+    // Sort by total votes (can be sorted differently on the client)
+    const sortedSessions = sessionsWithVotes
+      .sort((a, b) => b.votes.total - a.votes.total)
+      .slice(0, limit)
+    
+    return {
+      isSuccess: true,
+      message: "Top voted sessions retrieved successfully",
+      data: sortedSessions
+    }
+  } catch (error) {
+    console.error("Error getting top voted sessions:", error)
+    return { isSuccess: false, message: "Failed to get top voted sessions" }
   }
 } 

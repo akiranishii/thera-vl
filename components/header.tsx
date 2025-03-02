@@ -20,6 +20,8 @@ import { useEffect, useState } from "react"
 import { ThemeSwitcher } from "./utilities/theme-switcher"
 
 const navLinks = [
+  { href: "/gallery", label: "Gallery" },
+  { href: "/leaderboard", label: "Leaderboard" },
   { href: "/about", label: "About" },
   { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact" }

@@ -4,8 +4,6 @@ This server layout provides a centered layout for (auth) pages.
 </ai_context>
 */
 
-"use server"
-
 interface AuthLayoutProps {
   children: React.ReactNode
 }

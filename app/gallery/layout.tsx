@@ -1,5 +1,3 @@
-"use server"
-
 import type { Metadata } from "next"
 import { auth } from "@clerk/nextjs/server"
 import { SidebarNav } from "@/components/ui/sidebar-nav"

@@ -1,15 +1,9 @@
-"use server"
-
 import { Suspense } from "react"
 import { auth } from "@clerk/nextjs/server"
 import { getPublicSessionsAction } from "@/actions/db/sessions-actions"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
-import dynamic from "next/dynamic"
-
-// Dynamically import client components
-const GalleryFilters = dynamic(() => import("./_components/gallery-filters"), { ssr: false })
-const GalleryGrid = dynamic(() => import("./_components/gallery-grid"), { ssr: false })
+import GalleryClient, { GalleryGridClient } from "./_components/gallery-client"
 
 interface GalleryPageProps {
   searchParams: {
@@ -20,11 +14,37 @@ interface GalleryPageProps {
   }
 }
 
+function SessionsSkeleton() {
+  return (
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="overflow-hidden rounded-lg border bg-card">
+            <div className="p-6">
+              <Skeleton className="h-6 w-3/4" />
+              <Skeleton className="mt-3 h-4 w-1/2" />
+              <div className="mt-6 space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+            </div>
+            <div className="flex items-center justify-between border-t bg-muted/40 p-4">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-8 w-20" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default async function GalleryPage({ searchParams }: GalleryPageProps) {
   return (
     <div>
       <div className="mb-8">
-        <GalleryFilters 
+        <GalleryClient 
           initialSort={searchParams.sort || "recent"} 
           initialSearch={searchParams.search || ""}
           initialAgentType={searchParams.agentType || ""}
@@ -72,7 +92,7 @@ async function SessionsContent({ searchParams }: { searchParams: GalleryPageProp
   
   return (
     <div className="space-y-8">
-      <GalleryGrid sessions={sessions} currentUserId={userId || ""} />
+      <GalleryGridClient sessions={sessions} currentUserId={userId || ""} />
       
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2 py-8">
@@ -105,32 +125,6 @@ async function SessionsContent({ searchParams }: { searchParams: GalleryPageProp
           )}
         </div>
       )}
-    </div>
-  )
-}
-
-function SessionsSkeleton() {
-  return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="overflow-hidden rounded-lg border bg-card">
-            <div className="p-6">
-              <Skeleton className="h-6 w-3/4" />
-              <Skeleton className="mt-3 h-4 w-1/2" />
-              <div className="mt-6 space-y-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
-              </div>
-            </div>
-            <div className="flex items-center justify-between border-t bg-muted/40 p-4">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-8 w-20" />
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   )
 } 
