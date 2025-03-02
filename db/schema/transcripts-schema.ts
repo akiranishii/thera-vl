@@ -7,6 +7,7 @@ Defines the database schema for meeting transcripts.
 import { pgEnum, pgTable, text, timestamp, uuid, integer } from "drizzle-orm/pg-core"
 import { meetingsTable } from "./meetings-schema"
 import { agentsTable } from "./agents-schema"
+import { relations } from "drizzle-orm"
 
 export const messageRoleEnum = pgEnum("message_role", ["system", "user", "assistant"])
 
@@ -27,6 +28,17 @@ export const transcriptsTable = pgTable("transcripts", {
     .notNull()
     .$onUpdate(() => new Date())
 })
+
+export const transcriptsRelations = relations(transcriptsTable, ({ one }) => ({
+  meeting: one(meetingsTable, {
+    fields: [transcriptsTable.meetingId],
+    references: [meetingsTable.id]
+  }),
+  agent: one(agentsTable, {
+    fields: [transcriptsTable.agentId],
+    references: [agentsTable.id]
+  })
+}))
 
 export type InsertTranscript = typeof transcriptsTable.$inferInsert
 export type SelectTranscript = typeof transcriptsTable.$inferSelect 

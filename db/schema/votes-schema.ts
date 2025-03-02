@@ -6,6 +6,7 @@ Defines the database schema for session votes.
 
 import { integer, pgTable, text, timestamp, uuid, uniqueIndex } from "drizzle-orm/pg-core"
 import { sessionsTable } from "./sessions-schema"
+import { relations } from "drizzle-orm"
 
 export const votesTable = pgTable("votes", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -24,6 +25,13 @@ export const votesTable = pgTable("votes", {
     userSessionIdx: uniqueIndex("votes_user_session_idx").on(table.userId, table.sessionId)
   }
 })
+
+export const votesRelations = relations(votesTable, ({ one }) => ({
+  session: one(sessionsTable, {
+    fields: [votesTable.sessionId],
+    references: [sessionsTable.id]
+  })
+}))
 
 export type InsertVote = typeof votesTable.$inferInsert
 export type SelectVote = typeof votesTable.$inferSelect 

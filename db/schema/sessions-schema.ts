@@ -5,6 +5,8 @@ Defines the database schema for sessions.
 */
 
 import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { relations } from "drizzle-orm"
+import { meetingsTable } from "./meetings-schema"
 
 export const sessionsTable = pgTable("sessions", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -18,6 +20,10 @@ export const sessionsTable = pgTable("sessions", {
     .notNull()
     .$onUpdate(() => new Date())
 })
+
+export const sessionsRelations = relations(sessionsTable, ({ many }) => ({
+  meetings: many(meetingsTable)
+}))
 
 export type InsertSession = typeof sessionsTable.$inferInsert
 export type SelectSession = typeof sessionsTable.$inferSelect 
