@@ -10,7 +10,7 @@ import { db } from "@/db/db"
 import { InsertSession, SelectSession, sessionsTable } from "@/db/schema/sessions-schema"
 import { ActionState } from "@/types"
 import { auth } from "@clerk/nextjs/server"
-import { and, eq } from "drizzle-orm"
+import { and, desc, eq, ilike, or, sql } from "drizzle-orm"
 
 export async function createSessionAction(
   session: Omit<InsertSession, "userId">
@@ -61,16 +61,67 @@ export async function getSessionsAction(): Promise<ActionState<SelectSession[]>>
   }
 }
 
-export async function getPublicSessionsAction(): Promise<ActionState<SelectSession[]>> {
+export async function getPublicSessionsAction(
+  params?: {
+    page?: number
+    pageSize?: number
+    sort?: 'recent' | 'popular' | 'trending'
+    search?: string
+    agentType?: string
+  }
+): Promise<ActionState<{
+  sessions: SelectSession[],
+  totalPages: number,
+  currentPage: number
+}>> {
   try {
+    const {
+      page = 1,
+      pageSize = 12,
+      sort = 'recent',
+      search,
+      agentType
+    } = params || {}
+    
+    // Build the query conditions
+    const conditions = [eq(sessionsTable.isPublic, true)];
+    
+    // Add search condition if provided
+    if (search && search.trim() !== '') {
+      conditions.push(ilike(sessionsTable.title, `%${search}%`));
+    }
+    
+    // Add agent type condition if provided
+    // if (agentType) {
+    //   conditions.push(eq(sessionsTable.agentType, agentType));
+    // }
+    
+    // Count total sessions for pagination
+    const totalSessions = await db.query.sessions.findMany({
+      where: and(...conditions),
+    });
+    
+    const totalCount = totalSessions.length;
+    const totalPages = Math.ceil(totalCount / pageSize);
+    
+    // Get the paginated and sorted sessions
     const sessions = await db.query.sessions.findMany({
-      where: eq(sessionsTable.isPublic, true)
-    })
-
+      where: and(...conditions),
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      orderBy: sort === 'recent' 
+        ? [desc(sessionsTable.createdAt)] 
+        : [desc(sessionsTable.createdAt)] // For now use same sort for all options
+    });
+    
     return {
       isSuccess: true,
       message: "Public sessions retrieved successfully",
-      data: sessions
+      data: {
+        sessions,
+        totalPages,
+        currentPage: page
+      }
     }
   } catch (error) {
     console.error("Error getting public sessions:", error)
