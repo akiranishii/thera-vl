@@ -20,6 +20,7 @@ This is a web app template.
 - Payments: Stripe
 - Analytics: PostHog
 - Deployment: Vercel
+- A Python process running Discord client plus LLM calls
 
 ## Project Structure
 
@@ -232,6 +233,7 @@ export default function ExampleClientComponent({
 Follow these rules when working on the backend.
 
 It uses Postgres, Supabase, Drizzle ORM, and Server Actions.
+A Python process running Discord client plus LLM calls.
 
 #### General Rules
 
