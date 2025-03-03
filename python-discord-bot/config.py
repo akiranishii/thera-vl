@@ -1,60 +1,73 @@
-"""
-Configuration settings for the Discord bot.
-Includes default values and environment variable loading.
-"""
-
 import os
+import logging
 from dotenv import load_dotenv
-from pathlib import Path
+import yaml
 
-class Config:
-    """Configuration class for the Discord bot"""
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("bot.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
+# Load environment variables
+def load_environment():
+    """Load environment variables from .env, .env.local and local_env.yml files"""
+    logger.info("Loading environment variables")
     
-    # Load environment variables the first time the class is imported
-    load_dotenv(Path(__file__).parent.parent / '.env.local')
+    # First try loading from .env file
+    load_dotenv()
     
-    # Discord configuration
-    DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
-    COMMAND_PREFIX = '/'
+    # Also try loading from .env.local file in the project root
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    env_local_path = os.path.join(project_root, ".env.local")
+    if os.path.exists(env_local_path):
+        logger.info(f"Loading environment variables from {env_local_path}")
+        load_dotenv(dotenv_path=env_local_path)
     
-    # Database configuration
-    DB_HOST = os.getenv('SUPABASE_URL')
-    DB_PASSWORD = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
-    
-    # LLM API configuration - we'll support multiple providers
-    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-    ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
-    MISTRAL_API_KEY = os.getenv('MISTRAL_API_KEY')
-    
-    # Default LLM settings
-    DEFAULT_LLM_PROVIDER = 'openai'  # Options: 'openai', 'anthropic', 'mistral'
-    DEFAULT_OPENAI_MODEL = 'gpt-4'
-    DEFAULT_ANTHROPIC_MODEL = 'claude-2'
-    DEFAULT_MISTRAL_MODEL = 'mistral-large-latest'
-    
-    # System prompts
-    DEFAULT_SYSTEM_PROMPT = "You are a helpful research and brainstorming assistant in Thera Virtual Lab."
-    
-    # App settings
-    MAX_HISTORY_LENGTH = 10  # Maximum number of messages to keep in conversation history
-    LOGGING_LEVEL = 'INFO'
-    
-    # Roles and permissions
-    ADMIN_ROLE_NAME = 'Thera VL Admin'
-    
-    @classmethod
-    def validate(cls):
-        """Validate that all required configuration values are present"""
-        missing = []
-        
-        if not cls.DISCORD_TOKEN:
-            missing.append('DISCORD_TOKEN')
-        
-        if not cls.DB_HOST or not cls.DB_PASSWORD:
-            missing.append('Database credentials (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)')
-        
-        # At least one LLM provider is required
-        if not any([cls.OPENAI_API_KEY, cls.ANTHROPIC_API_KEY, cls.MISTRAL_API_KEY]):
-            missing.append('At least one LLM API key (OPENAI_API_KEY, ANTHROPIC_API_KEY, or MISTRAL_API_KEY)')
-        
-        return missing 
+    # Then try loading from local_env.yml if it exists
+    local_env_path = os.path.join(os.path.dirname(__file__), "local_env.yml")
+    if os.path.exists(local_env_path):
+        logger.info(f"Loading environment variables from {local_env_path}")
+        with open(local_env_path, "r") as file:
+            try:
+                config = yaml.safe_load(file)
+                if config and isinstance(config, dict):
+                    for key, value in config.items():
+                        if key not in os.environ:
+                            os.environ[key] = str(value)
+                            logger.debug(f"Loaded {key} from local_env.yml")
+            except Exception as e:
+                logger.error(f"Error loading local_env.yml: {e}")
+
+# Load environment variables
+load_environment()
+
+# Discord configuration
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+if not DISCORD_TOKEN:
+    logger.error("DISCORD_TOKEN not found in environment variables")
+    raise ValueError("DISCORD_TOKEN is required but was not found in environment variables")
+
+COMMAND_PREFIX = os.getenv("COMMAND_PREFIX", "!")
+APPLICATION_ID = os.getenv("APPLICATION_ID")
+
+# API URLs
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:3000")
+
+# Database configuration
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# LLM configuration
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+DEFAULT_LLM_PROVIDER = os.getenv("DEFAULT_LLM_PROVIDER", "openai")
+DEFAULT_LLM_MODEL = os.getenv("DEFAULT_LLM_MODEL", "gpt-4o-mini")
+
+# Other configurations
+DEBUG_MODE = os.getenv("DEBUG_MODE", "False").lower() == "true" 

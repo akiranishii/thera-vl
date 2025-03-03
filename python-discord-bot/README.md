@@ -1,106 +1,107 @@
-# Thera VL Discord Bot
+# Thera-VL Discord Bot
 
-A Discord bot for Thera Virtual Lab that facilitates multi-agent research and brainstorming sessions in Discord channels.
+This Discord bot integrates with the Thera-VL web application to allow users to create and manage therapeutic sessions through Discord.
 
 ## Features
 
-- Create and manage research and brainstorming sessions
-- Define AI agents with different roles and personalities
-- Run individual meetings with agents
-- Conduct multi-agent brainstorming sessions
-- View session transcripts
-- Support for parallel meetings
+- Create and manage therapy sessions
+- Interact with AI therapists
+- Access session history
+- Receive real-time transcripts
 
-## Setup Instructions
+## Installation
 
-### Prerequisites
+1. Clone the repository
+2. Install the dependencies:
 
-- Python 3.9 or higher
-- A Discord account with a registered application and bot
-- API keys for at least one LLM provider (OpenAI, Anthropic, or Mistral)
-- Supabase database credentials
+```bash
+pip install -r requirements.txt
+```
 
-### Installation
+3. Copy the main `.env.example` to `.env.local` at the root level and fill in the required environment variables:
 
-1. Clone the repository (if not already included in your project)
+```
+DISCORD_TOKEN=your_discord_bot_token
+APPLICATION_ID=your_discord_application_id
+API_BASE_URL=http://localhost:3000  # Or your deployed app URL
+OPENAI_API_KEY=your_openai_api_key
+```
 
-2. Install dependencies:
-   ```bash
-   cd python-discord-bot
-   pip install -r requirements.txt
-   ```
+4. Alternatively, you can create a `local_env.yml` file in the `python-discord-bot` directory with the following format:
 
-3. Configure environment variables:
-   
-   Ensure the following variables are set in your `.env.local` file in the project root:
-   
-   ```
-   # Discord Bot Token
-   DISCORD_TOKEN=your_discord_bot_token_here
-   
-   # Supabase Credentials
-   SUPABASE_URL=your_supabase_url_here
-   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
-   
-   # LLM API Keys (at least one is required)
-   OPENAI_API_KEY=your_openai_api_key_here
-   ANTHROPIC_API_KEY=your_anthropic_api_key_here
-   MISTRAL_API_KEY=your_mistral_api_key_here
-   ```
+```yaml
+DISCORD_TOKEN: "your_discord_bot_token"
+APPLICATION_ID: "your_discord_application_id"
+API_BASE_URL: "http://localhost:3000"
+OPENAI_API_KEY: "your_openai_api_key"
+```
 
-4. Run the bot:
-   ```bash
-   python main.py
-   ```
+## Discord Bot Setup
 
-### Discord Bot Setup
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications)
+2. Create a new application
+3. Go to the "Bot" tab and click "Add Bot"
+4. Under the "Privileged Gateway Intents" section, enable:
+   - Message Content Intent
+   - Server Members Intent
+5. Copy the bot token and add it to your environment variables
+6. Go to the "OAuth2" tab, then "URL Generator"
+7. Select the following scopes:
+   - bot
+   - applications.commands
+8. Select the following bot permissions:
+   - Send Messages
+   - Embed Links
+   - Attach Files
+   - Read Message History
+   - Use Slash Commands
+9. Copy the generated URL and use it to invite the bot to your server
 
-1. Create a Discord application at [Discord Developer Portal](https://discord.com/developers/applications)
+## Running the Bot
 
-2. Add a bot to your application:
-   - Go to the "Bot" tab and click "Add Bot"
-   - Under "Privileged Gateway Intents", enable:
-     - Presence Intent
-     - Server Members Intent
-     - Message Content Intent
+```bash
+python main.py
+```
 
-3. Get your bot token:
-   - Click "Reset Token" if needed
-   - Copy the token and add it to your `.env.local` file
+## Available Commands
 
-4. Invite the bot to your server:
-   - Go to OAuth2 > URL Generator
-   - Select the "bot" and "applications.commands" scopes
-   - Select required permissions (at minimum: Read Messages, Send Messages, Use Slash Commands)
-   - Copy and open the generated URL in your browser
-   - Select your server and authorize the bot
+### Session Management
 
-## Usage
+- `/start [title] [description] [public]` - Start a new therapy session
+  - `title` - Title of your session
+  - `description` (optional) - Brief description of what you'd like to discuss
+  - `public` (optional) - Whether the session should be public (default: false)
+  
+- `/end` - End your current active session
 
-Once the bot is running and has joined your server, you can interact with it using the following commands:
-
-- `/ping`: Check if the bot is responsive
-- `/hello`: Get a greeting from the bot
-
-More commands will be added as they are implemented.
-
-## Project Structure
-
-- `main.py`: Main bot entry point and event handlers
-- `config.py`: Configuration settings and environment variable handling
-- `db_client.py`: Database client for interacting with Supabase
-- `requirements.txt`: Python dependencies
+Additional commands will be implemented in future updates.
 
 ## Development
 
-To contribute or extend the bot:
+The bot is structured as follows:
 
-1. Create command files in a `commands/` directory
-2. Add the commands to the bot in `main.py`
-3. Update this README with new commands and features
+- `main.py` - The entry point for the bot
+- `config.py` - Configuration management
+- `db_client.py` - Client for interacting with the web app's API
+- `commands/` - Command modules organized by functionality
+  - `session_commands.py` - Commands for managing sessions
+  - (Additional command modules to be added)
+
+To add new commands:
+
+1. Create a new file in the `commands` directory or add to an existing one
+2. Create a new class that inherits from `commands.Cog`
+3. Add your command methods using the `@app_commands.command()` decorator
+4. Register your command in the `INITIAL_EXTENSIONS` list in `main.py`
 
 ## Troubleshooting
 
-- **Bot not responding**: Check that the bot is running and has the correct permissions in your Discord server
-- **Database connection issues**: Verify your Supabase credentials and ensure the tables exist
-- **LLM API errors**: Check that your API keys are valid and have sufficient quota 
+Check the `bot.log` file for detailed error messages.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 

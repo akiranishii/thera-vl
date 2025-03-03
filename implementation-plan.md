@@ -216,20 +216,20 @@ I should also break down the Discord bot implementation carefully, considering t
         - `python-discord-bot/config.py`: Configuration settings
     - **Step Dependencies**: None
     - **User Instructions**: You'll need to create a Discord application and bot at https://discord.com/developers/applications, then note the bot token for the next steps.
-- [ ] Step 22: Implement Session Management Commands
+- [ ] Step 22: Implement Lab Session Commands
     
-    - **Task**: Implement the slash commands for starting and ending labs
+    - **Task**: Implement the `/lab start`, `/lab end`, and `/lab list` commands
     - **Files**:
-        - `python-discord-bot/commands/session_commands.py`: Implementation of /startlab and /endlab
-        - `python-discord-bot/main.py`: Update to register new commands
+        - `python-discord-bot/commands/lab_session_commands.py`: Implementation of session-related subcommands
+        - `python-discord-bot/main.py`: Update to register the commands
     - **Step Dependencies**: Step 21
     - **User Instructions**: None
-- [ ] Step 23: Implement Agent Management Commands
+- [ ] Step 23: Implement Lab Agent Commands
     
-    - **Task**: Implement the slash commands for creating and managing agents
+    - **Task**: Implement the `/lab agent create`, `/lab agent update`, `/lab agent delete`, and `/lab agent list` commands
     - **Files**:
-        - `python-discord-bot/commands/agent_commands.py`: Implementation of /create_agent
-        - `python-discord-bot/main.py`: Update to register new commands
+        - `python-discord-bot/commands/lab_agent_commands.py`: Implementation of agent-related subcommands
+        - `python-discord-bot/main.py`: Update to register the commands
     - **Step Dependencies**: Steps 21, 22
     - **User Instructions**: None
 - [ ] Step 24: Implement LLM Client
@@ -240,51 +240,56 @@ I should also break down the Discord bot implementation carefully, considering t
         - `python-discord-bot/models.py`: Model definitions and configuration
     - **Step Dependencies**: Step 21
     - **User Instructions**: You'll need API keys for the LLM providers you want to support (OpenAI, Anthropic, Mistral).
-- [ ] Step 25: Implement Single-Agent Meeting Command
+- [ ] Step 25: Implement Team Meeting Commands
     
-    - **Task**: Implement the slash command for individual meetings with an agent
+    - **Task**: Implement the `/lab team_meeting` and `/lab end_team_meeting` commands
     - **Files**:
-        - `python-discord-bot/commands/meeting_commands.py`: Implementation of /individual_meeting
-        - `python-discord-bot/main.py`: Update to register new command
+        - `python-discord-bot/commands/lab_meeting_commands.py`: Implementation of team meeting commands
+        - `python-discord-bot/orchestrator.py`: Logic for managing multi-agent conversations
+        - `python-discord-bot/main.py`: Update to register the commands
     - **Step Dependencies**: Steps 21, 23, 24
     - **User Instructions**: None
-- [ ] Step 26: Implement Brainstorm Command
-    
-    - **Task**: Implement the slash command for multi-agent brainstorming
-    - **Files**:
-        - `python-discord-bot/commands/brainstorm_commands.py`: Implementation of /brainstorm
-        - `python-discord-bot/orchestrator.py`: Logic for managing multi-agent conversations
-        - `python-discord-bot/main.py`: Update to register new command
-    - **Step Dependencies**: Steps 21, 23, 24, 25
-    - **User Instructions**: None
-- [ ] Step 27: Implement Parallel Meeting Support
+- [ ] Step 26: Implement Parallel Meeting Support
     
     - **Task**: Add support for running multiple parallel meetings
     - **Files**:
-        - `python-discord-bot/commands/brainstorm_commands.py`: Update to support parallel_meetings parameter
+        - `python-discord-bot/commands/lab_meeting_commands.py`: Update to support parallel_meetings parameter
         - `python-discord-bot/orchestrator.py`: Update to manage multiple parallel sessions
-    - **Step Dependencies**: Step 26
+    - **Step Dependencies**: Step 25
     - **User Instructions**: None
-- [ ] Step 28: Implement View Transcript Command
+- [ ] Step 27: Implement Transcript Commands
     
-    - **Task**: Implement the slash command for viewing transcripts
+    - **Task**: Implement the `/lab transcript list` and `/lab transcript view` commands
     - **Files**:
-        - `python-discord-bot/commands/transcript_commands.py`: Implementation of /view_transcript
-        - `python-discord-bot/main.py`: Update to register new command
-    - **Step Dependencies**: Steps 21, 22
+        - `python-discord-bot/commands/lab_transcript_commands.py`: Implementation of transcript-related commands
+        - `python-discord-bot/main.py`: Update to register the commands
+    - **Step Dependencies**: Steps 21, 22, 25
     - **User Instructions**: None
-- [ ] Step 29: Implement Help Command
+- [ ] Step 28: Implement Lab Reopen Command
     
-    - **Task**: Implement the slash command for displaying help information
+    - **Task**: Implement the `/lab reopen` command for reopening ended sessions
     - **Files**:
-        - `python-discord-bot/commands/help_command.py`: Implementation of /help
-        - `python-discord-bot/main.py`: Update to register new command
-    - **Step Dependencies**: Step 21
+        - `python-discord-bot/commands/lab_session_commands.py`: Update to add reopen functionality
+        - `python-discord-bot/main.py`: Update to register the command
+    - **Step Dependencies**: Step 22
     - **User Instructions**: None
-
-## Authentication & Authorization
-
-- [ ] Step 30: Set up Discord OAuth Integration
+- [ ] Step 29: Implement Quick Start Command
+    
+    - **Task**: Implement the `/quickstart` command by combining functionality from other commands
+    - **Files**:
+        - `python-discord-bot/commands/quickstart_command.py`: Implementation of the quickstart command
+        - `python-discord-bot/main.py`: Update to register the command
+    - **Step Dependencies**: Steps 22, 23, 24, 25
+    - **User Instructions**: None
+- [ ] Step 30: Implement Help Command
+    
+    - **Task**: Implement the `/help` command for displaying help information
+    - **Files**:
+        - `python-discord-bot/commands/help_command.py`: Implementation of /help command
+        - `python-discord-bot/main.py`: Update to register the command
+    - **Step Dependencies**: Steps 21-29
+    - **User Instructions**: None
+- [ ] Step 31: Set up Discord OAuth Integration
     
     - **Task**: Set up Discord OAuth for connecting website accounts to Discord identities
     - **Files**:
@@ -292,7 +297,7 @@ I should also break down the Discord bot implementation carefully, considering t
         - `components/auth/discord-auth-button.tsx`: Button to initiate Discord auth
     - **Step Dependencies**: None
     - **User Instructions**: You'll need to set up OAuth2 in your Discord application settings and add the redirect URI.
-- [ ] Step 31: Implement Session Access Control
+- [ ] Step 32: Implement Session Access Control
     
     - **Task**: Add authorization checks to ensure only allowed users can view private sessions
     - **Files**:
@@ -300,10 +305,7 @@ I should also break down the Discord bot implementation carefully, considering t
         - `actions/db/sessions-actions.ts`: Add function to check session access
     - **Step Dependencies**: Steps 6, 18
     - **User Instructions**: None
-
-## Admin Features
-
-- [ ] Step 32: Create Admin Dashboard Layout
+- [ ] Step 33: Create Admin Dashboard Layout
     
     - **Task**: Implement the admin dashboard layout
     - **Files**:
@@ -311,19 +313,16 @@ I should also break down the Discord bot implementation carefully, considering t
         - `app/admin/page.tsx`: Admin dashboard overview
     - **Step Dependencies**: None
     - **User Instructions**: None
-- [ ] Step 33: Implement Session Moderation Features
+- [ ] Step 34: Implement Session Moderation Features
     
     - **Task**: Add ability for admins to review and moderate sessions
     - **Files**:
         - `app/admin/sessions/page.tsx`: Page listing all sessions for moderation
         - `app/admin/sessions/_components/moderation-actions.tsx`: UI for moderation actions
         - `actions/admin/moderation-actions.ts`: Server actions for moderation
-    - **Step Dependencies**: Steps 6, 32
+    - **Step Dependencies**: Steps 6, 33
     - **User Instructions**: None
-
-## Integration & Improvements
-
-- [ ] Step 34: Add Membership Tier Logic
+- [ ] Step 35: Add Membership Tier Logic
     
     - **Task**: Implement logic for differentiating between free and pro users
     - **Files**:
@@ -331,7 +330,7 @@ I should also break down the Discord bot implementation carefully, considering t
         - `app/api/stripe/webhooks/route.ts`: Update to handle TheraLab subscriptions
     - **Step Dependencies**: None
     - **User Instructions**: You'll need to create products in Stripe dashboard for "TheraLab Free" and "TheraLab Pro".
-- [ ] Step 35: Implement Usage Analytics
+- [ ] Step 36: Implement Usage Analytics
     
     - **Task**: Add PostHog events for tracking key user actions
     - **Files**:
@@ -340,10 +339,7 @@ I should also break down the Discord bot implementation carefully, considering t
         - `app/sessions/[sessionId]/page.tsx`: Add analytics for transcript views
     - **Step Dependencies**: Steps 11, 13, 18
     - **User Instructions**: None
-
-## Deployment & Configuration
-
-- [ ] Step 36: Create .env Example and Deployment Instructions
+- [ ] Step 37: Create .env Example and Deployment Instructions
     
     - **Task**: Update environment variables example and create deployment instructions
     - **Files**:
@@ -352,17 +348,14 @@ I should also break down the Discord bot implementation carefully, considering t
         - `python-discord-bot/README.md`: Create with specific Discord bot setup instructions
     - **Step Dependencies**: None
     - **User Instructions**: None
-- [ ] Step 37: Implement Database RLS Policies
+- [ ] Step 38: Implement Database RLS Policies
     
     - **Task**: Create SQL for Row Level Security policies in Supabase
     - **Files**:
         - `supabase/security-policies.sql`: SQL script for RLS policies
     - **Step Dependencies**: Steps 1-5
     - **User Instructions**: You'll need to run this SQL script in the Supabase SQL editor to set up security policies for your tables.
-
-## Final touches
-
-- [ ] Step 38: Landing Page Update
+- [ ] Step 39: Landing Page Update
     
     - **Task**: Update the landing page to showcase TheraLab features
     - **Files**:
@@ -371,24 +364,17 @@ I should also break down the Discord bot implementation carefully, considering t
         - `components/landing/features.tsx`: Update features section
     - **Step Dependencies**: None
     - **User Instructions**: None
-- [ ] Step 39: Test End-to-End Flows
+- [ ] Step 40: Document One-at-a-Time Session Model
+    
+    - **Task**: Create documentation about the one-at-a-time session model
+    - **Files**:
+        - `docs/session-model.md`: Create documentation explaining how sessions work
+    - **Step Dependencies**: None
+    - **User Instructions**: None
+- [ ] Step 41: Test End-to-End Flows
     
     - **Task**: Create a testing guide for end-to-end flows
     - **Files**:
         - `docs/testing-guide.md`: Create with testing scenarios
     - **Step Dependencies**: All previous steps
     - **User Instructions**: Follow this guide to manually test the end-to-end flows of the application.
-
-## Summary
-
-This implementation plan takes a systematic approach to building the Thera Virtual Lab, focusing first on the database foundation, then server actions, shared components, and finally the web interface and Discord bot integration.
-
-Key considerations:
-
-1. **Data Schema First**: We start with a solid database schema to ensure all components have a consistent data model.
-2. **Component Modularity**: We build reusable components before assembling pages to maintain consistency.
-3. **Progressive Enhancement**: We implement basic functionality first, then add real-time features.
-4. **Discord Integration**: The Python bot is built after the data layer to ensure it can interact with the same database.
-5. **Security & Privacy**: We implement access controls to respect the public/private nature of sessions.
-
-The plan is structured to allow for iterative development, with each step building logically on the previous ones. This approach minimizes rework and ensures that dependencies are met before implementing features that rely on them.

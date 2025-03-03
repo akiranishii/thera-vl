@@ -1,170 +1,219 @@
-"""
-Database client for connecting to Supabase.
-Handles CRUD operations for the Discord bot.
-"""
-
 import os
-import json
 import logging
-import httpx
-from typing import Dict, List, Any, Optional, Union
-from config import Config
+import aiohttp
+import json
+from typing import Dict, List, Optional, Any, Union
 
-logger = logging.getLogger('db_client')
+from config import API_BASE_URL
 
-class SupabaseClient:
-    """Client for interacting with Supabase database"""
+logger = logging.getLogger(__name__)
+
+class DatabaseClient:
+    """Client for interacting with the application's database via API calls."""
     
-    def __init__(self):
-        self.base_url = Config.DB_HOST
-        self.key = Config.DB_PASSWORD
-        self.headers = {
-            "apikey": self.key,
-            "Authorization": f"Bearer {self.key}",
-            "Content-Type": "application/json",
-            "Prefer": "return=representation"
-        }
+    def __init__(self, base_url: str = API_BASE_URL):
+        """Initialize the database client with the base API URL.
         
-        if not self.base_url or not self.key:
-            logger.error("Missing Supabase credentials. Please check your environment variables.")
-            raise ValueError("Missing Supabase credentials")
-        
-        # Strip trailing slash if present
-        if self.base_url.endswith('/'):
-            self.base_url = self.base_url[:-1]
+        Args:
+            base_url: Base URL for the API endpoints
+        """
+        self.base_url = base_url
+        logger.info(f"DatabaseClient initialized with base URL: {base_url}")
     
-    async def _request(
+    async def _make_request(
         self, 
         method: str, 
-        path: str, 
-        params: Optional[Dict[str, Any]] = None, 
-        data: Optional[Dict[str, Any]] = None
+        endpoint: str, 
+        data: Optional[Dict[str, Any]] = None,
+        params: Optional[Dict[str, str]] = None
     ) -> Dict[str, Any]:
-        """
-        Make an HTTP request to Supabase REST API
+        """Make an HTTP request to the API.
         
         Args:
             method: HTTP method (GET, POST, PUT, DELETE)
-            path: API endpoint path
-            params: Query parameters
-            data: Request body data
+            endpoint: API endpoint (will be appended to base URL)
+            data: Optional JSON data to send
+            params: Optional query parameters
             
         Returns:
-            Response data as dictionary
-        """
-        url = f"{self.base_url}{path}"
+            API response as a dictionary
         
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.request(
-                    method=method,
-                    url=url,
-                    headers=self.headers,
-                    params=params,
-                    json=data,
-                    timeout=10.0
-                )
+        Raises:
+            Exception: If the request fails
+        """
+        url = f"{self.base_url}{endpoint}"
+        headers = {"Content-Type": "application/json"}
+        
+        async with aiohttp.ClientSession() as session:
+            try:
+                logger.debug(f"Making {method} request to {url}")
                 
-                response.raise_for_status()
+                if method == "GET":
+                    async with session.get(url, params=params, headers=headers) as response:
+                        if response.status >= 400:
+                            error_text = await response.text()
+                            logger.error(f"API error ({response.status}): {error_text}")
+                            return {"isSuccess": False, "message": f"API error: {response.status}", "data": None}
+                        
+                        result = await response.json()
+                        return result
                 
-                if response.status_code == 204:  # No content
-                    return {}
+                elif method == "POST":
+                    async with session.post(url, json=data, headers=headers) as response:
+                        if response.status >= 400:
+                            error_text = await response.text()
+                            logger.error(f"API error ({response.status}): {error_text}")
+                            return {"isSuccess": False, "message": f"API error: {response.status}", "data": None}
+                        
+                        result = await response.json()
+                        return result
+                
+                elif method == "PUT":
+                    async with session.put(url, json=data, headers=headers) as response:
+                        if response.status >= 400:
+                            error_text = await response.text()
+                            logger.error(f"API error ({response.status}): {error_text}")
+                            return {"isSuccess": False, "message": f"API error: {response.status}", "data": None}
+                        
+                        result = await response.json()
+                        return result
+                
+                elif method == "DELETE":
+                    async with session.delete(url, json=data, headers=headers) as response:
+                        if response.status >= 400:
+                            error_text = await response.text()
+                            logger.error(f"API error ({response.status}): {error_text}")
+                            return {"isSuccess": False, "message": f"API error: {response.status}", "data": None}
+                        
+                        result = await response.json()
+                        return result
+                
+                else:
+                    raise ValueError(f"Unsupported HTTP method: {method}")
                     
-                return response.json()
-                
-        except httpx.HTTPStatusError as e:
-            logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
-            raise
-        except httpx.RequestError as e:
-            logger.error(f"Request error: {str(e)}")
-            raise
-        except Exception as e:
-            logger.error(f"Unexpected error: {str(e)}")
-            raise
+            except aiohttp.ClientError as e:
+                logger.error(f"HTTP error: {str(e)}")
+                return {"isSuccess": False, "message": f"HTTP error: {str(e)}", "data": None}
+            except Exception as e:
+                logger.error(f"Unexpected error: {str(e)}")
+                return {"isSuccess": False, "message": f"Unexpected error: {str(e)}", "data": None}
     
-    # Sessions table operations
+    # Session-related methods
+    async def get_active_session(self, user_id: str) -> Dict[str, Any]:
+        """Get the active session for a user.
+        
+        Args:
+            user_id: ID of the user
+            
+        Returns:
+            Session data or error information
+        """
+        return await self._make_request("GET", f"/api/discord/sessions/active", params={"userId": user_id})
     
-    async def create_session(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a new session"""
-        return await self._request("POST", "/rest/v1/sessions", data=data)
+    async def create_session(
+        self, 
+        user_id: str, 
+        title: str, 
+        description: Optional[str] = None,
+        is_public: bool = False
+    ) -> Dict[str, Any]:
+        """Create a new session.
+        
+        Args:
+            user_id: ID of the user
+            title: Title of the session
+            description: Optional description of the session
+            is_public: Whether the session is public
+            
+        Returns:
+            Session data or error information
+        """
+        data = {
+            "userId": user_id,
+            "title": title,
+            "isPublic": is_public
+        }
+        
+        if description:
+            data["description"] = description
+            
+        return await self._make_request("POST", "/api/discord/sessions", data)
     
-    async def get_session(self, session_id: str) -> Dict[str, Any]:
-        """Get a session by ID"""
-        params = {"id": f"eq.{session_id}"}
-        result = await self._request("GET", "/rest/v1/sessions", params=params)
-        return result[0] if result else None
+    # Meeting-related methods
+    async def create_meeting(
+        self, 
+        session_id: str, 
+        title: str, 
+        agenda: Optional[str] = None,
+        task_description: Optional[str] = None,
+        max_rounds: Optional[int] = None
+    ) -> Dict[str, Any]:
+        """Create a new meeting in a session.
+        
+        Args:
+            session_id: ID of the session
+            title: Title of the meeting
+            agenda: Optional agenda for the meeting
+            task_description: Optional task description for the meeting
+            max_rounds: Optional maximum number of rounds for the meeting
+            
+        Returns:
+            Meeting data or error information
+        """
+        data = {
+            "sessionId": session_id,
+            "title": title
+        }
+        
+        if agenda:
+            data["agenda"] = agenda
+        if task_description:
+            data["taskDescription"] = task_description
+        if max_rounds:
+            data["maxRounds"] = max_rounds
+            
+        return await self._make_request("POST", "/api/discord/meetings", data)
     
-    async def update_session(self, session_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Update a session by ID"""
-        params = {"id": f"eq.{session_id}"}
-        return await self._request("PATCH", "/rest/v1/sessions", params=params, data=data)
+    async def end_meeting(self, meeting_id: str) -> Dict[str, Any]:
+        """End a meeting.
+        
+        Args:
+            meeting_id: ID of the meeting
+            
+        Returns:
+            Meeting data or error information
+        """
+        return await self._make_request("PUT", f"/api/discord/meetings/{meeting_id}/end")
     
-    # Agents table operations
-    
-    async def create_agent(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a new agent"""
-        return await self._request("POST", "/rest/v1/agents", data=data)
-    
-    async def get_agents(self, filters: Optional[Dict[str, str]] = None) -> List[Dict[str, Any]]:
-        """Get agents with optional filtering"""
-        params = {}
-        if filters:
-            for key, value in filters.items():
-                params[key] = f"eq.{value}"
-                
-        return await self._request("GET", "/rest/v1/agents", params=params)
-    
-    async def update_agent(self, agent_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Update an agent by ID"""
-        params = {"id": f"eq.{agent_id}"}
-        return await self._request("PATCH", "/rest/v1/agents", params=params, data=data)
-    
-    async def delete_agent(self, agent_id: str) -> Dict[str, Any]:
-        """Delete an agent by ID"""
-        params = {"id": f"eq.{agent_id}"}
-        return await self._request("DELETE", "/rest/v1/agents", params=params)
-    
-    # Meetings table operations
-    
-    async def create_meeting(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a new meeting"""
-        return await self._request("POST", "/rest/v1/meetings", data=data)
-    
-    async def get_meeting(self, meeting_id: str) -> Dict[str, Any]:
-        """Get a meeting by ID"""
-        params = {"id": f"eq.{meeting_id}"}
-        result = await self._request("GET", "/rest/v1/meetings", params=params)
-        return result[0] if result else None
-    
-    async def get_meetings_by_session(self, session_id: str) -> List[Dict[str, Any]]:
-        """Get all meetings for a session"""
-        params = {"sessionId": f"eq.{session_id}"}
-        return await self._request("GET", "/rest/v1/meetings", params=params)
-    
-    async def update_meeting(self, meeting_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Update a meeting by ID"""
-        params = {"id": f"eq.{meeting_id}"}
-        return await self._request("PATCH", "/rest/v1/meetings", params=params, data=data)
-    
-    # Transcripts table operations
-    
-    async def create_transcript(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a new transcript entry"""
-        return await self._request("POST", "/rest/v1/transcripts", data=data)
-    
-    async def get_transcripts_by_meeting(self, meeting_id: str) -> List[Dict[str, Any]]:
-        """Get all transcripts for a meeting"""
-        params = {"meetingId": f"eq.{meeting_id}"}
-        return await self._request("GET", "/rest/v1/transcripts", params=params)
-    
-    # Utility methods
-    
-    async def check_connection(self) -> bool:
-        """Test the database connection"""
-        try:
-            # Try to get a single row from any table to test connection
-            await self._request("HEAD", "/rest/v1/sessions")
-            return True
-        except Exception as e:
-            logger.error(f"Connection test failed: {str(e)}")
-            return False 
+    # Transcript-related methods
+    async def add_message(
+        self, 
+        meeting_id: str, 
+        content: str, 
+        role: str, 
+        user_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Add a message to a meeting transcript.
+        
+        Args:
+            meeting_id: ID of the meeting
+            content: Content of the message
+            role: Role of the message sender (user, assistant, system)
+            user_id: Optional ID of the user (for user messages)
+            
+        Returns:
+            Message data or error information
+        """
+        data = {
+            "meetingId": meeting_id,
+            "content": content,
+            "role": role
+        }
+        
+        if user_id:
+            data["userId"] = user_id
+            
+        return await self._make_request("POST", "/api/discord/transcripts", data)
+
+# Create a singleton instance
+db_client = DatabaseClient() 

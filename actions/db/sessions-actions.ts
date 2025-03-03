@@ -9,9 +9,10 @@ Contains server actions related to sessions in the DB.
 import { db } from "@/db/db"
 import { InsertSession, SelectSession, sessionsTable } from "@/db/schema/sessions-schema"
 import { votesTable } from "@/db/schema/votes-schema"
+import { meetingsTable, meetingStatusEnum } from "@/db/schema/meetings-schema"
 import { ActionState } from "@/types"
 import { auth } from "@clerk/nextjs/server"
-import { and, desc, eq, ilike, or, sql, sum, count } from "drizzle-orm"
+import { and, desc, eq, ilike, or, sql, sum, count, not, isNull } from "drizzle-orm"
 
 export async function createSessionAction(
   session: Omit<InsertSession, "userId">
@@ -23,9 +24,19 @@ export async function createSessionAction(
       return { isSuccess: false, message: "Unauthorized" }
     }
 
+    // First, deactivate all other active sessions for this user
+    await db
+      .update(sessionsTable)
+      .set({ isActive: false })
+      .where(and(
+        eq(sessionsTable.userId, userId),
+        eq(sessionsTable.isActive, true)
+      ))
+
+    // Create the new session as active
     const [newSession] = await db
       .insert(sessionsTable)
-      .values({ ...session, userId })
+      .values({ ...session, userId, isActive: true })
       .returning()
 
     return {
@@ -325,5 +336,207 @@ export async function getTopVotedSessionsAction(
   } catch (error) {
     console.error("Error getting top voted sessions:", error)
     return { isSuccess: false, message: "Failed to get top voted sessions" }
+  }
+}
+
+/**
+ * Activates a session and deactivates all other sessions for the user.
+ * This supports the one-at-a-time session model.
+ */
+export async function activateSessionAction(
+  id: string
+): Promise<ActionState<SelectSession>> {
+  try {
+    const { userId } = await auth()
+    
+    if (!userId) {
+      return { isSuccess: false, message: "Unauthorized" }
+    }
+
+    // Ensure the user owns the session
+    const sessionToActivate = await db.query.sessions.findFirst({
+      where: and(
+        eq(sessionsTable.id, id),
+        eq(sessionsTable.userId, userId)
+      )
+    })
+
+    if (!sessionToActivate) {
+      return { isSuccess: false, message: "Session not found or unauthorized" }
+    }
+
+    // First, deactivate all sessions for this user
+    await db
+      .update(sessionsTable)
+      .set({ isActive: false })
+      .where(and(
+        eq(sessionsTable.userId, userId),
+        eq(sessionsTable.isActive, true)
+      ))
+
+    // Then, activate the requested session
+    const [activatedSession] = await db
+      .update(sessionsTable)
+      .set({ isActive: true })
+      .where(eq(sessionsTable.id, id))
+      .returning()
+
+    return {
+      isSuccess: true,
+      message: "Session activated successfully",
+      data: activatedSession
+    }
+  } catch (error) {
+    console.error("Error activating session:", error)
+    return { isSuccess: false, message: "Failed to activate session" }
+  }
+}
+
+/**
+ * Deactivates a session.
+ */
+export async function deactivateSessionAction(
+  id: string
+): Promise<ActionState<SelectSession>> {
+  try {
+    const { userId } = await auth()
+    
+    if (!userId) {
+      return { isSuccess: false, message: "Unauthorized" }
+    }
+
+    // Ensure the user owns the session
+    const sessionToDeactivate = await db.query.sessions.findFirst({
+      where: and(
+        eq(sessionsTable.id, id),
+        eq(sessionsTable.userId, userId)
+      )
+    })
+
+    if (!sessionToDeactivate) {
+      return { isSuccess: false, message: "Session not found or unauthorized" }
+    }
+
+    // Deactivate the session
+    const [deactivatedSession] = await db
+      .update(sessionsTable)
+      .set({ isActive: false })
+      .where(eq(sessionsTable.id, id))
+      .returning()
+
+    return {
+      isSuccess: true,
+      message: "Session deactivated successfully",
+      data: deactivatedSession
+    }
+  } catch (error) {
+    console.error("Error deactivating session:", error)
+    return { isSuccess: false, message: "Failed to deactivate session" }
+  }
+}
+
+/**
+ * Gets the currently active session for the user, if any.
+ */
+export async function getActiveSessionAction(): Promise<ActionState<SelectSession | null>> {
+  try {
+    const { userId } = await auth()
+    
+    if (!userId) {
+      return { isSuccess: false, message: "Unauthorized" }
+    }
+
+    const activeSession = await db.query.sessions.findFirst({
+      where: and(
+        eq(sessionsTable.userId, userId),
+        eq(sessionsTable.isActive, true)
+      )
+    })
+
+    return {
+      isSuccess: true,
+      message: activeSession ? "Active session retrieved" : "No active session found",
+      data: activeSession || null
+    }
+  } catch (error) {
+    console.error("Error getting active session:", error)
+    return { isSuccess: false, message: "Failed to get active session" }
+  }
+}
+
+/**
+ * Reopens an ended session by activating it and creating a new meeting.
+ */
+export async function reopenSessionAction(
+  id: string,
+  meetingParams?: Partial<{
+    title: string;
+    agenda: string;
+    taskDescription: string;
+    maxRounds: number;
+  }>
+): Promise<ActionState<{
+  session: SelectSession;
+  meetingId: string;
+}>> {
+  try {
+    const { userId } = await auth()
+    
+    if (!userId) {
+      return { isSuccess: false, message: "Unauthorized" }
+    }
+
+    // Ensure the user owns the session
+    const sessionToReopen = await db.query.sessions.findFirst({
+      where: and(
+        eq(sessionsTable.id, id),
+        eq(sessionsTable.userId, userId)
+      )
+    })
+
+    if (!sessionToReopen) {
+      return { isSuccess: false, message: "Session not found or unauthorized" }
+    }
+
+    // Activate this session and deactivate others
+    await db
+      .update(sessionsTable)
+      .set({ isActive: false })
+      .where(and(
+        eq(sessionsTable.userId, userId),
+        eq(sessionsTable.isActive, true)
+      ))
+
+    const [reopenedSession] = await db
+      .update(sessionsTable)
+      .set({ isActive: true })
+      .where(eq(sessionsTable.id, id))
+      .returning()
+
+    // Create a new meeting for this session
+    const [newMeeting] = await db
+      .insert(meetingsTable)
+      .values({
+        sessionId: id,
+        title: meetingParams?.title || `Reopened: ${reopenedSession.title}`,
+        agenda: meetingParams?.agenda || '',
+        taskDescription: meetingParams?.taskDescription || '',
+        maxRounds: meetingParams?.maxRounds || 3,
+        status: 'pending',
+        currentRound: 0
+      })
+      .returning()
+
+    return {
+      isSuccess: true,
+      message: "Session reopened successfully",
+      data: {
+        session: reopenedSession,
+        meetingId: newMeeting.id
+      }
+    }
+  } catch (error) {
+    console.error("Error reopening session:", error)
+    return { isSuccess: false, message: "Failed to reopen session" }
   }
 } 

@@ -166,4 +166,31 @@ export async function deleteAgentAction(
     console.error("Error deleting agent:", error)
     return { isSuccess: false, message: "Failed to delete agent" }
   }
+}
+
+export async function getAgentsBySessionAction(
+  sessionId: string
+): Promise<ActionState<SelectAgent[]>> {
+  try {
+    const { userId } = await auth()
+    
+    if (!userId) {
+      return { isSuccess: false, message: "Unauthorized" }
+    }
+
+    // For now, we'll just return all agents for the user
+    // In a real implementation, you would filter by session ID if that relationship exists
+    const agents = await db.query.agents.findMany({
+      where: eq(agentsTable.userId, userId)
+    })
+
+    return {
+      isSuccess: true,
+      message: "Agents retrieved successfully",
+      data: agents
+    }
+  } catch (error) {
+    console.error("Error getting agents:", error)
+    return { isSuccess: false, message: "Failed to get agents" }
+  }
 } 

@@ -14,6 +14,7 @@ export const sessionsTable = pgTable("sessions", {
   title: text("title").notNull(),
   description: text("description"),
   isPublic: boolean("is_public").default(false).notNull(),
+  isActive: boolean("is_active").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

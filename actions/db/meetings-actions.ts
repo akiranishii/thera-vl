@@ -7,7 +7,7 @@ Contains server actions related to meetings in the DB.
 "use server"
 
 import { db } from "@/db/db"
-import { InsertMeeting, MeetingWithSession, SelectMeeting, meetingsTable } from "@/db/schema/meetings-schema"
+import { InsertMeeting, MeetingWithSession, SelectMeeting, meetingsTable, meetingStatusEnum } from "@/db/schema/meetings-schema"
 import { sessionsTable } from "@/db/schema/sessions-schema"
 import { ActionState } from "@/types"
 import { auth } from "@clerk/nextjs/server"
@@ -208,5 +208,131 @@ export async function deleteMeetingAction(
   } catch (error) {
     console.error("Error deleting meeting:", error)
     return { isSuccess: false, message: "Failed to delete meeting" }
+  }
+}
+
+/**
+ * Ends a team meeting by marking it as completed
+ */
+export async function endMeetingAction(
+  id: string
+): Promise<ActionState<SelectMeeting>> {
+  try {
+    const { userId } = await auth()
+    
+    if (!userId) {
+      return { isSuccess: false, message: "Unauthorized" }
+    }
+
+    // Get the meeting with its session
+    const meeting = await db.query.meetings.findFirst({
+      where: eq(meetingsTable.id, id),
+      with: {
+        session: true
+      }
+    }) as MeetingWithSession | null
+
+    if (!meeting) {
+      return { isSuccess: false, message: "Meeting not found" }
+    }
+
+    // Check if user owns the meeting's session
+    if (meeting.session.userId !== userId) {
+      return { isSuccess: false, message: "Unauthorized to end this meeting" }
+    }
+
+    // If meeting is already completed, return early
+    if (meeting.status === "completed") {
+      return {
+        isSuccess: true,
+        message: "Meeting is already completed",
+        data: meeting
+      }
+    }
+
+    // Update meeting to completed status
+    const [updatedMeeting] = await db
+      .update(meetingsTable)
+      .set({
+        status: "completed",
+        completedAt: new Date()
+      })
+      .where(eq(meetingsTable.id, id))
+      .returning()
+
+    return {
+      isSuccess: true,
+      message: "Meeting ended successfully",
+      data: updatedMeeting
+    }
+  } catch (error) {
+    console.error("Error ending meeting:", error)
+    return { isSuccess: false, message: "Failed to end meeting" }
+  }
+}
+
+/**
+ * Ends all active meetings for a session
+ */
+export async function endAllSessionMeetingsAction(
+  sessionId: string
+): Promise<ActionState<number>> {
+  try {
+    const { userId } = await auth()
+    
+    if (!userId) {
+      return { isSuccess: false, message: "Unauthorized" }
+    }
+
+    // Ensure the user owns the session
+    const session = await db.query.sessions.findFirst({
+      where: and(
+        eq(sessionsTable.id, sessionId),
+        eq(sessionsTable.userId, userId)
+      )
+    })
+
+    if (!session) {
+      return { isSuccess: false, message: "Session not found or unauthorized" }
+    }
+
+    // Get all active meetings for this session
+    const activeMeetings = await db.query.meetings.findMany({
+      where: and(
+        eq(meetingsTable.sessionId, sessionId),
+        eq(meetingsTable.status, "in_progress")
+      )
+    })
+
+    if (activeMeetings.length === 0) {
+      return {
+        isSuccess: true,
+        message: "No active meetings to end",
+        data: 0
+      }
+    }
+
+    // End all active meetings
+    const result = await db
+      .update(meetingsTable)
+      .set({
+        status: "completed",
+        completedAt: new Date()
+      })
+      .where(
+        and(
+          eq(meetingsTable.sessionId, sessionId),
+          eq(meetingsTable.status, "in_progress")
+        )
+      )
+
+    return {
+      isSuccess: true,
+      message: `${activeMeetings.length} meetings ended successfully`,
+      data: activeMeetings.length
+    }
+  } catch (error) {
+    console.error("Error ending all session meetings:", error)
+    return { isSuccess: false, message: "Failed to end session meetings" }
   }
 } 

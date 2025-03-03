@@ -1221,3 +1221,732 @@
 2025-03-02 11:17:39,996 - discord.gateway - DEBUG - For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
 2025-03-02 11:18:21,166 - discord.gateway - DEBUG - Keeping shard ID None websocket alive with sequence 4.
 2025-03-02 11:18:21,262 - discord.gateway - DEBUG - For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+2025-03-02 15:24:16,706 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 15:24:16,707 - discord.client - INFO - logging in using static token
+2025-03-02 15:24:17,467 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: b3be2accc336e1f48f8cfe4699a96cbe).
+2025-03-02 15:24:19,497 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 15:24:19,497 - bot - INFO - Connected to 1 guilds
+2025-03-02 15:24:19,498 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 15:24:19,498 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 15:24:19,498 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 15:24:19,508 - session_commands - INFO - Registered lab command group
+2025-03-02 15:24:19,508 - bot - INFO - Loaded extension: commands.session_commands
+2025-03-02 15:24:19,508 - agent_commands - INFO - Agent commands added to lab group
+2025-03-02 15:24:19,508 - bot - INFO - Loaded extension: commands.agent_commands
+2025-03-02 15:24:19,509 - meeting_commands - INFO - Team meeting command added to lab group
+2025-03-02 15:24:19,509 - bot - INFO - Loaded extension: commands.meeting_commands
+2025-03-02 15:24:19,509 - bot - INFO - Loaded extension: commands.brainstorm_commands
+2025-03-02 15:24:19,512 - bot - ERROR - Failed to load extension commands.transcript_commands: Extension 'commands.transcript_commands' raised an error: AttributeError: 'Command' object has no attribute 'add_option'
+2025-03-02 15:24:19,513 - data_commands - INFO - Data commands added to lab group
+2025-03-02 15:24:19,513 - bot - INFO - Loaded extension: commands.data_commands
+2025-03-02 15:24:19,515 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 15:24:19,515 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 15:24:19,515 - bot - INFO - Loaded extension: commands.quickstart_commands
+2025-03-02 15:24:19,515 - bot - INFO - Loaded extension: commands.help_command
+2025-03-02 15:24:19,515 - bot - INFO - Syncing commands with Discord...
+2025-03-02 15:24:19,842 - bot - INFO - Synced 6 commands globally
+2025-03-02 15:24:19,842 - bot - INFO - Command tree: lab start, lab end, lab list, lab agent, lab team_meeting, lab data, brainstorm, cancel_brainstorm, compare_brainstorms, quickstart, help
+2025-03-02 15:24:19,842 - bot - INFO - Bot is ready
+2025-03-02 15:30:07,003 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 15:30:07,004 - discord.client - INFO - logging in using static token
+2025-03-02 15:30:07,863 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: f7c0ad6a330d3d2f9ad4a4ea9262e745).
+2025-03-02 15:30:09,881 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 15:30:09,881 - bot - INFO - Connected to 1 guilds
+2025-03-02 15:30:09,882 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 15:30:09,882 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 15:30:09,882 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 15:30:09,887 - lab_commands - INFO - Registered lab command group
+2025-03-02 15:36:43,496 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 15:36:43,496 - discord.client - INFO - logging in using static token
+2025-03-02 15:36:44,215 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: d32700a407264ce48874642aeb1609cf).
+2025-03-02 15:36:46,221 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 15:36:46,222 - bot - INFO - Connected to 1 guilds
+2025-03-02 15:36:46,223 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 15:36:46,223 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 15:36:46,223 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 15:36:46,228 - session_commands - INFO - Registered lab command group
+2025-03-02 15:36:46,228 - bot - INFO - Loaded extension: commands.session_commands
+2025-03-02 15:36:46,229 - agent_commands - INFO - Agent commands added to lab group
+2025-03-02 15:36:46,229 - bot - INFO - Loaded extension: commands.agent_commands
+2025-03-02 15:36:46,230 - meeting_commands - INFO - Team meeting command added to lab group
+2025-03-02 15:36:46,230 - bot - INFO - Loaded extension: commands.meeting_commands
+2025-03-02 15:36:46,231 - bot - INFO - Loaded extension: commands.brainstorm_commands
+2025-03-02 15:36:46,231 - data_commands - INFO - Data commands added to lab group
+2025-03-02 15:36:46,231 - bot - INFO - Loaded extension: commands.data_commands
+2025-03-02 15:36:46,234 - bot - ERROR - Failed to load extension commands.lab_commands: Extension 'commands.lab_commands' raised an error: CommandAlreadyRegistered: Command 'lab' already registered.
+2025-03-02 15:36:46,234 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 15:36:46,234 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 15:36:46,234 - bot - INFO - Loaded extension: commands.quickstart_commands
+2025-03-02 15:36:46,237 - bot - INFO - Loaded extension: commands.help_command
+2025-03-02 15:36:46,237 - bot - INFO - Syncing commands with Discord...
+2025-03-02 15:36:46,531 - bot - INFO - Synced 3 commands globally
+2025-03-02 15:36:46,531 - bot - INFO - Command tree: lab start, lab end, lab list, lab agent, lab team_meeting, lab data, lab agent create, lab agent list, lab agent delete, lab agent generate, lab data upload, quickstart, help
+2025-03-02 15:36:46,531 - bot - INFO - Bot is ready
+2025-03-02 15:47:45,784 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 15:47:45,785 - discord.client - INFO - logging in using static token
+2025-03-02 15:47:46,612 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: a9c2484c638a9d2960ca282b307812ec).
+2025-03-02 15:47:48,629 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 15:47:48,629 - bot - INFO - Connected to 1 guilds
+2025-03-02 15:47:48,630 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 15:47:48,631 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 15:47:48,631 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 15:47:48,631 - bot - INFO - Starting extension loading process
+2025-03-02 15:47:48,631 - bot - INFO - Beginning extension loading sequence
+2025-03-02 15:47:48,648 - session_commands - INFO - Registered lab command group
+2025-03-02 15:47:48,648 - bot - INFO - Successfully loaded extension: commands.session_commands
+2025-03-02 15:47:48,649 - agent_commands - INFO - Agent commands added to lab group
+2025-03-02 15:47:48,649 - bot - INFO - Successfully loaded extension: commands.agent_commands
+2025-03-02 15:47:48,657 - meeting_commands - INFO - Team meeting command added to lab group
+2025-03-02 15:47:48,658 - bot - INFO - Successfully loaded extension: commands.meeting_commands
+2025-03-02 15:47:48,666 - bot - INFO - Successfully loaded extension: commands.brainstorm_commands
+2025-03-02 15:47:48,667 - data_commands - INFO - Data commands added to lab group
+2025-03-02 15:47:48,667 - bot - INFO - Successfully loaded extension: commands.data_commands
+2025-03-02 15:47:48,668 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 15:47:48,668 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 15:47:48,668 - bot - INFO - Successfully loaded extension: commands.quickstart_commands
+2025-03-02 15:47:48,669 - bot - INFO - Successfully loaded extension: commands.help_command
+2025-03-02 15:47:48,669 - bot - ERROR - Failed to load extension commands.lab_commands: Extension 'commands.lab_commands' raised an error: CommandAlreadyRegistered: Command 'lab' already registered.
+2025-03-02 15:47:48,686 - bot - ERROR - Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 963, in _load_from_module_spec
+    await setup(self)
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 193, in setup
+    await bot.add_cog(LabCommands(bot))
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 799, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/cog.py", line 706, in _inject
+    await maybe_coroutine(self.cog_load)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/utils.py", line 715, in maybe_coroutine
+    return await value
+           ^^^^^^^^^^^
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 40, in cog_load
+    self.bot.tree.add_command(self.lab_group)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/tree.py", line 407, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'lab' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/main.py", line 63, in load_extensions
+    await bot.load_extension(extension)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 1029, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 968, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'commands.lab_commands' raised an error: CommandAlreadyRegistered: Command 'lab' already registered.
+
+2025-03-02 15:47:48,689 - bot - INFO - Completed extension loading. Loaded 7 of 8 extensions
+2025-03-02 15:47:48,689 - bot - INFO - Starting command sync process
+2025-03-02 15:47:48,689 - bot - INFO - Syncing commands with Discord...
+2025-03-02 15:47:48,999 - bot - INFO - Synced 0 commands globally
+2025-03-02 15:47:49,000 - bot - WARNING - Final command tree is empty!
+2025-03-02 15:47:49,000 - bot - INFO - Bot is ready
+2025-03-02 15:49:06,337 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 15:49:06,337 - discord.client - INFO - logging in using static token
+2025-03-02 15:49:07,109 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: df2a52f5e19b732d203bd73e6dc7ee10).
+2025-03-02 15:49:09,134 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 15:49:09,135 - bot - INFO - Connected to 1 guilds
+2025-03-02 15:49:09,136 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 15:49:09,136 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 15:49:09,136 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 15:49:09,136 - bot - INFO - Starting extension loading process
+2025-03-02 15:49:09,136 - bot - INFO - Beginning extension loading sequence
+2025-03-02 15:49:09,136 - bot - INFO - Attempting to load extension: commands.session_commands
+2025-03-02 15:49:09,141 - session_commands - INFO - Registered lab command group
+2025-03-02 15:49:09,141 - bot - INFO - Successfully loaded extension: commands.session_commands
+2025-03-02 15:49:09,141 - bot - INFO - Attempting to load extension: commands.agent_commands
+2025-03-02 15:49:09,143 - agent_commands - INFO - Agent commands added to lab group
+2025-03-02 15:49:09,143 - bot - INFO - Successfully loaded extension: commands.agent_commands
+2025-03-02 15:49:09,143 - bot - INFO - Attempting to load extension: commands.meeting_commands
+2025-03-02 15:49:09,143 - meeting_commands - INFO - Team meeting command added to lab group
+2025-03-02 15:49:09,143 - bot - INFO - Successfully loaded extension: commands.meeting_commands
+2025-03-02 15:49:09,143 - bot - INFO - Attempting to load extension: commands.brainstorm_commands
+2025-03-02 15:49:09,144 - bot - INFO - Successfully loaded extension: commands.brainstorm_commands
+2025-03-02 15:49:09,144 - bot - INFO - Attempting to load extension: commands.data_commands
+2025-03-02 15:49:09,145 - data_commands - INFO - Data commands added to lab group
+2025-03-02 15:49:09,145 - bot - INFO - Successfully loaded extension: commands.data_commands
+2025-03-02 15:49:09,146 - bot - INFO - Attempting to load extension: commands.quickstart_commands
+2025-03-02 15:49:09,146 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 15:49:09,146 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 15:49:09,146 - bot - INFO - Successfully loaded extension: commands.quickstart_commands
+2025-03-02 15:49:09,146 - bot - INFO - Attempting to load extension: commands.help_command
+2025-03-02 15:49:09,147 - bot - INFO - Successfully loaded extension: commands.help_command
+2025-03-02 15:49:09,147 - bot - INFO - Attempting to load extension: commands.lab_commands
+2025-03-02 15:49:09,149 - lab_commands - INFO - Loading Lab Commands cog
+2025-03-02 15:49:09,149 - lab_commands - INFO - Found lab_group from SessionCommands
+2025-03-02 15:49:09,149 - lab_commands - INFO - Dependent cogs loaded successfully
+2025-03-02 15:49:09,149 - lab_commands - INFO - LabCommands cog loaded
+2025-03-02 15:49:09,149 - bot - INFO - Successfully loaded extension: commands.lab_commands
+2025-03-02 15:49:09,149 - bot - INFO - Completed extension loading. Loaded 8 of 8 extensions
+2025-03-02 15:49:09,149 - bot - INFO - Extension loading completed successfully
+2025-03-02 15:49:09,149 - bot - INFO - Starting command sync process
+2025-03-02 15:49:09,149 - bot - INFO - Syncing commands with Discord...
+2025-03-02 15:49:09,308 - bot - INFO - Synced 0 commands globally
+2025-03-02 15:49:09,308 - bot - WARNING - Final command tree is empty!
+2025-03-02 15:49:09,308 - bot - INFO - Command sync completed successfully
+2025-03-02 15:49:09,308 - bot - INFO - Bot is ready
+2025-03-02 15:49:59,500 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 15:49:59,501 - discord.client - INFO - logging in using static token
+2025-03-02 15:50:00,175 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: bc00f1c53a3cc66203d519bcc43e00c7).
+2025-03-02 15:50:02,194 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 15:50:02,194 - bot - INFO - Connected to 1 guilds
+2025-03-02 15:50:02,195 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 15:50:02,195 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 15:50:02,195 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 15:50:02,195 - bot - INFO - Starting extension loading process
+2025-03-02 15:50:02,195 - bot - INFO - Beginning extension loading sequence
+2025-03-02 15:50:02,195 - bot - INFO - Attempting to load extension: commands.session_commands
+2025-03-02 15:50:02,201 - session_commands - INFO - Registered lab command group
+2025-03-02 15:50:02,201 - bot - INFO - Successfully loaded extension: commands.session_commands
+2025-03-02 15:50:02,201 - bot - INFO - Attempting to load extension: commands.agent_commands
+2025-03-02 15:50:02,201 - agent_commands - INFO - Agent commands added to lab group
+2025-03-02 15:50:02,201 - bot - INFO - Successfully loaded extension: commands.agent_commands
+2025-03-02 15:50:02,202 - bot - INFO - Attempting to load extension: commands.meeting_commands
+2025-03-02 15:50:02,202 - meeting_commands - INFO - Team meeting command added to lab group
+2025-03-02 15:50:02,202 - bot - INFO - Successfully loaded extension: commands.meeting_commands
+2025-03-02 15:50:02,202 - bot - INFO - Attempting to load extension: commands.brainstorm_commands
+2025-03-02 15:50:02,203 - bot - INFO - Successfully loaded extension: commands.brainstorm_commands
+2025-03-02 15:50:02,203 - bot - INFO - Attempting to load extension: commands.data_commands
+2025-03-02 15:50:02,203 - data_commands - INFO - Data commands added to lab group
+2025-03-02 15:50:02,203 - bot - INFO - Successfully loaded extension: commands.data_commands
+2025-03-02 15:50:02,203 - bot - INFO - Attempting to load extension: commands.quickstart_commands
+2025-03-02 15:50:02,204 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 15:50:02,204 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 15:50:02,204 - bot - INFO - Successfully loaded extension: commands.quickstart_commands
+2025-03-02 15:50:02,204 - bot - INFO - Attempting to load extension: commands.help_command
+2025-03-02 15:50:02,204 - bot - INFO - Successfully loaded extension: commands.help_command
+2025-03-02 15:50:02,204 - bot - INFO - Attempting to load extension: commands.lab_commands
+2025-03-02 15:50:02,205 - lab_commands - INFO - Loading Lab Commands cog
+2025-03-02 15:50:02,205 - lab_commands - INFO - Found lab_group from SessionCommands
+2025-03-02 15:50:02,205 - lab_commands - INFO - Dependent cogs loaded successfully
+2025-03-02 15:50:02,205 - lab_commands - INFO - LabCommands cog loaded
+2025-03-02 15:50:02,205 - bot - INFO - Successfully loaded extension: commands.lab_commands
+2025-03-02 15:50:02,205 - bot - INFO - Completed extension loading. Loaded 8 of 8 extensions
+2025-03-02 15:50:02,205 - bot - INFO - Extension loading completed successfully
+2025-03-02 15:50:02,205 - bot - INFO - Waiting for commands to be fully registered...
+2025-03-02 15:50:03,206 - bot - INFO - Starting command sync process
+2025-03-02 15:50:03,206 - bot - INFO - Syncing commands with Discord...
+2025-03-02 15:50:03,206 - bot - INFO - Found 6 commands before filtering
+2025-03-02 15:50:03,206 - bot - INFO - Found command: lab (type: Group)
+2025-03-02 15:50:03,206 - bot - INFO -   Subcommand: start
+2025-03-02 15:50:03,206 - bot - INFO -   Subcommand: end
+2025-03-02 15:50:03,206 - bot - INFO -   Subcommand: list
+2025-03-02 15:50:03,206 - bot - INFO -   Subgroup: agent
+2025-03-02 15:50:03,206 - bot - INFO -     Sub-subcommand: create
+2025-03-02 15:50:03,206 - bot - INFO -     Sub-subcommand: list
+2025-03-02 15:50:03,206 - bot - INFO -     Sub-subcommand: delete
+2025-03-02 15:50:03,206 - bot - INFO -     Sub-subcommand: generate
+2025-03-02 15:50:03,206 - bot - INFO -   Subcommand: team_meeting
+2025-03-02 15:50:03,206 - bot - INFO -   Subgroup: data
+2025-03-02 15:50:03,206 - bot - INFO -     Sub-subcommand: upload
+2025-03-02 15:50:03,206 - bot - INFO - Found command: brainstorm (type: Command)
+2025-03-02 15:50:03,206 - bot - INFO - Found command: cancel_brainstorm (type: Command)
+2025-03-02 15:50:03,206 - bot - INFO - Found command: compare_brainstorms (type: Command)
+2025-03-02 15:50:03,206 - bot - INFO - Found command: quickstart (type: Command)
+2025-03-02 15:50:03,206 - bot - INFO - Found command: help (type: Command)
+2025-03-02 15:50:03,207 - bot - INFO - Keeping command: lab
+2025-03-02 15:50:03,207 - bot - INFO - Filtering out command: brainstorm
+2025-03-02 15:50:03,207 - bot - INFO - Filtering out command: cancel_brainstorm
+2025-03-02 15:50:03,207 - bot - INFO - Filtering out command: compare_brainstorms
+2025-03-02 15:50:03,207 - bot - INFO - Keeping command: quickstart
+2025-03-02 15:50:03,207 - bot - INFO - Keeping command: help
+2025-03-02 15:50:03,207 - bot - INFO - Added command: lab
+2025-03-02 15:50:03,207 - bot - INFO - Added command: quickstart
+2025-03-02 15:50:03,207 - bot - INFO - Added command: help
+2025-03-02 15:50:03,552 - bot - INFO - Synced 3 commands globally
+2025-03-02 15:50:03,552 - bot - INFO - Final command tree: lab start, lab end, lab list, lab agent, lab team_meeting, lab data, lab agent create, lab agent list, lab agent delete, lab agent generate, lab data upload, quickstart, help
+2025-03-02 15:50:03,552 - bot - INFO - Command sync completed successfully
+2025-03-02 15:50:03,553 - bot - INFO - Bot is ready
+2025-03-02 15:50:56,981 - discord.app_commands.tree - ERROR - Ignoring exception in command 'help'
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 857, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/help_command.py", line 43, in help
+    await interaction.response.defer(thinking=True)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/interactions.py", line 844, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'help' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2025-03-02 16:10:55,295 WARNING discord.client: PyNaCl is not installed, voice will NOT be supported
+2025-03-02 16:10:55,296 INFO discord.client: logging in using static token
+2025-03-02 16:10:56,245 INFO discord.gateway: Shard ID None has connected to Gateway (Session ID: 2a5a168140c58c8797bc199c8fc427de).
+2025-03-02 16:10:58,263 INFO main: Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 16:10:58,263 INFO main: Connected to 1 guild(s)
+2025-03-02 16:10:58,263 INFO main: Loading extensions...
+2025-03-02 16:10:58,263 INFO main: Loading extensions in order: ['commands.session_commands', 'commands.agent_commands', 'commands.meeting_commands', 'commands.data_commands', 'commands.brainstorm_commands', 'commands.lab_commands', 'commands.quickstart_commands', 'commands.help_command']
+2025-03-02 16:10:58,263 INFO main: Loading extension: commands.session_commands
+2025-03-02 16:10:58,268 ERROR main: ❌ Failed to load extension commands.session_commands: f-string expression part cannot include a backslash (brainstorm_commands.py, line 269)
+2025-03-02 16:10:58,270 INFO main: Loading extension: commands.agent_commands
+2025-03-02 16:12:12,511 ERROR discord.app_commands.tree: Ignoring exception in command tree
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/tree.py", line 1151, in wrapper
+    await self._call(interaction)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/tree.py", line 1283, in _call
+    command, options = self._get_app_command_options(data)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/tree.py", line 1187, in _get_app_command_options
+    raise CommandNotFound(name, parents)
+discord.app_commands.errors.CommandNotFound: Application command 'help' not found
+2025-03-02 16:20:13,599 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 16:20:13,601 - discord.client - INFO - logging in using static token
+2025-03-02 16:20:14,490 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: be5de38a0b4c07f89c9d9735137244e3).
+2025-03-02 16:20:16,501 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 16:20:16,501 - bot - INFO - Connected to 1 guilds
+2025-03-02 16:20:16,502 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 16:20:16,503 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 16:20:16,503 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 16:20:16,503 - bot - INFO - Starting extension loading process
+2025-03-02 16:20:16,503 - bot - INFO - Beginning extension loading sequence
+2025-03-02 16:20:16,503 - bot - INFO - Attempting to load extension: commands.session_commands
+2025-03-02 16:20:16,538 - session_commands - INFO - SessionCommands cog loaded
+2025-03-02 16:20:16,538 - bot - INFO - Successfully loaded extension: commands.session_commands
+2025-03-02 16:20:16,538 - bot - INFO - Attempting to load extension: commands.quickstart_commands
+2025-03-02 16:20:16,541 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 16:20:16,541 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 16:20:16,541 - quickstart_commands - INFO - QuickstartCommands cog loaded
+2025-03-02 16:20:16,541 - bot - INFO - Successfully loaded extension: commands.quickstart_commands
+2025-03-02 16:20:16,541 - bot - INFO - Attempting to load extension: commands.help_command
+2025-03-02 16:20:16,546 - bot - INFO - Successfully loaded extension: commands.help_command
+2025-03-02 16:20:16,546 - bot - INFO - Attempting to load extension: commands.lab_commands
+2025-03-02 16:20:16,547 - lab_commands - INFO - Loading Lab Commands cog
+2025-03-02 16:20:16,547 - lab_commands - INFO - Found SessionCommands cog
+2025-03-02 16:20:16,547 - lab_commands - INFO - Dependent cogs loaded successfully
+2025-03-02 16:20:16,548 - lab_commands - INFO - Added all subcommands to lab command group
+2025-03-02 16:20:16,548 - lab_commands - INFO - LabCommands cog loaded
+2025-03-02 16:20:16,548 - bot - INFO - Successfully loaded extension: commands.lab_commands
+2025-03-02 16:20:16,548 - bot - INFO - Completed extension loading. Loaded 4 of 4 extensions
+2025-03-02 16:20:16,548 - bot - INFO - Extension loading completed successfully
+2025-03-02 16:20:16,548 - bot - INFO - Waiting for commands to be fully registered...
+2025-03-02 16:20:17,549 - bot - INFO - Starting command sync process
+2025-03-02 16:20:17,549 - bot - INFO - Syncing commands with Discord...
+2025-03-02 16:20:17,549 - bot - INFO - Found 3 commands before filtering
+2025-03-02 16:20:17,549 - bot - INFO - Found command: quickstart (type: Command)
+2025-03-02 16:20:17,550 - bot - INFO - Found command: help (type: Command)
+2025-03-02 16:20:17,550 - bot - INFO - Found command: lab (type: Group)
+2025-03-02 16:20:17,550 - bot - INFO -   Subcommand: start
+2025-03-02 16:20:17,550 - bot - INFO -   Subcommand: end
+2025-03-02 16:20:17,550 - bot - INFO -   Subcommand: list
+2025-03-02 16:20:17,550 - bot - INFO - Keeping command: quickstart
+2025-03-02 16:20:17,550 - bot - INFO - Keeping command: help
+2025-03-02 16:20:17,550 - bot - INFO - Keeping command: lab
+2025-03-02 16:20:17,550 - bot - INFO - Added command: quickstart
+2025-03-02 16:20:17,550 - bot - INFO - Added command: help
+2025-03-02 16:20:17,550 - bot - INFO - Added command: lab
+2025-03-02 16:20:17,963 - bot - INFO - Synced 3 commands globally
+2025-03-02 16:20:17,964 - bot - INFO - Final command tree: quickstart, help, lab start, lab end, lab list
+2025-03-02 16:20:17,964 - bot - INFO - Command sync completed successfully
+2025-03-02 16:20:17,964 - bot - INFO - Bot is ready
+2025-03-02 16:21:52,280 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 16:21:52,281 - discord.client - INFO - logging in using static token
+2025-03-02 16:21:53,208 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 69ae373f8f946e45a5163ace4881db8a).
+2025-03-02 16:21:55,216 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 16:21:55,216 - bot - INFO - Connected to 1 guilds
+2025-03-02 16:21:55,218 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 16:21:55,218 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 16:21:55,218 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 16:21:55,218 - bot - INFO - Starting extension loading process
+2025-03-02 16:21:55,218 - bot - INFO - Beginning extension loading sequence
+2025-03-02 16:21:55,218 - bot - INFO - Attempting to load extension: commands.session_commands
+2025-03-02 16:21:55,221 - session_commands - INFO - SessionCommands cog loaded
+2025-03-02 16:21:55,222 - bot - INFO - Successfully loaded extension: commands.session_commands
+2025-03-02 16:21:55,222 - bot - INFO - Attempting to load extension: commands.quickstart_commands
+2025-03-02 16:21:55,222 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 16:21:55,222 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 16:21:55,222 - quickstart_commands - INFO - QuickstartCommands cog loaded
+2025-03-02 16:21:55,222 - bot - INFO - Successfully loaded extension: commands.quickstart_commands
+2025-03-02 16:21:55,222 - bot - INFO - Attempting to load extension: commands.help_command
+2025-03-02 16:21:55,223 - bot - INFO - Successfully loaded extension: commands.help_command
+2025-03-02 16:21:55,223 - bot - INFO - Attempting to load extension: commands.lab_commands
+2025-03-02 16:21:55,223 - lab_commands - INFO - Loading Lab Commands cog
+2025-03-02 16:21:55,223 - lab_commands - INFO - Found SessionCommands cog
+2025-03-02 16:21:55,223 - lab_commands - INFO - Dependent cogs loaded successfully
+2025-03-02 16:21:55,223 - lab_commands - INFO - Added all subcommands to lab command group
+2025-03-02 16:21:55,223 - lab_commands - INFO - LabCommands cog loaded
+2025-03-02 16:21:55,223 - bot - INFO - Successfully loaded extension: commands.lab_commands
+2025-03-02 16:21:55,223 - bot - INFO - Completed extension loading. Loaded 4 of 4 extensions
+2025-03-02 16:21:55,223 - bot - INFO - Extension loading completed successfully
+2025-03-02 16:21:55,223 - bot - INFO - Waiting for commands to be fully registered...
+2025-03-02 16:21:56,225 - bot - INFO - Starting command sync process
+2025-03-02 16:21:56,225 - bot - INFO - Syncing commands with Discord...
+2025-03-02 16:21:56,225 - bot - INFO - Found 3 commands before filtering
+2025-03-02 16:21:56,225 - bot - INFO - Found command: quickstart (type: Command)
+2025-03-02 16:21:56,225 - bot - INFO - Found command: help (type: Command)
+2025-03-02 16:21:56,225 - bot - INFO - Found command: lab (type: Group)
+2025-03-02 16:21:56,225 - bot - INFO -   Subcommand: start
+2025-03-02 16:21:56,225 - bot - INFO -   Subcommand: end
+2025-03-02 16:21:56,225 - bot - INFO -   Subcommand: list
+2025-03-02 16:21:56,225 - bot - INFO - Keeping command: quickstart
+2025-03-02 16:21:56,225 - bot - INFO - Keeping command: help
+2025-03-02 16:21:56,225 - bot - INFO - Keeping command: lab
+2025-03-02 16:21:56,225 - bot - INFO - Added command: quickstart
+2025-03-02 16:21:56,225 - bot - INFO - Added command: help
+2025-03-02 16:21:56,225 - bot - INFO - Added command: lab
+2025-03-02 16:21:56,496 - bot - INFO - Synced 3 commands globally
+2025-03-02 16:21:56,496 - bot - INFO - Final command tree: quickstart, help, lab start, lab end, lab list
+2025-03-02 16:21:56,496 - bot - INFO - Command sync completed successfully
+2025-03-02 16:21:56,496 - bot - INFO - Bot is ready
+2025-03-02 16:22:49,825 - discord.app_commands.tree - ERROR - Ignoring exception in command 'help'
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 857, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/help_command.py", line 43, in help
+    await interaction.response.defer(thinking=True)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/interactions.py", line 844, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'help' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2025-03-02 16:45:46,553 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 16:45:46,554 - discord.client - INFO - logging in using static token
+2025-03-02 16:45:47,388 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 75fea0d190bf9c6b52f966cc050e41fb).
+2025-03-02 16:45:49,437 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 16:45:49,437 - bot - INFO - Connected to 1 guilds
+2025-03-02 16:45:49,437 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 16:45:49,437 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 16:45:49,437 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 16:45:49,437 - bot - INFO - Starting extension loading process
+2025-03-02 16:45:49,437 - bot - INFO - Beginning extension loading sequence
+2025-03-02 16:45:49,437 - bot - INFO - Attempting to load extension: commands.session_commands
+2025-03-02 16:45:49,443 - session_commands - INFO - Registered lab command group
+2025-03-02 16:45:49,443 - bot - INFO - Successfully loaded extension: commands.session_commands
+2025-03-02 16:45:49,443 - bot - INFO - Attempting to load extension: commands.agent_commands
+2025-03-02 16:45:49,444 - agent_commands - INFO - Agent commands added to lab group
+2025-03-02 16:45:49,444 - bot - INFO - Successfully loaded extension: commands.agent_commands
+2025-03-02 16:45:49,444 - bot - INFO - Attempting to load extension: commands.meeting_commands
+2025-03-02 16:45:49,445 - meeting_commands - INFO - Team meeting command added to lab group
+2025-03-02 16:45:49,445 - bot - INFO - Successfully loaded extension: commands.meeting_commands
+2025-03-02 16:45:49,445 - bot - INFO - Attempting to load extension: commands.brainstorm_commands
+2025-03-02 16:45:49,445 - bot - INFO - Successfully loaded extension: commands.brainstorm_commands
+2025-03-02 16:45:49,445 - bot - INFO - Attempting to load extension: commands.data_commands
+2025-03-02 16:45:49,446 - data_commands - INFO - Data commands added to lab group
+2025-03-02 16:45:49,446 - bot - INFO - Successfully loaded extension: commands.data_commands
+2025-03-02 16:45:49,446 - bot - INFO - Attempting to load extension: commands.quickstart_commands
+2025-03-02 16:45:49,448 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 16:45:49,448 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 16:45:49,448 - bot - INFO - Successfully loaded extension: commands.quickstart_commands
+2025-03-02 16:45:49,449 - bot - INFO - Attempting to load extension: commands.help_command
+2025-03-02 16:45:49,452 - bot - INFO - Successfully loaded extension: commands.help_command
+2025-03-02 16:45:49,452 - bot - INFO - Attempting to load extension: commands.lab_commands
+2025-03-02 16:45:49,455 - lab_commands - INFO - Loading Lab Commands cog
+2025-03-02 16:45:49,455 - lab_commands - INFO - Found lab_group from SessionCommands
+2025-03-02 16:45:49,455 - bot - ERROR - Failed to load extension commands.lab_commands: Extension 'commands.lab_commands' raised an error: CommandAlreadyRegistered: Command 'agent' already registered.
+2025-03-02 16:45:49,461 - bot - ERROR - Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 963, in _load_from_module_spec
+    await setup(self)
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 171, in setup
+    await bot.add_cog(LabCommands(bot))
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 799, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/cog.py", line 706, in _inject
+    await maybe_coroutine(self.cog_load)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/utils.py", line 715, in maybe_coroutine
+    return await value
+           ^^^^^^^^^^^
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 40, in cog_load
+    await self._load_dependent_cogs()
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 81, in _load_dependent_cogs
+    agent_group = app_commands.Group(
+                  ^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 1666, in __init__
+    parent.add_command(self)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 1914, in add_command
+    raise CommandAlreadyRegistered(command.name, guild_id=None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'agent' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/main.py", line 65, in load_extensions
+    await bot.load_extension(extension)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 1029, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 968, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'commands.lab_commands' raised an error: CommandAlreadyRegistered: Command 'agent' already registered.
+
+2025-03-02 16:45:49,461 - bot - INFO - Completed extension loading. Loaded 7 of 8 extensions
+2025-03-02 16:45:49,461 - bot - INFO - Extension loading completed successfully
+2025-03-02 16:45:49,461 - bot - INFO - Waiting for commands to be fully registered...
+2025-03-02 16:45:50,462 - bot - INFO - Starting command sync process
+2025-03-02 16:45:50,462 - bot - INFO - Syncing commands with Discord...
+2025-03-02 16:45:50,462 - bot - INFO - Found 6 commands before filtering
+2025-03-02 16:45:50,462 - bot - INFO - Found command: lab (type: Group)
+2025-03-02 16:45:50,462 - bot - INFO -   Subcommand: start
+2025-03-02 16:45:50,462 - bot - INFO -   Subcommand: end
+2025-03-02 16:45:50,462 - bot - INFO -   Subcommand: list
+2025-03-02 16:45:50,462 - bot - INFO -   Subgroup: agent
+2025-03-02 16:45:50,462 - bot - INFO -     Sub-subcommand: create
+2025-03-02 16:45:50,462 - bot - INFO -     Sub-subcommand: list
+2025-03-02 16:45:50,462 - bot - INFO -     Sub-subcommand: delete
+2025-03-02 16:45:50,462 - bot - INFO -     Sub-subcommand: generate
+2025-03-02 16:45:50,462 - bot - INFO -   Subcommand: team_meeting
+2025-03-02 16:45:50,462 - bot - INFO -   Subgroup: data
+2025-03-02 16:45:50,462 - bot - INFO -     Sub-subcommand: upload
+2025-03-02 16:45:50,462 - bot - INFO - Found command: brainstorm (type: Command)
+2025-03-02 16:45:50,462 - bot - INFO - Found command: cancel_brainstorm (type: Command)
+2025-03-02 16:45:50,462 - bot - INFO - Found command: compare_brainstorms (type: Command)
+2025-03-02 16:45:50,462 - bot - INFO - Found command: quickstart (type: Command)
+2025-03-02 16:45:50,463 - bot - INFO - Found command: help (type: Command)
+2025-03-02 16:45:50,463 - bot - INFO - Keeping command: lab
+2025-03-02 16:45:50,463 - bot - INFO - Filtering out command: brainstorm
+2025-03-02 16:45:50,463 - bot - INFO - Filtering out command: cancel_brainstorm
+2025-03-02 16:45:50,463 - bot - INFO - Filtering out command: compare_brainstorms
+2025-03-02 16:45:50,463 - bot - INFO - Keeping command: quickstart
+2025-03-02 16:45:50,463 - bot - INFO - Keeping command: help
+2025-03-02 16:45:50,463 - bot - INFO - Added command: lab
+2025-03-02 16:45:50,463 - bot - INFO - Added command: quickstart
+2025-03-02 16:45:50,463 - bot - INFO - Added command: help
+2025-03-02 16:45:50,823 - bot - INFO - Synced 3 commands globally
+2025-03-02 16:45:50,823 - bot - INFO - Final command tree: lab start, lab end, lab list, lab agent, lab team_meeting, lab data, lab agent create, lab agent list, lab agent delete, lab agent generate, lab data upload, quickstart, help
+2025-03-02 16:45:50,823 - bot - INFO - Command sync completed successfully
+2025-03-02 16:45:50,823 - bot - INFO - Bot is ready
+2025-03-02 16:47:08,972 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 16:47:08,973 - discord.client - INFO - logging in using static token
+2025-03-02 16:47:10,097 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 2ef85e43c37b3c683f287a04198cf21a).
+2025-03-02 16:47:12,115 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 16:47:12,115 - bot - INFO - Connected to 1 guilds
+2025-03-02 16:47:12,117 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 16:47:12,117 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 16:47:12,117 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 16:47:12,117 - bot - INFO - Starting extension loading process
+2025-03-02 16:47:12,117 - bot - INFO - Beginning extension loading sequence
+2025-03-02 16:47:12,117 - bot - INFO - Attempting to load extension: commands.session_commands
+2025-03-02 16:47:12,121 - session_commands - INFO - Registered lab command group
+2025-03-02 16:47:12,121 - bot - INFO - Successfully loaded extension: commands.session_commands
+2025-03-02 16:47:12,121 - bot - INFO - Attempting to load extension: commands.agent_commands
+2025-03-02 16:47:12,123 - agent_commands - INFO - Agent commands added to lab group
+2025-03-02 16:47:12,123 - bot - INFO - Successfully loaded extension: commands.agent_commands
+2025-03-02 16:47:12,123 - bot - INFO - Attempting to load extension: commands.meeting_commands
+2025-03-02 16:47:12,123 - meeting_commands - INFO - Team meeting command added to lab group
+2025-03-02 16:47:12,123 - bot - INFO - Successfully loaded extension: commands.meeting_commands
+2025-03-02 16:47:12,123 - bot - INFO - Attempting to load extension: commands.brainstorm_commands
+2025-03-02 16:47:12,124 - bot - INFO - Successfully loaded extension: commands.brainstorm_commands
+2025-03-02 16:47:12,124 - bot - INFO - Attempting to load extension: commands.data_commands
+2025-03-02 16:47:12,125 - data_commands - INFO - Data commands added to lab group
+2025-03-02 16:47:12,125 - bot - INFO - Successfully loaded extension: commands.data_commands
+2025-03-02 16:47:12,125 - bot - INFO - Attempting to load extension: commands.transcript_commands
+2025-03-02 16:47:12,128 - transcript_commands - INFO - TranscriptCommands cog initialized
+2025-03-02 16:47:12,128 - transcript_commands - INFO - TranscriptCommands cog loaded
+2025-03-02 16:47:12,128 - bot - INFO - Successfully loaded extension: commands.transcript_commands
+2025-03-02 16:47:12,128 - bot - INFO - Attempting to load extension: commands.quickstart_commands
+2025-03-02 16:47:12,129 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 16:47:12,129 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 16:47:12,129 - bot - INFO - Successfully loaded extension: commands.quickstart_commands
+2025-03-02 16:47:12,129 - bot - INFO - Attempting to load extension: commands.help_command
+2025-03-02 16:47:12,129 - bot - INFO - Successfully loaded extension: commands.help_command
+2025-03-02 16:47:12,129 - bot - INFO - Attempting to load extension: commands.lab_commands
+2025-03-02 16:47:12,130 - lab_commands - INFO - Loading Lab Commands cog
+2025-03-02 16:47:12,130 - lab_commands - INFO - Found lab_group from SessionCommands
+2025-03-02 16:47:12,130 - bot - ERROR - Failed to load extension commands.lab_commands: Extension 'commands.lab_commands' raised an error: CommandAlreadyRegistered: Command 'agent' already registered.
+2025-03-02 16:47:12,134 - bot - ERROR - Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 963, in _load_from_module_spec
+    await setup(self)
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 171, in setup
+    await bot.add_cog(LabCommands(bot))
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 799, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/cog.py", line 706, in _inject
+    await maybe_coroutine(self.cog_load)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/utils.py", line 715, in maybe_coroutine
+    return await value
+           ^^^^^^^^^^^
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 40, in cog_load
+    await self._load_dependent_cogs()
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 81, in _load_dependent_cogs
+    agent_group = app_commands.Group(
+                  ^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 1666, in __init__
+    parent.add_command(self)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/app_commands/commands.py", line 1914, in add_command
+    raise CommandAlreadyRegistered(command.name, guild_id=None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'agent' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/main.py", line 65, in load_extensions
+    await bot.load_extension(extension)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 1029, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 968, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'commands.lab_commands' raised an error: CommandAlreadyRegistered: Command 'agent' already registered.
+
+2025-03-02 16:47:12,134 - bot - INFO - Completed extension loading. Loaded 8 of 9 extensions
+2025-03-02 16:47:12,134 - bot - INFO - Extension loading completed successfully
+2025-03-02 16:47:12,134 - bot - INFO - Waiting for commands to be fully registered...
+2025-03-02 16:47:13,135 - bot - INFO - Starting command sync process
+2025-03-02 16:47:13,135 - bot - INFO - Syncing commands with Discord...
+2025-03-02 16:47:13,135 - bot - INFO - Found 6 commands before filtering
+2025-03-02 16:47:13,135 - bot - INFO - Found command: lab (type: Group)
+2025-03-02 16:47:13,135 - bot - INFO -   Subcommand: start
+2025-03-02 16:47:13,135 - bot - INFO -   Subcommand: end
+2025-03-02 16:47:13,135 - bot - INFO -   Subcommand: list
+2025-03-02 16:47:13,135 - bot - INFO -   Subgroup: agent
+2025-03-02 16:47:13,135 - bot - INFO -     Sub-subcommand: create
+2025-03-02 16:47:13,135 - bot - INFO -     Sub-subcommand: list
+2025-03-02 16:47:13,135 - bot - INFO -     Sub-subcommand: delete
+2025-03-02 16:47:13,135 - bot - INFO -     Sub-subcommand: generate
+2025-03-02 16:47:13,135 - bot - INFO -   Subcommand: team_meeting
+2025-03-02 16:47:13,135 - bot - INFO -   Subgroup: data
+2025-03-02 16:47:13,135 - bot - INFO -     Sub-subcommand: upload
+2025-03-02 16:47:13,135 - bot - INFO - Found command: brainstorm (type: Command)
+2025-03-02 16:47:13,135 - bot - INFO - Found command: cancel_brainstorm (type: Command)
+2025-03-02 16:47:13,135 - bot - INFO - Found command: compare_brainstorms (type: Command)
+2025-03-02 16:47:13,135 - bot - INFO - Found command: quickstart (type: Command)
+2025-03-02 16:47:13,135 - bot - INFO - Found command: help (type: Command)
+2025-03-02 16:47:13,135 - bot - INFO - Keeping command: lab
+2025-03-02 16:47:13,135 - bot - INFO - Filtering out command: brainstorm
+2025-03-02 16:47:13,135 - bot - INFO - Filtering out command: cancel_brainstorm
+2025-03-02 16:47:13,135 - bot - INFO - Filtering out command: compare_brainstorms
+2025-03-02 16:47:13,135 - bot - INFO - Keeping command: quickstart
+2025-03-02 16:47:13,136 - bot - INFO - Keeping command: help
+2025-03-02 16:47:13,136 - bot - INFO - Added command: lab
+2025-03-02 16:47:13,136 - bot - INFO - Added command: quickstart
+2025-03-02 16:47:13,136 - bot - INFO - Added command: help
+2025-03-02 16:47:13,562 - bot - INFO - Synced 3 commands globally
+2025-03-02 16:47:13,562 - bot - INFO - Final command tree: lab start, lab end, lab list, lab agent, lab team_meeting, lab data, lab agent create, lab agent list, lab agent delete, lab agent generate, lab data upload, quickstart, help
+2025-03-02 16:47:13,562 - bot - INFO - Command sync completed successfully
+2025-03-02 16:47:13,562 - bot - INFO - Bot is ready
+2025-03-02 16:48:01,677 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-02 16:48:01,677 - discord.client - INFO - logging in using static token
+2025-03-02 16:48:02,631 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: b8ac84a93f4741bd739b8f4d36c5f71b).
+2025-03-02 16:48:04,765 - bot - INFO - Logged in as Co-Scientist#3905 (ID: 1344103520856707235)
+2025-03-02 16:48:04,765 - bot - INFO - Connected to 1 guilds
+2025-03-02 16:48:04,766 - bot - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo
+2025-03-02 16:48:04,766 - bot - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-sonnet-20240229
+2025-03-02 16:48:04,766 - bot - INFO - LLM Provider: mistral - Available: True - Default model: mistral-medium-latest
+2025-03-02 16:48:04,766 - bot - INFO - Starting extension loading process
+2025-03-02 16:48:04,767 - bot - INFO - Beginning extension loading sequence
+2025-03-02 16:48:04,767 - bot - INFO - Attempting to load extension: commands.session_commands
+2025-03-02 16:48:04,770 - session_commands - INFO - Registered lab command group
+2025-03-02 16:48:04,771 - bot - INFO - Successfully loaded extension: commands.session_commands
+2025-03-02 16:48:04,771 - bot - INFO - Attempting to load extension: commands.agent_commands
+2025-03-02 16:48:04,772 - agent_commands - INFO - Agent commands added to lab group
+2025-03-02 16:48:04,772 - bot - INFO - Successfully loaded extension: commands.agent_commands
+2025-03-02 16:48:04,772 - bot - INFO - Attempting to load extension: commands.meeting_commands
+2025-03-02 16:48:04,773 - meeting_commands - INFO - Team meeting command added to lab group
+2025-03-02 16:48:04,773 - bot - INFO - Successfully loaded extension: commands.meeting_commands
+2025-03-02 16:48:04,773 - bot - INFO - Attempting to load extension: commands.brainstorm_commands
+2025-03-02 16:48:04,773 - bot - INFO - Successfully loaded extension: commands.brainstorm_commands
+2025-03-02 16:48:04,773 - bot - INFO - Attempting to load extension: commands.data_commands
+2025-03-02 16:48:04,774 - data_commands - INFO - Data commands added to lab group
+2025-03-02 16:48:04,774 - bot - INFO - Successfully loaded extension: commands.data_commands
+2025-03-02 16:48:04,774 - bot - INFO - Attempting to load extension: commands.transcript_commands
+2025-03-02 16:48:04,775 - transcript_commands - INFO - TranscriptCommands cog initialized
+2025-03-02 16:48:04,775 - transcript_commands - INFO - TranscriptCommands cog loaded
+2025-03-02 16:48:04,775 - bot - INFO - Successfully loaded extension: commands.transcript_commands
+2025-03-02 16:48:04,775 - bot - INFO - Attempting to load extension: commands.quickstart_commands
+2025-03-02 16:48:04,776 - quickstart_commands - INFO - Registered quickstart command
+2025-03-02 16:48:04,776 - quickstart_commands - INFO - All required cogs for quickstart command are loaded
+2025-03-02 16:48:04,776 - bot - INFO - Successfully loaded extension: commands.quickstart_commands
+2025-03-02 16:48:04,776 - bot - INFO - Attempting to load extension: commands.help_command
+2025-03-02 16:48:04,776 - bot - INFO - Successfully loaded extension: commands.help_command
+2025-03-02 16:48:04,777 - bot - INFO - Attempting to load extension: commands.lab_commands
+2025-03-02 16:48:04,779 - lab_commands - INFO - Loading Lab Commands cog
+2025-03-02 16:48:04,779 - lab_commands - INFO - Found lab_group from SessionCommands
+2025-03-02 16:48:04,779 - lab_commands - INFO - Found existing agent subgroup
+2025-03-02 16:48:04,779 - lab_commands - INFO - Found existing data subgroup
+2025-03-02 16:48:04,779 - lab_commands - ERROR - Error adding transcript subgroup: Command 'transcript' already registered.
+2025-03-02 16:48:04,779 - lab_commands - INFO - Dependent cogs loaded successfully
+2025-03-02 16:48:04,780 - bot - ERROR - Failed to load extension commands.lab_commands: Extension 'commands.lab_commands' raised an error: AttributeError: 'MeetingCommands' object has no attribute 'brainstorm'
+2025-03-02 16:48:04,782 - bot - ERROR - Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 963, in _load_from_module_spec
+    await setup(self)
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 204, in setup
+    await bot.add_cog(LabCommands(bot))
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 799, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/cog.py", line 706, in _inject
+    await maybe_coroutine(self.cog_load)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/utils.py", line 715, in maybe_coroutine
+    return await value
+           ^^^^^^^^^^^
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/commands/lab_commands.py", line 47, in cog_load
+    callback=self.meeting_commands.brainstorm
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MeetingCommands' object has no attribute 'brainstorm'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/main.py", line 65, in load_extensions
+    await bot.load_extension(extension)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 1029, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/ext/commands/bot.py", line 968, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'commands.lab_commands' raised an error: AttributeError: 'MeetingCommands' object has no attribute 'brainstorm'
+
+2025-03-02 16:48:04,782 - bot - INFO - Completed extension loading. Loaded 8 of 9 extensions
+2025-03-02 16:48:04,782 - bot - INFO - Extension loading completed successfully
+2025-03-02 16:48:04,782 - bot - INFO - Waiting for commands to be fully registered...
+2025-03-02 16:48:05,783 - bot - INFO - Starting command sync process
+2025-03-02 16:48:05,784 - bot - INFO - Syncing commands with Discord...
+2025-03-02 16:48:05,784 - bot - INFO - Found 6 commands before filtering
+2025-03-02 16:48:05,784 - bot - INFO - Found command: lab (type: Group)
+2025-03-02 16:48:05,784 - bot - INFO -   Subcommand: start
+2025-03-02 16:48:05,784 - bot - INFO -   Subcommand: end
+2025-03-02 16:48:05,784 - bot - INFO -   Subcommand: list
+2025-03-02 16:48:05,784 - bot - INFO -   Subgroup: agent
+2025-03-02 16:48:05,784 - bot - INFO -     Sub-subcommand: create
+2025-03-02 16:48:05,784 - bot - INFO -     Sub-subcommand: list
+2025-03-02 16:48:05,784 - bot - INFO -     Sub-subcommand: delete
+2025-03-02 16:48:05,784 - bot - INFO -     Sub-subcommand: generate
+2025-03-02 16:48:05,784 - bot - INFO -   Subcommand: team_meeting
+2025-03-02 16:48:05,784 - bot - INFO -   Subgroup: data
+2025-03-02 16:48:05,784 - bot - INFO -     Sub-subcommand: upload
+2025-03-02 16:48:05,784 - bot - INFO -   Subgroup: transcript
+2025-03-02 16:48:05,784 - bot - INFO -     Sub-subcommand: view
+2025-03-02 16:48:05,784 - bot - INFO -     Sub-subcommand: list
+2025-03-02 16:48:05,784 - bot - INFO - Found command: brainstorm (type: Command)
+2025-03-02 16:48:05,784 - bot - INFO - Found command: cancel_brainstorm (type: Command)
+2025-03-02 16:48:05,784 - bot - INFO - Found command: compare_brainstorms (type: Command)
+2025-03-02 16:48:05,784 - bot - INFO - Found command: quickstart (type: Command)
+2025-03-02 16:48:05,784 - bot - INFO - Found command: help (type: Command)
+2025-03-02 16:48:05,784 - bot - INFO - Keeping command: lab
+2025-03-02 16:48:05,784 - bot - INFO - Filtering out command: brainstorm
+2025-03-02 16:48:05,784 - bot - INFO - Filtering out command: cancel_brainstorm
+2025-03-02 16:48:05,784 - bot - INFO - Filtering out command: compare_brainstorms
+2025-03-02 16:48:05,784 - bot - INFO - Keeping command: quickstart
+2025-03-02 16:48:05,784 - bot - INFO - Keeping command: help
+2025-03-02 16:48:05,784 - bot - INFO - Added command: lab
+2025-03-02 16:48:05,784 - bot - INFO - Added command: quickstart
+2025-03-02 16:48:05,784 - bot - INFO - Added command: help
+2025-03-02 16:48:06,212 - bot - INFO - Synced 3 commands globally
+2025-03-02 16:48:06,212 - bot - INFO - Final command tree: lab start, lab end, lab list, lab agent, lab team_meeting, lab data, lab transcript, lab agent create, lab agent list, lab agent delete, lab agent generate, lab data upload, lab transcript view, lab transcript list, quickstart, help
+2025-03-02 16:48:06,212 - bot - INFO - Command sync completed successfully
+2025-03-02 16:48:06,212 - bot - INFO - Bot is ready
