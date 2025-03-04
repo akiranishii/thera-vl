@@ -1950,3 +1950,84 @@ discord.ext.commands.errors.ExtensionFailed: Extension 'commands.lab_commands' r
 2025-03-02 16:48:06,212 - bot - INFO - Final command tree: lab start, lab end, lab list, lab agent, lab team_meeting, lab data, lab transcript, lab agent create, lab agent list, lab agent delete, lab agent generate, lab data upload, lab transcript view, lab transcript list, quickstart, help
 2025-03-02 16:48:06,212 - bot - INFO - Command sync completed successfully
 2025-03-02 16:48:06,212 - bot - INFO - Bot is ready
+2025-03-03 17:10:02,801 - config - INFO - Loading environment variables
+2025-03-03 17:10:02,802 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-03 17:10:02,803 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-03 17:10:02,804 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-03 17:10:02,805 - __main__ - INFO - Starting extension loading process
+2025-03-03 17:10:02,805 - __main__ - INFO - Beginning extension loading sequence
+2025-03-03 17:10:02,805 - __main__ - INFO - Attempting to load extension: commands.lab_session_commands
+2025-03-03 17:10:02,810 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000
+2025-03-03 17:10:02,811 - commands.lab_session_commands - INFO - Created new lab command group
+2025-03-03 17:10:02,811 - commands.lab_session_commands - INFO - Registered lab session commands
+2025-03-03 17:10:02,811 - __main__ - INFO - Successfully loaded extension: commands.lab_session_commands
+2025-03-03 17:10:02,812 - __main__ - INFO - Attempting to load extension: commands.lab_agent_commands
+2025-03-03 17:10:02,815 - commands.lab_agent_commands - INFO - Using existing lab command group
+2025-03-03 17:10:02,815 - commands.lab_agent_commands - INFO - Registered lab agent commands
+2025-03-03 17:10:02,815 - __main__ - INFO - Successfully loaded extension: commands.lab_agent_commands
+2025-03-03 17:10:02,815 - __main__ - INFO - Attempting to load extension: commands.lab_meeting_commands
+2025-03-03 17:10:03,232 - llm_client - INFO - Initialized LLM clients
+2025-03-03 17:10:03,234 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-03 17:10:03,234 - commands.lab_meeting_commands - INFO - Using existing lab command group
+2025-03-03 17:10:03,235 - commands.lab_meeting_commands - INFO - Registered lab meeting commands
+2025-03-03 17:10:03,235 - __main__ - INFO - Successfully loaded extension: commands.lab_meeting_commands
+2025-03-03 17:10:03,235 - __main__ - INFO - Attempting to load extension: commands.lab_transcript_commands
+2025-03-03 17:10:03,237 - commands.lab_transcript_commands - INFO - Using existing lab command group
+2025-03-03 17:10:03,238 - commands.lab_transcript_commands - INFO - Registered lab transcript commands
+2025-03-03 17:10:03,238 - __main__ - INFO - Successfully loaded extension: commands.lab_transcript_commands
+2025-03-03 17:10:03,238 - __main__ - INFO - Attempting to load extension: commands.session_commands
+2025-03-03 17:10:03,238 - commands.session_commands - INFO - SessionCommands cog initialized
+2025-03-03 17:10:03,238 - __main__ - INFO - Successfully loaded extension: commands.session_commands
+2025-03-03 17:10:03,238 - __main__ - INFO - Attempting to load extension: commands.quickstart_command
+2025-03-03 17:10:03,241 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-03 17:10:03,241 - commands.quickstart_command - INFO - Initialized quickstart command
+2025-03-03 17:10:03,241 - __main__ - INFO - Successfully loaded extension: commands.quickstart_command
+2025-03-03 17:10:03,241 - __main__ - INFO - Attempting to load extension: commands.help_command
+2025-03-03 17:10:03,241 - commands.help_command - INFO - Initialized help command
+2025-03-03 17:10:03,241 - __main__ - INFO - Successfully loaded extension: commands.help_command
+2025-03-03 17:10:03,241 - __main__ - INFO - Completed extension loading. Loaded 7 of 7 extensions
+2025-03-03 17:10:03,241 - __main__ - INFO - Extension loading completed successfully
+2025-03-03 17:10:03,241 - __main__ - INFO - Waiting for commands to be fully registered...
+2025-03-03 17:10:04,242 - __main__ - INFO - Starting command sync process
+2025-03-03 17:10:04,242 - __main__ - INFO - Starting bot...
+2025-03-03 17:10:04,243 - discord.client - INFO - logging in using static token
+2025-03-03 17:10:05,246 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 14f3f653a1b3ee10fb3f0f2041f100eb).
+2025-03-03 17:10:07,250 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-03 17:10:07,250 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-03 17:10:07,250 - __main__ - INFO - Connected to 1 guilds
+2025-03-03 17:10:07,250 - __main__ - INFO - LLM Provider: openai - Available: True - Default model: gpt-4-turbo-preview
+2025-03-03 17:10:07,250 - __main__ - INFO - LLM Provider: anthropic - Available: True - Default model: claude-3-opus-20240229
+2025-03-03 17:10:07,250 - __main__ - INFO - LLM Provider: mistral - Available: True - Default model: mistral-large
+2025-03-03 17:10:07,250 - __main__ - INFO - === COMMAND REGISTRATION STATUS ===
+2025-03-03 17:10:07,250 - __main__ - INFO - Commands registered before syncing:
+2025-03-03 17:10:07,250 - __main__ - INFO - Command group: lab
+2025-03-03 17:10:07,250 - __main__ - INFO -   Subcommand: start
+2025-03-03 17:10:07,250 - __main__ - INFO -   Subcommand: end
+2025-03-03 17:10:07,250 - __main__ - INFO -   Subcommand: list
+2025-03-03 17:10:07,250 - __main__ - INFO -   Subcommand: reopen
+2025-03-03 17:10:07,250 - __main__ - INFO -   Subcommand: agent_create
+2025-03-03 17:10:07,250 - __main__ - INFO -   Subcommand: agent_update
+2025-03-03 17:10:07,250 - __main__ - INFO -   Subcommand: agent_delete
+2025-03-03 17:10:07,250 - __main__ - INFO -   Subcommand: agent_list
+2025-03-03 17:10:07,251 - __main__ - INFO -   Subcommand: team_meeting
+2025-03-03 17:10:07,251 - __main__ - INFO -   Subcommand: end_team_meeting
+2025-03-03 17:10:07,251 - __main__ - INFO -   Subcommand: transcript_list
+2025-03-03 17:10:07,251 - __main__ - INFO -   Subcommand: transcript_view
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: start
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: end
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: list
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: reopen
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: agent_create
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: agent_update
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: agent_delete
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: agent_list
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: team_meeting
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: end_team_meeting
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: session_start
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: session_end
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: quickstart
+2025-03-03 17:10:07,251 - __main__ - INFO - Command: help
+2025-03-03 17:10:07,251 - __main__ - INFO - Syncing commands with Discord...
+2025-03-03 17:10:07,663 - __main__ - INFO - Synced 15 commands globally
+2025-03-03 17:10:07,663 - __main__ - INFO - Final command tree: lab start, lab end, lab list, lab reopen, lab agent_create, lab agent_update, lab agent_delete, lab agent_list, lab team_meeting, lab end_team_meeting, lab transcript_list, lab transcript_view, start, end, list, reopen, agent_create, agent_update, agent_delete, agent_list, team_meeting, end_team_meeting, session_start, session_end, quickstart, help
+2025-03-03 17:10:07,663 - __main__ - INFO - Bot is ready!

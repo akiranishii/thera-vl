@@ -49,10 +49,9 @@ async def on_ready():
     
     # Get available LLM providers
     try:
-        from llm_client import LLMClient
-        llm_client = LLMClient()
-        for provider_name, provider in llm_client.providers.items():
-            logger.info(f"LLM Provider: {provider_name} - Available: {provider.is_available} - Default model: {provider.default_model}")
+        from llm_client import llm_client
+        for provider_name, provider_info in llm_client.providers.items():
+            logger.info(f"LLM Provider: {provider_name} - Available: {provider_info['is_available']} - Default model: {provider_info['default_model']}")
     except Exception as e:
         logger.error(f"Error loading LLM providers: {e}")
     
@@ -144,41 +143,49 @@ async def on_command_error(ctx, error):
         await ctx.send("An error occurred while processing your command. Please try again later.")
 
 @bot.tree.error
-async def on_app_command_error(interaction: discord.Interaction, error):
-    """Handle application command errors."""
-    if isinstance(error, discord.app_commands.CommandNotFound):
-        return
-    
-    if isinstance(error, discord.app_commands.MissingPermissions):
-        await interaction.response.send_message(
-            "You don't have permission to use this command.", 
-            ephemeral=True
-        )
-        return
-    
-    # Log the error
+async def on_app_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError):
+    """Handle errors that occur during app command execution."""
     logger.error(f"App command error: {error}")
-    logger.error(traceback.format_exc())
     
-    # If in debug mode, send the error details
-    if DEBUG_MODE:
-        await interaction.response.send_message(
-            f"An error occurred: {error}", 
-            ephemeral=True
-        )
-    else:
-        # If interaction was already responded to, follow up
+    # Extract the original error if it's wrapped in a CommandInvokeError
+    if isinstance(error, discord.app_commands.CommandInvokeError):
+        error = error.original
+        logger.error(f"Original error: {error}")
+    
+    # Check for common interaction errors - use string matching as the error can be wrapped
+    error_str = str(error)
+    
+    # Handle 10062 (Unknown interaction) error - this means the interaction token expired
+    if "error code: 10062" in error_str or "Unknown interaction" in error_str:
+        logger.warning(f"Interaction timed out (already expired): {error_str}")
+        return  # Can't respond to an expired interaction
+    
+    # Handle 40060 (Interaction already acknowledged) error
+    if "error code: 40060" in error_str or "interaction has already been acknowledged" in error_str:
+        logger.warning(f"Interaction already acknowledged: {error_str}")
+        try:
+            await interaction.followup.send(
+                "An error occurred. Please try again later.",
+                ephemeral=True
+            )
+        except Exception as follow_up_error:
+            logger.error(f"Failed to send followup message: {follow_up_error}")
+        return
+    
+    # Try to respond with an error message
+    try:
         if interaction.response.is_done():
             await interaction.followup.send(
                 "An error occurred while processing your command. Please try again later.",
                 ephemeral=True
             )
         else:
-            # Otherwise respond to the interaction
             await interaction.response.send_message(
                 "An error occurred while processing your command. Please try again later.",
                 ephemeral=True
             )
+    except Exception as response_error:
+        logger.error(f"Failed to send error message: {response_error}")
 
 async def load_extensions():
     """Load all extensions/cogs."""

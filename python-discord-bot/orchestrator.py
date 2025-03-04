@@ -41,9 +41,36 @@ class AgentOrchestrator:
         logger.info("Initialized meeting " + str(meeting_id) + " (parallel index " + str(parallel_index) + ") for session " + str(session_id))
         return True
     
-    async def start_conversation(self, meeting_id, interaction):
-        """Start a conversation for a meeting."""
-        logger.info("Starting conversation for meeting " + str(meeting_id))
+    async def start_conversation(self, meeting_id, interaction, live_mode=True):
+        """Start a conversation for a meeting.
+        
+        Args:
+            meeting_id: ID of the meeting
+            interaction: Discord interaction object
+            live_mode: Whether to output agent responses in real-time (default: True)
+        """
+        logger.info("Starting conversation for meeting " + str(meeting_id) + " (live_mode: " + str(live_mode) + ")")
+        
+        # Store live_mode setting in meeting data for reference by the server-side code
+        meeting_data = self.active_meetings.get(meeting_id)
+        if meeting_data:
+            meeting_data["live_mode"] = live_mode
+            
+        return True
+    
+    async def end_conversation(self, meeting_id):
+        """End a conversation for a meeting.
+        
+        Args:
+            meeting_id: ID of the meeting
+        """
+        logger.info("Ending conversation for meeting " + str(meeting_id))
+        
+        meeting_data = self.active_meetings.get(meeting_id)
+        if meeting_data:
+            meeting_data["is_completed"] = True
+            meeting_data["is_active"] = False
+            
         return True
     
     async def generate_combined_summary(self, meetings):

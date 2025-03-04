@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     if (!userId) {
       return NextResponse.json({
         isSuccess: false,
-        message: "UserId is required",
+        message: "User ID is required",
         data: null
       }, { status: 400 })
     }

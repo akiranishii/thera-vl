@@ -35,52 +35,35 @@ class LabTranscriptCommands(commands.Cog):
         
         # Add transcript commands to the lab group
         self.lab_group.add_command(app_commands.Command(
-            name="transcript",
-            description="List or view meeting transcripts",
-            callback=self.transcript_callback,
+            name="transcript_list",
+            description="List all meeting transcripts for the current session",
+            callback=self.transcript_list_callback,
+            extras={"cog": self}
+        ))
+        
+        self.lab_group.add_command(app_commands.Command(
+            name="transcript_view",
+            description="View transcript for a specific meeting",
+            callback=self.transcript_view_callback,
             extras={"cog": self}
         ))
         
         logger.info("Registered lab transcript commands")
 
-    async def transcript_callback(self, interaction: discord.Interaction, action: str, meeting_id: Optional[str] = None,
-                         round_number: Optional[int] = None, agent_name: Optional[str] = None,
-                         format: Optional[str] = "embed"):
-        """Callback for the transcript command."""
-        await self.transcript(interaction, action, meeting_id, round_number, agent_name, format)
-
-    @app_commands.command(
-        name="transcript",
-        description="List or view meeting transcripts"
-    )
-    @app_commands.describe(
-        action="Action to perform (list or view)",
-        meeting_id="Optional meeting ID to view specific transcript",
-        round_number="Optional round number to filter by",
-        agent_name="Optional agent name to filter by",
-        format="Output format (text or embed, default: embed)"
-    )
-    async def transcript(
-        self,
-        interaction: discord.Interaction,
-        action: str,
-        meeting_id: Optional[str] = None,
-        round_number: Optional[int] = None,
-        agent_name: Optional[str] = None,
-        format: Optional[str] = "embed"
-    ):
-        """List or view meeting transcripts."""
-        await interaction.response.defer(ephemeral=True, thinking=True)
-        
-        user_id = str(interaction.user.id)
-        
+    async def transcript_list_callback(self, interaction: discord.Interaction):
+        """Callback for the transcript_list command."""
         try:
+            # Immediately acknowledge the interaction to prevent timeout
+            await interaction.response.defer(ephemeral=True)
+            
+            user_id = str(interaction.user.id)
+            
             # Get active session
             session_result = await db_client.get_active_session(user_id=user_id)
             
             if not session_result.get("isSuccess") or not session_result.get("data"):
                 await interaction.followup.send(
-                    "You don't have an active session. Use `/lab start` to create one.",
+                    "You don't have an active session. Use `/lab session_start` to create one.",
                     ephemeral=True
                 )
                 return
@@ -88,181 +71,224 @@ class LabTranscriptCommands(commands.Cog):
             session_data = session_result.get("data", {})
             session_id = session_data.get("id")
             
-            if action.lower() == "list":
-                # List all meetings with transcripts for the session
-                meetings_result = await db_client.get_session_meetings(session_id=session_id)
-                
-                if not meetings_result.get("isSuccess"):
+            # List all meetings with transcripts for the session
+            await self.list_transcripts(interaction, session_id)
+        except Exception as e:
+            logger.error(f"Error in transcript_list command: {e}")
+            try:
+                if interaction.response.is_done():
                     await interaction.followup.send(
-                        f"Failed to fetch meetings: {meetings_result.get('message', 'Unknown error')}",
+                        "An error occurred. Please try again later.",
                         ephemeral=True
                     )
-                    return
-                
-                meetings = meetings_result.get("data", [])
-                
-                if not meetings:
-                    await interaction.followup.send(
-                        "No meetings found in this session.",
+                else:
+                    await interaction.response.send_message(
+                        "An error occurred. Please try again later.",
                         ephemeral=True
                     )
-                    return
+            except Exception as follow_up_error:
+                logger.error(f"Failed to send error message: {follow_up_error}")
+
+    async def transcript_view_callback(
+        self, 
+        interaction: discord.Interaction, 
+        meeting_id: str,
+        round_number: Optional[int] = None,
+        agent_name: Optional[str] = None,
+        format: Optional[str] = "embed"
+    ):
+        """Callback for the transcript_view command."""
+        try:
+            # Immediately acknowledge the interaction to prevent timeout
+            await interaction.response.defer(ephemeral=True)
+            
+            # View transcript for the specified meeting
+            await self.view_transcript(interaction, meeting_id, round_number, agent_name, format)
+        except Exception as e:
+            logger.error(f"Error in transcript_view command: {e}")
+            try:
+                if interaction.response.is_done():
+                    await interaction.followup.send(
+                        "An error occurred. Please try again later.",
+                        ephemeral=True
+                    )
+                else:
+                    await interaction.response.send_message(
+                        "An error occurred. Please try again later.",
+                        ephemeral=True
+                    )
+            except Exception as follow_up_error:
+                logger.error(f"Failed to send error message: {follow_up_error}")
+
+    # Helper methods
+    async def list_transcripts(self, interaction: discord.Interaction, session_id: str):
+        """List all meetings with transcripts for the session."""
+        # List all meetings with transcripts for the session
+        meetings_result = await db_client.get_session_meetings(session_id=session_id)
+        
+        if not meetings_result.get("isSuccess"):
+            await interaction.followup.send(
+                f"Failed to fetch meetings: {meetings_result.get('message', 'Unknown error')}",
+                ephemeral=True
+            )
+            return
+        
+        meetings = meetings_result.get("data", [])
+        
+        if not meetings:
+            await interaction.followup.send(
+                "No meetings found in this session.",
+                ephemeral=True
+            )
+            return
+        
+        # Create embed for meetings list
+        embed = discord.Embed(
+            title="Meeting Transcripts",
+            description="Here are your meeting transcripts:",
+            color=discord.Color.blue()
+        )
+        
+        for meeting in meetings:
+            parallel_suffix = f" (Run {meeting.get('parallel_index', 0) + 1})" if meeting.get('parallel_index', 0) > 0 else ""
+            
+            embed.add_field(
+                name=f"Meeting {meeting.get('id')}{parallel_suffix}",
+                value=(
+                    f"**Agenda**: {meeting.get('agenda')}\n"
+                    f"**Rounds**: {meeting.get('round_count')}\n"
+                    f"**Status**: {'Completed' if meeting.get('is_completed') else 'In Progress'}\n"
+                    f"**Created**: <t:{int(datetime.fromisoformat(meeting.get('created_at')).timestamp())}:R>\n"
+                    f"Use `/lab transcript view meeting_id:{meeting.get('id')}` to view transcript"
+                ),
+                inline=False
+            )
+        
+        await interaction.followup.send(embed=embed, ephemeral=True)
+
+    async def view_transcript(self, interaction: discord.Interaction, meeting_id: str, round_number: Optional[int] = None,
+                          agent_name: Optional[str] = None, format: Optional[str] = "embed"):
+        """View a specific meeting transcript."""
+        await interaction.response.defer(ephemeral=True, thinking=True)
+        
+        try:
+            # Get meeting details
+            meeting_result = await db_client.get_meeting(meeting_id=meeting_id)
+            
+            if not meeting_result.get("isSuccess") or not meeting_result.get("data"):
+                await interaction.followup.send(
+                    f"Failed to fetch meeting: {meeting_result.get('message', 'Unknown error')}",
+                    ephemeral=True
+                )
+                return
+            
+            meeting = meeting_result.get("data", {})
+            
+            # Get transcripts for the meeting
+            transcripts_result = await db_client.get_meeting_transcripts(
+                meeting_id=meeting_id,
+                round_number=round_number,
+                agent_name=agent_name
+            )
+            
+            if not transcripts_result.get("isSuccess"):
+                await interaction.followup.send(
+                    f"Failed to fetch transcripts: {transcripts_result.get('message', 'Unknown error')}",
+                    ephemeral=True
+                )
+                return
+            
+            transcripts = transcripts_result.get("data", [])
+            
+            if not transcripts:
+                await interaction.followup.send(
+                    "No transcripts found for this meeting.",
+                    ephemeral=True
+                )
+                return
+            
+            if format.lower() == "text":
+                # Format as plain text
+                lines = [
+                    f"Meeting Transcript: {meeting.get('agenda')}\n",
+                    f"Meeting ID: {meeting_id}\n",
+                    "=" * 40 + "\n"
+                ]
                 
-                # Create embed for meetings list
+                current_round = None
+                for transcript in transcripts:
+                    if transcript.get("round_number") != current_round:
+                        current_round = transcript.get("round_number")
+                        lines.append(f"\nRound {current_round}:\n")
+                        lines.append("-" * 20 + "\n")
+                    
+                    lines.append(
+                        f"{transcript.get('agent_name')}: {transcript.get('content')}\n"
+                    )
+                
+                # Split into chunks if needed (Discord has a 2000 char limit)
+                content = "".join(lines)
+                chunks = [content[i:i+1990] for i in range(0, len(content), 1990)]
+                
+                for i, chunk in enumerate(chunks):
+                    is_first = i == 0
+                    is_last = i == len(chunks) - 1
+                    
+                    if is_first:
+                        await interaction.followup.send(chunk, ephemeral=True)
+                    else:
+                        await interaction.followup.send(chunk, ephemeral=True)
+                    
+            else:  # format == "embed"
+                # Create embed for transcript
                 embed = discord.Embed(
-                    title="Meeting Transcripts",
-                    description="Here are your meeting transcripts:",
+                    title=f"Meeting Transcript",
+                    description=meeting.get('agenda'),
                     color=discord.Color.blue()
                 )
                 
-                for meeting in meetings:
-                    parallel_suffix = f" (Run {meeting.get('parallel_index', 0) + 1})" if meeting.get('parallel_index', 0) > 0 else ""
+                embed.add_field(
+                    name="Meeting Details",
+                    value=(
+                        f"**ID**: {meeting_id}\n"
+                        f"**Parallel Run**: {meeting.get('parallel_index', 0) + 1}\n"
+                        f"**Status**: {'Completed' if meeting.get('is_completed') else 'In Progress'}\n"
+                        f"**Created**: <t:{int(datetime.fromisoformat(meeting.get('created_at')).timestamp())}:R>"
+                    ),
+                    inline=False
+                )
+                
+                # Group messages by round
+                rounds: Dict[int, List[Dict]] = {}
+                for transcript in transcripts:
+                    round_num = transcript.get("round_number", 0)
+                    if round_num not in rounds:
+                        rounds[round_num] = []
+                    rounds[round_num].append(transcript)
+                
+                # Add each round to the embed
+                for round_num in sorted(rounds.keys()):
+                    round_messages = []
+                    for transcript in rounds[round_num]:
+                        round_messages.append(
+                            f"**{transcript.get('agent_name')}**: {transcript.get('content')}"
+                        )
+                    
+                    # Split round content if too long
+                    round_content = "\n\n".join(round_messages)
+                    if len(round_content) > 1024:
+                        round_content = round_content[:1021] + "..."
                     
                     embed.add_field(
-                        name=f"Meeting {meeting.get('id')}{parallel_suffix}",
-                        value=(
-                            f"**Agenda**: {meeting.get('agenda')}\n"
-                            f"**Rounds**: {meeting.get('round_count')}\n"
-                            f"**Status**: {'Completed' if meeting.get('is_completed') else 'In Progress'}\n"
-                            f"**Created**: <t:{int(datetime.fromisoformat(meeting.get('created_at')).timestamp())}:R>\n"
-                            f"Use `/lab transcript view meeting_id:{meeting.get('id')}` to view transcript"
-                        ),
+                        name=f"Round {round_num}",
+                        value=round_content,
                         inline=False
                     )
                 
                 await interaction.followup.send(embed=embed, ephemeral=True)
-                
-            elif action.lower() == "view":
-                if not meeting_id:
-                    await interaction.followup.send(
-                        "Please provide a meeting ID to view its transcript.",
-                        ephemeral=True
-                    )
-                    return
-                
-                # Get meeting details
-                meeting_result = await db_client.get_meeting(meeting_id=meeting_id)
-                
-                if not meeting_result.get("isSuccess") or not meeting_result.get("data"):
-                    await interaction.followup.send(
-                        f"Failed to fetch meeting: {meeting_result.get('message', 'Unknown error')}",
-                        ephemeral=True
-                    )
-                    return
-                
-                meeting = meeting_result.get("data", {})
-                
-                # Get transcripts for the meeting
-                transcripts_result = await db_client.get_meeting_transcripts(
-                    meeting_id=meeting_id,
-                    round_number=round_number,
-                    agent_name=agent_name
-                )
-                
-                if not transcripts_result.get("isSuccess"):
-                    await interaction.followup.send(
-                        f"Failed to fetch transcripts: {transcripts_result.get('message', 'Unknown error')}",
-                        ephemeral=True
-                    )
-                    return
-                
-                transcripts = transcripts_result.get("data", [])
-                
-                if not transcripts:
-                    await interaction.followup.send(
-                        "No transcripts found for this meeting.",
-                        ephemeral=True
-                    )
-                    return
-                
-                if format.lower() == "text":
-                    # Format as plain text
-                    lines = [
-                        f"Meeting Transcript: {meeting.get('agenda')}\n",
-                        f"Meeting ID: {meeting_id}\n",
-                        "=" * 40 + "\n"
-                    ]
-                    
-                    current_round = None
-                    for transcript in transcripts:
-                        if transcript.get("round_number") != current_round:
-                            current_round = transcript.get("round_number")
-                            lines.append(f"\nRound {current_round}:\n")
-                            lines.append("-" * 20 + "\n")
-                        
-                        lines.append(
-                            f"{transcript.get('agent_name')}: {transcript.get('content')}\n"
-                        )
-                    
-                    # Split into chunks if needed (Discord has a 2000 char limit)
-                    content = "".join(lines)
-                    chunks = [content[i:i+1990] for i in range(0, len(content), 1990)]
-                    
-                    for i, chunk in enumerate(chunks):
-                        is_first = i == 0
-                        is_last = i == len(chunks) - 1
-                        
-                        if is_first:
-                            await interaction.followup.send(chunk, ephemeral=True)
-                        else:
-                            await interaction.followup.send(chunk, ephemeral=True)
-                            
-                else:  # format == "embed"
-                    # Create embed for transcript
-                    embed = discord.Embed(
-                        title=f"Meeting Transcript",
-                        description=meeting.get('agenda'),
-                        color=discord.Color.blue()
-                    )
-                    
-                    embed.add_field(
-                        name="Meeting Details",
-                        value=(
-                            f"**ID**: {meeting_id}\n"
-                            f"**Parallel Run**: {meeting.get('parallel_index', 0) + 1}\n"
-                            f"**Status**: {'Completed' if meeting.get('is_completed') else 'In Progress'}\n"
-                            f"**Created**: <t:{int(datetime.fromisoformat(meeting.get('created_at')).timestamp())}:R>"
-                        ),
-                        inline=False
-                    )
-                    
-                    # Group messages by round
-                    rounds: Dict[int, List[Dict]] = {}
-                    for transcript in transcripts:
-                        round_num = transcript.get("round_number", 0)
-                        if round_num not in rounds:
-                            rounds[round_num] = []
-                        rounds[round_num].append(transcript)
-                    
-                    # Add each round to the embed
-                    for round_num in sorted(rounds.keys()):
-                        round_messages = []
-                        for transcript in rounds[round_num]:
-                            round_messages.append(
-                                f"**{transcript.get('agent_name')}**: {transcript.get('content')}"
-                            )
-                        
-                        # Split round content if too long
-                        round_content = "\n\n".join(round_messages)
-                        if len(round_content) > 1024:
-                            round_content = round_content[:1021] + "..."
-                        
-                        embed.add_field(
-                            name=f"Round {round_num}",
-                            value=round_content,
-                            inline=False
-                        )
-                    
-                    await interaction.followup.send(embed=embed, ephemeral=True)
             
-            else:
-                await interaction.followup.send(
-                    "Invalid action. Use 'list' to see all transcripts or 'view' to view a specific transcript.",
-                    ephemeral=True
-                )
-                
         except Exception as e:
-            logger.error(f"Error in transcript command: {e}")
+            logger.error(f"Error in view_transcript: {e}")
             await interaction.followup.send(
                 "An error occurred while processing your request. Please try again later.",
                 ephemeral=True

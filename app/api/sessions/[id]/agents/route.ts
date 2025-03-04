@@ -10,7 +10,8 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id
+    // Await params before accessing properties
+    const { id } = await params
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get("userId")
 

@@ -25,6 +25,22 @@ class LLMClient:
         # Initialize Mistral client (when available)
         self.mistral_api_key = os.getenv("MISTRAL_API_KEY")
         
+        # Initialize providers dictionary to track available providers
+        self.providers = {
+            LLMProvider.OPENAI.value: {
+                "is_available": bool(os.getenv("OPENAI_API_KEY")),
+                "default_model": "gpt-4-turbo-preview"
+            },
+            LLMProvider.ANTHROPIC.value: {
+                "is_available": bool(os.getenv("ANTHROPIC_API_KEY")),
+                "default_model": "claude-3-opus-20240229"
+            },
+            LLMProvider.MISTRAL.value: {
+                "is_available": bool(os.getenv("MISTRAL_API_KEY")),
+                "default_model": "mistral-large"
+            }
+        }
+        
         logger.info("Initialized LLM clients")
 
     async def generate_response(
@@ -244,6 +260,19 @@ class LLMClient:
         except Exception as e:
             logger.error(f"Error getting embeddings: {e}")
             raise
+
+    def get_available_providers(self):
+        """
+        Returns a dictionary of available LLM providers.
+        
+        Returns:
+            dict: Dictionary mapping provider names to their availability and default model
+        """
+        return {
+            provider_name: provider_info 
+            for provider_name, provider_info in self.providers.items() 
+            if provider_info['is_available']
+        }
 
 # Create a singleton instance of LLMClient
 llm_client = LLMClient() 

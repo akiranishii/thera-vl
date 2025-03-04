@@ -118,35 +118,24 @@ class LabSessionCommands(commands.Cog):
             
             # Send a welcome message to the user
             embed = discord.Embed(
-                title="Lab Session Started",
-                description=f"Your lab session '{title}' has been started.",
+                title="🧪 Lab Session Started",
+                description=f"Your new lab session '{title}' has been created.",
                 color=discord.Color.green()
             )
-            embed.add_field(
-                name="Session ID", 
-                value=session_data.get("id", "Unknown"),
-                inline=True
-            )
-            embed.add_field(
-                name="Privacy", 
-                value="Public" if is_public else "Private",
-                inline=True
-            )
-            embed.add_field(
-                name="Next Steps", 
-                value="Use `/lab agent create` to add agents or `/lab team_meeting` to begin a discussion.",
-                inline=False
-            )
+            embed.add_field(name="Session ID", value=f"`{session_data.get('id')}`", inline=False)
+            embed.add_field(name="Type", value="Public" if is_public else "Private", inline=True)
+            embed.add_field(name="Status", value="Active", inline=True)
+            embed.set_footer(text=f"Created by {interaction.user.display_name}")
             
             await interaction.followup.send(
+                "✅ Lab session started successfully!",
                 embed=embed,
                 ephemeral=True
             )
-            
         except Exception as e:
-            logger.error(f"Error in start_session command: {e}")
+            logger.error(f"Error starting session: {str(e)}", exc_info=True)
             await interaction.followup.send(
-                "An error occurred while starting your session. Please try again later.",
+                "An error occurred while creating the session. Please try again later.",
                 ephemeral=True
             )
 
@@ -433,19 +422,178 @@ class LabSessionCommands(commands.Cog):
 
     async def start_session_callback(self, interaction: discord.Interaction, title: str, description: Optional[str] = None, is_public: Optional[bool] = False):
         """Callback for the start_session command."""
-        await self.start_session(interaction, title, description, is_public)
+        try:
+            # Immediately acknowledge the interaction to prevent timeout
+            await interaction.response.defer(ephemeral=True)
+            
+            user_id = str(interaction.user.id)
+            
+            # Check for existing active session
+            active_session = await db_client.get_active_session(user_id=user_id)
+            if active_session.get("isSuccess") and active_session.get("data"):
+                # End the current session
+                await db_client.end_session(
+                    session_id=active_session["data"]["id"]
+                )
+                logger.info(f"Ended previous active session for user {user_id}")
+            
+            # Create the new session
+            session_result = await db_client.create_session(
+                user_id=user_id,
+                title=title,
+                description=description,
+                is_public=is_public
+            )
+            
+            if not session_result.get("isSuccess", False):
+                await interaction.followup.send(
+                    f"Failed to create session: {session_result.get('message', 'Unknown error')}",
+                    ephemeral=True
+                )
+                return
+            
+            session_data = session_result.get("data", {})
+            
+            # Send a welcome message to the user
+            embed = discord.Embed(
+                title="🧪 Lab Session Started",
+                description=f"Your new lab session '{title}' has been created.",
+                color=discord.Color.green()
+            )
+            embed.add_field(name="Session ID", value=f"`{session_data.get('id')}`", inline=False)
+            embed.add_field(name="Type", value="Public" if is_public else "Private", inline=True)
+            embed.add_field(name="Status", value="Active", inline=True)
+            embed.set_footer(text=f"Created by {interaction.user.display_name}")
+            
+            await interaction.followup.send(
+                "✅ Lab session started successfully!",
+                embed=embed,
+                ephemeral=True
+            )
+        except Exception as e:
+            logger.error(f"Error starting session: {str(e)}", exc_info=True)
+            try:
+                if interaction.response.is_done():
+                    await interaction.followup.send(
+                        "An error occurred while creating the session. Please try again later.",
+                        ephemeral=True
+                    )
+                else:
+                    await interaction.response.send_message(
+                        "An error occurred while creating the session. Please try again later.",
+                        ephemeral=True
+                    )
+            except Exception as follow_up_error:
+                logger.error(f"Failed to send error message: {follow_up_error}")
         
     async def end_session_callback(self, interaction: discord.Interaction, session_id: Optional[str] = None):
         """Callback for the end_session command."""
-        await self.end_session(interaction, session_id)
+        try:
+            # Immediately acknowledge the interaction to prevent timeout
+            await interaction.response.defer(ephemeral=True)
+            
+            user_id = str(interaction.user.id)
+            
+            if not session_id:
+                # Get the user's active session
+                active_session = await db_client.get_active_session(user_id=user_id)
+                
+                if not active_session.get("isSuccess") or not active_session.get("data"):
+                    await interaction.followup.send(
+                        "You don't have an active session to end.",
+                        ephemeral=True
+                    )
+                    return
+                
+                session_id = active_session["data"]["id"]
+            
+            # End the session
+            result = await db_client.end_session(session_id=session_id)
+            
+            if not result.get("isSuccess", False):
+                await interaction.followup.send(
+                    f"Failed to end session: {result.get('message', 'Unknown error')}",
+                    ephemeral=True
+                )
+                return
+            
+            # Confirm to the user
+            await interaction.followup.send(
+                "✅ Lab session ended successfully.",
+                ephemeral=True
+            )
+            
+        except Exception as e:
+            logger.error(f"Error ending session: {str(e)}", exc_info=True)
+            try:
+                if interaction.response.is_done():
+                    await interaction.followup.send(
+                        "An error occurred while ending the session. Please try again later.",
+                        ephemeral=True
+                    )
+                else:
+                    await interaction.response.send_message(
+                        "An error occurred while ending the session. Please try again later.",
+                        ephemeral=True
+                    )
+            except Exception as follow_up_error:
+                logger.error(f"Failed to send error message: {follow_up_error}")
         
     async def list_sessions_callback(self, interaction: discord.Interaction, include_closed: Optional[bool] = False, limit: Optional[int] = 10):
         """Callback for the list_sessions command."""
-        await self.list_sessions(interaction, include_closed, limit)
+        try:
+            # Immediately acknowledge the interaction to prevent timeout
+            await interaction.response.defer(ephemeral=True)
+            
+            # Implement the list sessions functionality directly here
+            # This would require a new endpoint in the API
+            await interaction.followup.send(
+                "The list sessions functionality is not yet implemented.",
+                ephemeral=True
+            )
+        except Exception as e:
+            logger.error(f"Error listing sessions: {str(e)}", exc_info=True)
+            try:
+                if interaction.response.is_done():
+                    await interaction.followup.send(
+                        "An error occurred. Please try again later.",
+                        ephemeral=True
+                    )
+                else:
+                    await interaction.response.send_message(
+                        "An error occurred. Please try again later.",
+                        ephemeral=True
+                    )
+            except Exception as follow_up_error:
+                logger.error(f"Failed to send error message: {follow_up_error}")
         
     async def reopen_session_callback(self, interaction: discord.Interaction, session_id: str):
         """Callback for the reopen_session command."""
-        await self.reopen_session(interaction, session_id)
+        try:
+            # Immediately acknowledge the interaction to prevent timeout
+            await interaction.response.defer(ephemeral=True)
+            
+            # Implement the reopen session functionality directly here
+            # This would require a new endpoint in the API
+            await interaction.followup.send(
+                "The reopen session functionality is not yet implemented.",
+                ephemeral=True
+            )
+        except Exception as e:
+            logger.error(f"Error reopening session: {str(e)}", exc_info=True)
+            try:
+                if interaction.response.is_done():
+                    await interaction.followup.send(
+                        "An error occurred. Please try again later.",
+                        ephemeral=True
+                    )
+                else:
+                    await interaction.response.send_message(
+                        "An error occurred. Please try again later.",
+                        ephemeral=True
+                    )
+            except Exception as follow_up_error:
+                logger.error(f"Failed to send error message: {follow_up_error}")
 
 async def setup(bot: commands.Bot):
     """Add the cog to the bot."""

@@ -8,7 +8,8 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id
+    // Await params before accessing properties
+    const { id } = await params
 
     if (!id) {
       return NextResponse.json(

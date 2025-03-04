@@ -338,8 +338,11 @@ class LabAgentCommands(commands.Cog):
             session_data = session_result.get("data", {})
             session_id = session_data.get("id")
             
-            # Get agents
-            agents_result = await db_client.get_session_agents(session_id=session_id)
+            # Get all created agents
+            agents_result = await db_client.get_session_agents(
+                session_id=session_id,
+                user_id=str(interaction.user.id)
+            )
             
             if not agents_result.get("isSuccess"):
                 await interaction.followup.send(

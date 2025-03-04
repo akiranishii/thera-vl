@@ -27,7 +27,8 @@ class QuickstartCommand(commands.Cog):
         topic="The topic or question to discuss",
         agent_count="Number of Scientist agents to create (default: 3)",
         include_critic="Whether to include a Critic agent (default: true)",
-        public="Whether the session should be publicly viewable (default: false)"
+        public="Whether the session should be publicly viewable (default: false)",
+        live_mode="Show agent responses in real-time (default: true)"
     )
     async def quickstart(
         self,
@@ -35,33 +36,55 @@ class QuickstartCommand(commands.Cog):
         topic: str,
         agent_count: Optional[int] = 3,
         include_critic: Optional[bool] = True,
-        public: Optional[bool] = False
+        public: Optional[bool] = False,
+        live_mode: Optional[bool] = True
     ):
-        """Quickly start a lab session with agents and begin a discussion."""
-        await interaction.response.defer(ephemeral=True, thinking=True)
-        
-        user_id = str(interaction.user.id)
+        """Quickly create a lab session with agents and start a meeting."""
+        # IMMEDIATELY acknowledge the interaction to prevent timeout
+        # This must be the very first thing we do
+        await interaction.response.defer(ephemeral=True)
         
         try:
-            # Check for existing active session and end it
-            active_session = await db_client.get_active_session(user_id=user_id)
-            if active_session.get("isSuccess") and active_session.get("data"):
-                await db_client.end_session(
-                    session_id=active_session["data"]["id"]
-                )
-                logger.info(f"Ended previous active session for user {user_id}")
+            user_id = str(interaction.user.id)
+            logger.info(f"Starting quickstart for user {user_id} on topic: {topic}")
             
-            # Create new session
+            # Check API connectivity
+            health_check = await db_client.health_check()
+            if not health_check.get("isSuccess"):
+                logger.error(f"API is not available: {health_check.get('message')}")
+                await interaction.followup.send(
+                    f"Error: The API service is currently unavailable. Please try again later.",
+                    ephemeral=True
+                )
+                return
+                
+            # Check for existing active session
+            active_session = await db_client.get_active_session(user_id=user_id)
+            
+            if active_session.get("isSuccess") and active_session.get("data"):
+                # End the current session
+                session_id = active_session["data"]["id"]
+                logger.info(f"Found active session {session_id} for user {user_id}")
+                end_result = await db_client.end_session(session_id=session_id)
+                if end_result.get("isSuccess"):
+                    logger.info(f"Ended previous active session {session_id} for user {user_id}")
+                else:
+                    logger.warning(f"Failed to end session {session_id}: {end_result.get('message')}")
+            
+            # Create the new session
+            logger.info(f"Creating new session for user {user_id}")
             session_result = await db_client.create_session(
                 user_id=user_id,
-                title=topic,
+                title=f"Research on: {topic}",
                 description=f"Quickstart session on: {topic}",
                 is_public=public
             )
             
             if not session_result.get("isSuccess"):
+                error_message = session_result.get('message', 'Unknown error')
+                logger.error(f"Failed to create session: {error_message}")
                 await interaction.followup.send(
-                    f"Failed to create session: {session_result.get('message', 'Unknown error')}",
+                    f"Failed to create session: {error_message}",
                     ephemeral=True
                 )
                 return
@@ -110,8 +133,12 @@ class QuickstartCommand(commands.Cog):
                 )
             
             # Get all created agents
-            agents_result = await db_client.get_session_agents(session_id=session_id)
+            agents_result = await db_client.get_session_agents(
+                session_id=session_id,
+                user_id=user_id
+            )
             if not agents_result.get("isSuccess"):
+                logger.error(f"Failed to retrieve agents: {agents_result.get('message')}")
                 await interaction.followup.send(
                     f"Failed to retrieve agents: {agents_result.get('message', 'Unknown error')}",
                     ephemeral=True
@@ -123,8 +150,9 @@ class QuickstartCommand(commands.Cog):
             # Create and start the meeting
             meeting_result = await db_client.create_meeting(
                 session_id=session_id,
+                title=f"Discussion on: {topic}",
                 agenda=topic,
-                round_count=3  # Default to 3 rounds for quickstart
+                max_rounds=3
             )
             
             if not meeting_result.get("isSuccess"):
@@ -149,9 +177,15 @@ class QuickstartCommand(commands.Cog):
             # Start the conversation asynchronously
             await self.orchestrator.start_conversation(
                 meeting_id=meeting_id,
-                interaction=interaction
+                interaction=interaction,
+                live_mode=live_mode
             )
             
+            # Calculate the total number of agents
+            agent_total = agent_count + 1  # Scientists + Principal Investigator
+            if include_critic:
+                agent_total += 1  # Add Critic if included
+                
             # Create response embed
             embed = discord.Embed(
                 title="Quickstart Complete",
@@ -164,7 +198,7 @@ class QuickstartCommand(commands.Cog):
                 value=(
                     f"**ID**: {session_id}\n"
                     f"**Privacy**: {'Public' if public else 'Private'}\n"
-                    f"**Agents**: {len(agents)} total\n"
+                    f"**Agents**: {agent_total} total\n"
                     f"- 1 Principal Investigator\n"
                     f"- {agent_count} Scientists\n"
                     f"{f'- 1 Critic' if include_critic else ''}"
@@ -177,14 +211,15 @@ class QuickstartCommand(commands.Cog):
                 value=(
                     f"**ID**: {meeting_id}\n"
                     f"**Rounds**: 3\n"
-                    f"**Status**: In Progress"
+                    f"**Status**: In Progress\n"
+                    f"**Live Mode**: {'On' if live_mode else 'Off'}"
                 ),
                 inline=False
             )
             
             embed.add_field(
                 name="View Progress",
-                value="Use `/lab transcript view meeting_id:{meeting_id}` to view the discussion.",
+                value=f"Use `/lab transcript_view {meeting_id}` to view the discussion.",
                 inline=False
             )
             

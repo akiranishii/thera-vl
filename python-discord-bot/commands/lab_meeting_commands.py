@@ -65,7 +65,8 @@ class LabMeetingCommands(commands.Cog):
         auto_generate="Automatically generate PI, critic, and scientist agents",
         auto_scientist_count="Number of scientists to generate if auto_generate is true (default: 3)",
         auto_include_critic="Include a critic agent if auto_generate is true (default: true)",
-        temperature_variation="Increase temperature variation for parallel runs (default: true)"
+        temperature_variation="Increase temperature variation for parallel runs (default: true)",
+        live_mode="Show agent responses in real-time (default: true)"
     )
     async def team_meeting(
         self,
@@ -77,7 +78,8 @@ class LabMeetingCommands(commands.Cog):
         auto_generate: Optional[bool] = False,
         auto_scientist_count: Optional[int] = 3,
         auto_include_critic: Optional[bool] = True,
-        temperature_variation: Optional[bool] = True
+        temperature_variation: Optional[bool] = True,
+        live_mode: Optional[bool] = True
     ):
         """Start a multi-agent team meeting."""
         await interaction.response.defer(ephemeral=True, thinking=True)
@@ -148,7 +150,10 @@ class LabMeetingCommands(commands.Cog):
                     agent_names=agent_names
                 )
             else:
-                agents_result = await db_client.get_session_agents(session_id=session_id)
+                agents_result = await db_client.get_session_agents(
+                    session_id=session_id,
+                    user_id=str(interaction.user.id)
+                )
             
             if not agents_result.get("isSuccess"):
                 await interaction.followup.send(
@@ -184,8 +189,9 @@ class LabMeetingCommands(commands.Cog):
             for i in range(parallel_meetings):
                 meeting_result = await db_client.create_meeting(
                     session_id=session_id,
+                    title=f"Meeting {i+1} on: {agenda}",
                     agenda=agenda,
-                    round_count=rounds,
+                    max_rounds=rounds,
                     parallel_index=i
                 )
                 
@@ -216,7 +222,8 @@ class LabMeetingCommands(commands.Cog):
                 # Start the conversation
                 await self.orchestrator.start_conversation(
                     meeting_id=meeting_id,
-                    interaction=interaction
+                    interaction=interaction,
+                    live_mode=live_mode
                 )
             
             # Create response embed
@@ -241,6 +248,13 @@ class LabMeetingCommands(commands.Cog):
             embed.add_field(
                 name="Parallel Runs",
                 value=str(parallel_meetings),
+                inline=True
+            )
+            
+            # Add live_mode field
+            embed.add_field(
+                name="Live Mode",
+                value="On" if live_mode else "Off",
                 inline=True
             )
             
@@ -397,10 +411,10 @@ class LabMeetingCommands(commands.Cog):
 
     async def start_team_meeting_callback(self, interaction: discord.Interaction, agenda: str, rounds: Optional[int] = 3, parallel_meetings: Optional[int] = 1, 
                                  agent_list: Optional[str] = None, auto_generate: Optional[bool] = False, auto_scientist_count: Optional[int] = 3, 
-                                 auto_include_critic: Optional[bool] = True, temperature_variation: Optional[bool] = True):
+                                 auto_include_critic: Optional[bool] = True, temperature_variation: Optional[bool] = True, live_mode: Optional[bool] = True):
         """Callback for the team_meeting command."""
         await self.team_meeting(interaction, agenda, rounds, parallel_meetings, agent_list, 
-                               auto_generate, auto_scientist_count, auto_include_critic, temperature_variation)
+                               auto_generate, auto_scientist_count, auto_include_critic, temperature_variation, live_mode)
         
     async def end_team_meeting_callback(self, interaction: discord.Interaction, meeting_id: Optional[str] = None, end_all_parallel: Optional[bool] = True):
         """Callback for the end_team_meeting command."""
