@@ -2,6 +2,28 @@
 
 This directory contains test scripts for the TheraLab Discord bot, focusing on testing LLM providers and agent discussions.
 
+## Setting Up Environment Variables
+
+The bot and test scripts now use a `.env` file to load API keys and other configuration options:
+
+1. Copy the `.env.example` file to create a new `.env` file:
+   ```
+   cp .env.example .env
+   ```
+
+2. Edit the `.env` file and replace the placeholder values with your actual API keys:
+   ```
+   # LLM Provider API Keys
+   OPENAI_API_KEY=your_actual_openai_key
+   ANTHROPIC_API_KEY=your_actual_anthropic_key
+   MISTRAL_API_KEY=your_actual_mistral_key
+   ```
+
+3. Ensure you have the `python-dotenv` package installed:
+   ```
+   pip install python-dotenv
+   ```
+
 ## Test Files
 
 - `test_llm_agents.py` - Tests real LLM API calls and agent discussions when API keys are available, with graceful fallback to mocks when needed
@@ -38,16 +60,18 @@ This script will:
 
 ### Real Tests (API Keys Required)
 
-For full testing with real API calls, set your API keys in the environment:
+For full testing with real API calls, make sure your API keys are correctly configured in the `.env` file:
 
 ```bash
-# Set your API keys
-export OPENAI_API_KEY=your_openai_key
-export ANTHROPIC_API_KEY=your_anthropic_key
-export MISTRAL_API_KEY=your_mistral_key
-
-# Run the tests
+# Run the tests with API keys from .env file
 python test_llm_agents.py
+```
+
+You can also override the environment variables from the command line if needed:
+
+```bash
+# Override the API keys from .env
+OPENAI_API_KEY=your_openai_key python test_llm_agents.py
 ```
 
 ## Test Output
@@ -71,13 +95,14 @@ The tests will provide detailed logging output, showing:
 
 If you encounter errors with the real tests:
 
-1. Make sure your API keys are set correctly
-2. Check your internet connection
-3. Verify that you have the required Python packages installed:
+1. Check that your `.env` file exists and contains valid API keys
+2. Verify the file permissions on your `.env` file
+3. Check your internet connection
+4. Verify that you have the required Python packages installed:
    ```
-   pip install openai anthropic mistralai
+   pip install python-dotenv openai anthropic mistralai
    ```
-4. If specific providers fail, you can comment out their tests in the `test_providers` method
+5. If specific providers fail, you can comment out their tests in the `test_providers` method
 
 ## Adding New Tests
 

@@ -30,7 +30,7 @@ class DatabaseClient:
         try:
             # Just try to reach the base API to check connectivity
             async with aiohttp.ClientSession() as session:
-                async with session.get(f"{self.base_url}/api/health", timeout=5) as response:
+                async with session.get(f"{self.base_url}/health", timeout=5) as response:
                     if response.status == 200:
                         return {"isSuccess": True, "message": "API is reachable", "data": None}
                     else:
@@ -148,7 +148,7 @@ class DatabaseClient:
         Returns:
             Session data or error information
         """
-        return await self._make_request("GET", f"/api/discord/sessions/active", params={"userId": user_id})
+        return await self._make_request("GET", f"/discord/sessions/active", params={"userId": user_id})
     
     async def create_session(
         self, 
@@ -180,7 +180,7 @@ class DatabaseClient:
         # Log the data being sent
         logger.debug(f"Sending session creation data: {data}")
             
-        return await self._make_request("POST", "/api/discord/sessions", data)
+        return await self._make_request("POST", "/discord/sessions", data)
     
     async def end_session(self, session_id: str) -> Dict[str, Any]:
         """End a session.
@@ -191,7 +191,7 @@ class DatabaseClient:
         Returns:
             Session data or error information
         """
-        return await self._make_request("PUT", f"/api/discord/sessions/{session_id}/end")
+        return await self._make_request("PUT", f"/discord/sessions/{session_id}/end")
     
     async def get_session_agents(self, session_id: str, user_id: str) -> Dict[str, Any]:
         """Get agents for a session.
@@ -205,7 +205,7 @@ class DatabaseClient:
         """
         return await self._make_request(
             "GET", 
-            f"/api/discord/sessions/{session_id}/agents", 
+            f"/discord/sessions/{session_id}/agents", 
             params={"userId": user_id}
         )
     
@@ -246,7 +246,7 @@ class DatabaseClient:
         if model:
             data["model"] = model
             
-        return await self._make_request("POST", "/api/discord/agents", data)
+        return await self._make_request("POST", "/discord/agents", data)
     
     # Meeting-related methods
     async def create_meeting(
@@ -285,7 +285,7 @@ class DatabaseClient:
         if parallel_index is not None:  # Use is not None to allow 0 as a valid value
             data["parallelIndex"] = parallel_index
             
-        return await self._make_request("POST", "/api/discord/meetings", data)
+        return await self._make_request("POST", "/discord/meetings", data)
     
     async def end_meeting(self, meeting_id: str) -> Dict[str, Any]:
         """End a meeting.
@@ -296,7 +296,7 @@ class DatabaseClient:
         Returns:
             Meeting data or error information
         """
-        return await self._make_request("PUT", f"/api/discord/meetings/{meeting_id}/end")
+        return await self._make_request("PUT", f"/discord/meetings/{meeting_id}/end")
     
     # Transcript-related methods
     async def add_message(
@@ -326,7 +326,7 @@ class DatabaseClient:
         if user_id:
             data["userId"] = user_id
             
-        return await self._make_request("POST", "/api/discord/transcripts", data)
+        return await self._make_request("POST", "/discord/transcripts", data)
 
 # Create a singleton instance
 db_client = DatabaseClient() 

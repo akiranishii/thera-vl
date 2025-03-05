@@ -2031,3 +2031,12 @@ discord.ext.commands.errors.ExtensionFailed: Extension 'commands.lab_commands' r
 2025-03-03 17:10:07,663 - __main__ - INFO - Synced 15 commands globally
 2025-03-03 17:10:07,663 - __main__ - INFO - Final command tree: lab start, lab end, lab list, lab reopen, lab agent_create, lab agent_update, lab agent_delete, lab agent_list, lab team_meeting, lab end_team_meeting, lab transcript_list, lab transcript_view, start, end, list, reopen, agent_create, agent_update, agent_delete, agent_list, team_meeting, end_team_meeting, session_start, session_end, quickstart, help
 2025-03-03 17:10:07,663 - __main__ - INFO - Bot is ready!
+2025-03-03 17:54:28,349 - run - WARNING - No LLM provider API keys found. Lab meeting features will be limited.
+2025-03-03 17:54:28,349 - run - WARNING - Consider adding at least one of: OPENAI_API_KEY, ANTHROPIC_API_KEY, MISTRAL_API_KEY
+2025-03-03 17:54:28,512 - run - INFO - All required packages are installed.
+2025-03-03 17:54:28,512 - run - INFO - Environment setup looks good!
+2025-03-03 17:54:41,353 - run - INFO - Running mock tests...
+2025-03-03 17:55:06,183 - run - WARNING - No LLM provider API keys found. Lab meeting features will be limited.
+2025-03-03 17:55:06,183 - run - WARNING - Consider adding at least one of: OPENAI_API_KEY, ANTHROPIC_API_KEY, MISTRAL_API_KEY
+2025-03-03 17:55:06,383 - run - INFO - All required packages are installed.
+2025-03-03 17:55:06,384 - run - INFO - Environment setup looks good!

@@ -4,6 +4,12 @@ import openai
 import anthropic
 from typing import List, Dict, Optional, Union
 from models import LLMProvider, LLMMessage, LLMResponse
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+dotenv_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path)
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +18,12 @@ class LLMClient:
     
     def __init__(self):
         """Initialize API clients for each provider."""
+        # Log API key availability
+        logger.info(f"Loaded environment variables from {dotenv_path}")
+        logger.info(f"OpenAI API Key available: {bool(os.getenv('OPENAI_API_KEY'))}")
+        logger.info(f"Anthropic API Key available: {bool(os.getenv('ANTHROPIC_API_KEY'))}")
+        logger.info(f"Mistral API Key available: {bool(os.getenv('MISTRAL_API_KEY'))}")
+        
         # Initialize OpenAI client
         self.openai_client = openai.OpenAI(
             api_key=os.getenv("OPENAI_API_KEY")

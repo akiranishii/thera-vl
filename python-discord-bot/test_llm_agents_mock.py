@@ -9,6 +9,14 @@ from typing import List, Dict, Optional
 from unittest.mock import patch, MagicMock
 from enum import Enum
 from dataclasses import dataclass
+from pathlib import Path
+
+# Add dotenv import at the top
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+dotenv_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path)
 
 # Configure logging
 logging.basicConfig(
@@ -20,6 +28,12 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger("llm_test")
+
+# Log environment variable loading
+logger.info(f"Loaded environment variables from {dotenv_path}")
+logger.info(f"OpenAI API Key available: {bool(os.getenv('OPENAI_API_KEY'))}")
+logger.info(f"Anthropic API Key available: {bool(os.getenv('ANTHROPIC_API_KEY'))}")
+logger.info(f"Mistral API Key available: {bool(os.getenv('MISTRAL_API_KEY'))}")
 
 # Mock the required classes if the real ones aren't available
 class LLMProvider(str, Enum):

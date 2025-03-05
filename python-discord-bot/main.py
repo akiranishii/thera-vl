@@ -8,7 +8,7 @@ import traceback
 from typing import List, Optional
 
 # Import configuration
-from config import DISCORD_TOKEN, COMMAND_PREFIX, APPLICATION_ID, DEBUG_MODE
+from config import DISCORD_TOKEN, COMMAND_PREFIX, APPLICATION_ID, GUILD_ID, DEBUG_MODE
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -49,65 +49,47 @@ async def on_ready():
     
     # Get available LLM providers
     try:
-        from llm_client import llm_client
-        for provider_name, provider_info in llm_client.providers.items():
-            logger.info(f"LLM Provider: {provider_name} - Available: {provider_info['is_available']} - Default model: {provider_info['default_model']}")
+        from llm_client import LLMClient
+        llm_client = LLMClient()
+        
+        # Log available providers
+        available_providers = [
+            provider for provider, details in llm_client.providers.items() 
+            if details.get("is_available", False)
+        ]
+        
+        if available_providers:
+            logger.info(f"Available LLM providers: {', '.join(available_providers)}")
+            logger.info(f"Default models per provider:")
+            for provider, details in llm_client.providers.items():
+                if details.get("is_available", False):
+                    logger.info(f"  - {provider}: {details.get('default_model', 'unknown')}")
+        else:
+            logger.warning("No LLM providers available. Lab meeting features will be limited.")
+            logger.warning("Please check your API keys in the .env file.")
     except Exception as e:
-        logger.error(f"Error loading LLM providers: {e}")
-    
-    # List all commands that were registered before syncing
-    logger.info("=== COMMAND REGISTRATION STATUS ===")
-    command_count = 0
-    try:
-        logger.info("Commands registered before syncing:")
-        for cmd in bot.tree.get_commands():
-            command_count += 1
-            if isinstance(cmd, discord.app_commands.Group):
-                logger.info(f"Command group: {cmd.name}")
-                for subcmd in cmd.commands:
-                    if isinstance(subcmd, discord.app_commands.Group):
-                        logger.info(f"  Subgroup: {subcmd.name}")
-                        for subsubcmd in subcmd.commands:
-                            logger.info(f"    Subcommand: {subsubcmd.name}")
-                    else:
-                        logger.info(f"  Subcommand: {subcmd.name}")
-            else:
-                logger.info(f"Command: {cmd.name}")
-    except Exception as e:
-        logger.error(f"Error listing commands: {e}")
-    
-    if command_count == 0:
-        logger.warning("No commands were registered! Check your extensions and command registration.")
-    
-    # Sync commands with Discord
+        logger.error(f"Error loading LLM providers: {str(e)}")
+        logger.debug(traceback.format_exc())
+
+    # Display server registration
+    if GUILD_ID:
+        logger.info(f"Using guild ID: {GUILD_ID}")
+    else:
+        logger.info("No guild ID specified. Commands will be registered globally.")
+
+    # After connection is established, sync slash commands
     try:
         logger.info("Syncing commands with Discord...")
-        
-        # Sync all commands globally
-        synced = await bot.tree.sync()
-        logger.info(f"Synced {len(synced)} commands globally")
-        
-        # List the final command tree
-        cmds = []
-        for cmd in bot.tree.get_commands():
-            if isinstance(cmd, discord.app_commands.Group):
-                for subcmd in cmd.commands:
-                    if isinstance(subcmd, discord.app_commands.Group):
-                        for subsubcmd in subcmd.commands:
-                            cmds.append(f"{cmd.name} {subcmd.name} {subsubcmd.name}")
-                    else:
-                        cmds.append(f"{cmd.name} {subcmd.name}")
-            else:
-                cmds.append(cmd.name)
-        
-        if cmds:
-            logger.info(f"Final command tree: {', '.join(cmds)}")
+        if GUILD_ID:
+            await bot.tree.sync(guild=discord.Object(id=GUILD_ID))
+            logger.info(f"Slash commands synced to guild: {GUILD_ID}")
         else:
-            logger.error("CRITICAL ERROR: Final command tree is empty! Commands failed to register.")
+            await bot.tree.sync()
+            logger.info("Slash commands synced globally")
     except Exception as e:
-        logger.error(f"Failed to sync commands: {e}")
-        logger.error(traceback.format_exc())
-    
+        logger.error(f"Error syncing commands: {e}")
+        logger.debug(traceback.format_exc())
+        
     # Set bot status
     await bot.change_presence(
         activity=discord.Activity(
