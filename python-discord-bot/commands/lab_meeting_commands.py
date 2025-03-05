@@ -327,7 +327,7 @@ class LabMeetingCommands(commands.Cog):
                 if end_all_parallel and meeting_result.get("isSuccess"):
                     parallel_result = await db_client.get_parallel_meetings(
                         session_id=session_id,
-                        parallel_group=meeting_result.get("data", {}).get("parallel_group")
+                        base_meeting_id=meeting_result.get("data", {}).get("id")
                     )
                     meetings = parallel_result.get("data", []) if parallel_result.get("isSuccess") else []
                 else:

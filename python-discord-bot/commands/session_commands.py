@@ -109,7 +109,8 @@ class SessionCommands(commands.Cog):
             await db_client.add_message(
                 meeting_id=meeting_data.get("id"),
                 content=f"Session started by {interaction.user.display_name}.",
-                role="system"
+                role="system",
+                agent_name="System"
             )
             
         except Exception as e:

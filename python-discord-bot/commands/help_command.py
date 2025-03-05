@@ -81,10 +81,10 @@ class HelpCommand(commands.Cog):
         embed.add_field(
             name="🤖 Agent Management",
             value=(
-                "**`/lab agent create`** - Create a new agent\n"
-                "**`/lab agent update`** - Update an agent\n"
-                "**`/lab agent delete`** - Delete an agent\n"
-                "**`/lab agent list`** - List all agents"
+                "**`/lab agent_create`** - Create a new agent\n"
+                "**`/lab agent_update`** - Update an agent\n"
+                "**`/lab agent_delete`** - Delete an agent\n"
+                "**`/lab agent_list`** - List all agents"
             ),
             inline=False
         )
@@ -103,8 +103,8 @@ class HelpCommand(commands.Cog):
         embed.add_field(
             name="📝 Transcripts",
             value=(
-                "**`/lab transcript list`** - List available transcripts\n"
-                "**`/lab transcript view`** - View a specific transcript"
+                "**`/lab transcript_list`** - List available transcripts\n"
+                "**`/lab transcript_view`** - View a specific transcript"
             ),
             inline=False
         )
@@ -192,8 +192,8 @@ class HelpCommand(commands.Cog):
                 "title": "Transcript Commands",
                 "description": "View and manage meeting transcripts.",
                 "usage": [
-                    "/lab transcript list",
-                    "/lab transcript view transcript_id:\"id\""
+                    "/lab transcript_list",
+                    "/lab transcript_view transcript_id:\"id\""
                 ],
                 "parameters": {
                     "transcript_id": "ID of the transcript to view (required for view)"

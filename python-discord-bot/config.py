@@ -69,7 +69,20 @@ if not DISCORD_TOKEN:
 
 COMMAND_PREFIX = os.getenv("COMMAND_PREFIX", "!")
 APPLICATION_ID = os.getenv("APPLICATION_ID")
-GUILD_ID = os.getenv("DISCORD_GUILD_ID")
+
+# Validate GUILD_ID - it should be None if not set or if it contains a placeholder
+guild_id_value = os.getenv("DISCORD_GUILD_ID")
+if guild_id_value and guild_id_value != "your_discord_server_id_here" and not "your_" in guild_id_value:
+    try:
+        # Check if it can be converted to integer
+        int(guild_id_value)
+        GUILD_ID = guild_id_value
+    except ValueError:
+        logger.warning(f"DISCORD_GUILD_ID must be a valid integer. Got: {guild_id_value}")
+        logger.warning("Defaulting to global command registration.")
+        GUILD_ID = None
+else:
+    GUILD_ID = None
 
 # API URLs
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:3000/api")

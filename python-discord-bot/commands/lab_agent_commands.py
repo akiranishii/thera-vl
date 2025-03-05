@@ -63,17 +63,17 @@ class LabAgentCommands(commands.Cog):
         
         logger.info("Registered lab agent commands")
 
-    async def create_agent_callback(self, interaction: discord.Interaction, name: str, role: str, goal: str, model: Optional[str] = None, expertise: Optional[str] = None):
+    async def create_agent_callback(self, interaction: discord.Interaction, agent_name: str, expertise: Optional[str] = None, goal: Optional[str] = None, role: Optional[str] = None, model: Optional[str] = "openai"):
         """Callback for the create_agent command."""
-        await self.create_agent(interaction, name, role, goal, model, expertise)
+        await self.create_agent(interaction, agent_name, expertise, goal, role, model)
         
-    async def update_agent_callback(self, interaction: discord.Interaction, agent_id: str, name: Optional[str] = None, role: Optional[str] = None, goal: Optional[str] = None, model: Optional[str] = None, expertise: Optional[str] = None):
+    async def update_agent_callback(self, interaction: discord.Interaction, agent_name: str, expertise: Optional[str] = None, goal: Optional[str] = None, role: Optional[str] = None, model: Optional[str] = None):
         """Callback for the update_agent command."""
-        await self.update_agent(interaction, agent_id, name, role, goal, model, expertise)
+        await self.update_agent(interaction, agent_name, expertise, goal, role, model)
         
-    async def delete_agent_callback(self, interaction: discord.Interaction, agent_id: str):
+    async def delete_agent_callback(self, interaction: discord.Interaction, agent_name: str):
         """Callback for the delete_agent command."""
-        await self.delete_agent(interaction, agent_id)
+        await self.delete_agent(interaction, agent_name)
         
     async def list_agents_callback(self, interaction: discord.Interaction):
         """Callback for the list_agents command."""

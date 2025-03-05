@@ -186,9 +186,7 @@ class LabTranscriptCommands(commands.Cog):
             
             # Get transcripts for the meeting
             transcripts_result = await db_client.get_meeting_transcripts(
-                meeting_id=meeting_id,
-                round_number=round_number,
-                agent_name=agent_name
+                meeting_id=meeting_id
             )
             
             if not transcripts_result.get("isSuccess"):
@@ -198,7 +196,12 @@ class LabTranscriptCommands(commands.Cog):
                 )
                 return
             
+            # If we need to filter by round_number or agent_name, do it client-side
             transcripts = transcripts_result.get("data", [])
+            if round_number is not None and transcripts:
+                transcripts = [t for t in transcripts if t.get("roundNumber") == round_number]
+            if agent_name and transcripts:
+                transcripts = [t for t in transcripts if t.get("agentName") == agent_name]
             
             if not transcripts:
                 await interaction.followup.send(

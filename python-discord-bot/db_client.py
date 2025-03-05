@@ -18,8 +18,9 @@ class DatabaseClient:
         Args:
             base_url: Base URL for the API endpoints
         """
-        self.base_url = base_url
-        logger.info(f"DatabaseClient initialized with base URL: {base_url}")
+        # Ensure the base_url doesn't end with a slash
+        self.base_url = base_url.rstrip('/')
+        logger.info(f"DatabaseClient initialized with base URL: {self.base_url}")
     
     async def health_check(self) -> Dict[str, Any]:
         """Check if the API is reachable.
@@ -27,23 +28,32 @@ class DatabaseClient:
         Returns:
             Status information
         """
+        health_endpoint = "/health"
+        # Remove duplicate /api in the endpoint if base_url already ends with /api
+        if self.base_url.endswith("/api") and health_endpoint.startswith("/api/"):
+            health_endpoint = health_endpoint.replace("/api/", "/", 1)
+        
+        full_url = f"{self.base_url}{health_endpoint}"
+        logger.info(f"Performing health check to: {full_url}")
+        
         try:
-            # Just try to reach the base API to check connectivity
+            # Try to reach the base API to check connectivity
             async with aiohttp.ClientSession() as session:
-                async with session.get(f"{self.base_url}/health", timeout=5) as response:
+                async with session.get(full_url, timeout=5) as response:
                     if response.status == 200:
                         return {"isSuccess": True, "message": "API is reachable", "data": None}
+                    elif response.status == 404:
+                        logger.error(f"Health check failed - endpoint not found (404): {full_url}")
+                        return {"isSuccess": False, "message": f"API endpoint not found (404). Check if API_BASE_URL={self.base_url} is correct.", "data": None}
                     else:
+                        logger.error(f"Health check failed - API returned status {response.status}: {full_url}")
                         return {"isSuccess": False, "message": f"API returned status {response.status}", "data": None}
         except aiohttp.ClientConnectorError as e:
-            logger.error(f"Connection error during health check: {str(e)}")
+            logger.error(f"Connection error during health check: {str(e)} - URL: {full_url}")
             return {"isSuccess": False, "message": f"Cannot connect to API: {str(e)}", "data": None}
-        except asyncio.TimeoutError:
-            logger.error("Timeout during health check")
-            return {"isSuccess": False, "message": "API connection timed out", "data": None}
         except Exception as e:
-            logger.error(f"Error during health check: {str(e)}")
-            return {"isSuccess": False, "message": f"API check failed: {str(e)}", "data": None}
+            logger.error(f"Unexpected error during health check: {str(e)} - URL: {full_url}")
+            return {"isSuccess": False, "message": f"Unexpected error during health check: {str(e)}", "data": None}
     
     async def _make_request(
         self, 
@@ -66,6 +76,10 @@ class DatabaseClient:
         # Ensure endpoint starts with a slash
         if not endpoint.startswith("/"):
             endpoint = f"/{endpoint}"
+        
+        # Remove duplicate /api in the endpoint if base_url already ends with /api
+        if self.base_url.endswith("/api") and endpoint.startswith("/api/"):
+            endpoint = endpoint.replace("/api/", "/", 1)
             
         url = f"{self.base_url}{endpoint}"
         headers = {"Content-Type": "application/json"}
@@ -304,7 +318,10 @@ class DatabaseClient:
         meeting_id: str, 
         content: str, 
         role: str, 
-        user_id: Optional[str] = None
+        agent_id: Optional[str] = None,
+        agent_name: Optional[str] = None,
+        round_number: Optional[int] = None,
+        sequence_number: Optional[int] = None
     ) -> Dict[str, Any]:
         """Add a message to a meeting transcript.
         
@@ -312,7 +329,10 @@ class DatabaseClient:
             meeting_id: ID of the meeting
             content: Content of the message
             role: Role of the message sender (user, assistant, system)
-            user_id: Optional ID of the user (for user messages)
+            agent_id: Optional ID of the agent
+            agent_name: Optional name of the agent
+            round_number: Optional round number for the message
+            sequence_number: Optional sequence number within the round
             
         Returns:
             Message data or error information
@@ -323,10 +343,195 @@ class DatabaseClient:
             "role": role
         }
         
-        if user_id:
-            data["userId"] = user_id
+        if agent_id:
+            data["agentId"] = agent_id
+        if agent_name:
+            data["agentName"] = agent_name
+        if round_number is not None:  # Allow 0 as a valid value
+            data["roundNumber"] = round_number
+        if sequence_number is not None:  # Allow 0 as a valid value
+            data["sequenceNumber"] = sequence_number
             
         return await self._make_request("POST", "/discord/transcripts", data)
+
+    # Additional Session-related methods
+    async def get_user_sessions(self, user_id: str) -> Dict[str, Any]:
+        """Get all sessions for a user.
+        
+        Args:
+            user_id: ID of the user
+            
+        Returns:
+            List of sessions or error information
+        """
+        return await self._make_request("GET", "/discord/sessions", params={"userId": user_id})
+    
+    async def get_session(self, session_id: str) -> Dict[str, Any]:
+        """Get a specific session by ID.
+        
+        Args:
+            session_id: ID of the session
+            
+        Returns:
+            Session data or error information
+        """
+        return await self._make_request("GET", f"/discord/sessions/{session_id}")
+    
+    async def reopen_session(self, session_id: str) -> Dict[str, Any]:
+        """Reopen a previously ended session.
+        
+        Args:
+            session_id: ID of the session to reopen
+            
+        Returns:
+            Session data or error information
+        """
+        return await self._make_request("PUT", f"/discord/sessions/{session_id}/reopen")
+    
+    async def update_session(self, session_id: str, updates: Dict[str, Any]) -> Dict[str, Any]:
+        """Update a session with new data.
+        
+        Args:
+            session_id: ID of the session to update
+            updates: Dictionary of fields to update
+            
+        Returns:
+            Updated session data or error information
+        """
+        return await self._make_request("PUT", f"/discord/sessions/{session_id}", updates)
+    
+    # Additional Meeting-related methods
+    async def get_session_meetings(self, session_id: str) -> Dict[str, Any]:
+        """Get all meetings for a session.
+        
+        Args:
+            session_id: ID of the session
+            
+        Returns:
+            List of meetings or error information
+        """
+        return await self._make_request("GET", "/discord/meetings", params={"sessionId": session_id})
+    
+    async def get_meeting(self, meeting_id: str) -> Dict[str, Any]:
+        """Get a specific meeting by ID.
+        
+        Args:
+            meeting_id: ID of the meeting
+            
+        Returns:
+            Meeting data or error information
+        """
+        return await self._make_request("GET", f"/discord/meetings/{meeting_id}")
+    
+    async def get_active_meetings(self, session_id: str) -> Dict[str, Any]:
+        """Get active meetings for a session.
+        
+        Args:
+            session_id: ID of the session
+            
+        Returns:
+            List of active meetings or error information
+        """
+        return await self._make_request("GET", "/discord/meetings/active", params={"sessionId": session_id})
+    
+    async def get_parallel_meetings(self, session_id: str, base_meeting_id: str) -> Dict[str, Any]:
+        """Get parallel meetings related to a base meeting.
+        
+        Args:
+            session_id: ID of the session
+            base_meeting_id: ID of the base meeting
+            
+        Returns:
+            List of parallel meetings or error information
+        """
+        return await self._make_request(
+            "GET", 
+            "/discord/meetings/parallel", 
+            params={"sessionId": session_id, "baseMeetingId": base_meeting_id}
+        )
+    
+    # Additional Agent-related methods
+    async def update_agent(
+        self,
+        agent_id: str,
+        name: Optional[str] = None,
+        role: Optional[str] = None,
+        description: Optional[str] = None,
+        expertise: Optional[str] = None,
+        model: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Update an existing agent.
+        
+        Args:
+            agent_id: ID of the agent to update
+            name: New name for the agent
+            role: New role for the agent
+            description: New description/goal for the agent
+            expertise: New expertise for the agent
+            model: New model for the agent
+            
+        Returns:
+            Updated agent data or error information
+        """
+        data = {}
+        
+        if name:
+            data["name"] = name
+        if role:
+            data["role"] = role
+        if description:
+            data["description"] = description
+        if expertise:
+            data["expertise"] = expertise
+        if model:
+            data["model"] = model
+            
+        return await self._make_request("PUT", f"/discord/agents/{agent_id}", data)
+    
+    async def delete_agent(self, agent_id: str) -> Dict[str, Any]:
+        """Delete an agent.
+        
+        Args:
+            agent_id: ID of the agent to delete
+            
+        Returns:
+            Result of deletion operation or error information
+        """
+        return await self._make_request("DELETE", f"/discord/agents/{agent_id}")
+    
+    async def get_agents_by_names(self, session_id: str, agent_names: List[str]) -> Dict[str, Any]:
+        """Get agents by their names within a session.
+        
+        Args:
+            session_id: ID of the session
+            agent_names: List of agent names to find
+            
+        Returns:
+            List of matching agents or error information
+        """
+        names_param = ",".join(agent_names)
+        return await self._make_request(
+            "GET", 
+            f"/discord/sessions/{session_id}/agents", 
+            params={"names": names_param}
+        )
+    
+    # Transcript-related methods
+    async def get_meeting_transcripts(self, meeting_id: str, limit: Optional[int] = None) -> Dict[str, Any]:
+        """Get transcripts for a meeting.
+        
+        Args:
+            meeting_id: ID of the meeting
+            limit: Optional limit on the number of transcripts to return
+            
+        Returns:
+            List of transcripts or error information
+        """
+        params = {"meetingId": meeting_id}
+        if limit:
+            params["limit"] = limit
+            
+        return await self._make_request("GET", "/discord/transcripts", params=params)
 
 # Create a singleton instance
 db_client = DatabaseClient() 

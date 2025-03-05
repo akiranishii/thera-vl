@@ -2040,3 +2040,223 @@ discord.ext.commands.errors.ExtensionFailed: Extension 'commands.lab_commands' r
 2025-03-03 17:55:06,183 - run - WARNING - Consider adding at least one of: OPENAI_API_KEY, ANTHROPIC_API_KEY, MISTRAL_API_KEY
 2025-03-03 17:55:06,383 - run - INFO - All required packages are installed.
 2025-03-03 17:55:06,384 - run - INFO - Environment setup looks good!
+2025-03-05 13:08:21,299 - config - INFO - Loading environment variables
+2025-03-05 13:08:21,299 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:08:21,301 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-05 13:08:21,303 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-05 13:08:21,304 - config - INFO - Set log level to INFO
+2025-03-05 13:08:21,304 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-05 13:08:21,304 - run - ERROR - API_BASE_URL is not set in your .env file.
+2025-03-05 13:09:53,553 - config - INFO - Loading environment variables
+2025-03-05 13:09:53,554 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:09:53,554 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-05 13:09:53,556 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-05 13:09:53,556 - config - INFO - Set log level to INFO
+2025-03-05 13:09:53,556 - config - WARNING - No LLM provider API keys found. Some functionality will be limited.
+2025-03-05 13:09:53,556 - config - WARNING - Please set at least one of OPENAI_API_KEY, ANTHROPIC_API_KEY, or MISTRAL_API_KEY in your .env file
+2025-03-05 13:09:53,556 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-05 13:09:53,557 - run - INFO - Checking API connection to: http://localhost:3000/api
+2025-03-05 13:09:53,557 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-05 13:09:53,557 - db_client - INFO - Performing health check to: http://localhost:3000/api/health
+2025-03-05 13:09:53,732 - run - INFO - ✅ API connection successful!
+2025-03-05 13:10:02,670 - config - INFO - Loading environment variables
+2025-03-05 13:10:02,670 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:10:02,671 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-05 13:10:02,672 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-05 13:10:02,672 - config - INFO - Set log level to INFO
+2025-03-05 13:10:02,672 - config - WARNING - No LLM provider API keys found. Some functionality will be limited.
+2025-03-05 13:10:02,672 - config - WARNING - Please set at least one of OPENAI_API_KEY, ANTHROPIC_API_KEY, or MISTRAL_API_KEY in your .env file
+2025-03-05 13:10:02,673 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-05 13:10:02,673 - __main__ - INFO - Starting extension loading process
+2025-03-05 13:10:02,673 - __main__ - INFO - Beginning extension loading sequence
+2025-03-05 13:10:02,673 - __main__ - INFO - Attempting to load extension: commands.lab_session_commands
+2025-03-05 13:10:02,674 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-05 13:10:02,675 - commands.lab_session_commands - INFO - Created new lab command group
+2025-03-05 13:10:02,675 - commands.lab_session_commands - INFO - Registered lab session commands
+2025-03-05 13:10:02,675 - __main__ - INFO - Successfully loaded extension: commands.lab_session_commands
+2025-03-05 13:10:02,675 - __main__ - INFO - Attempting to load extension: commands.lab_agent_commands
+2025-03-05 13:10:02,678 - commands.lab_agent_commands - INFO - Using existing lab command group
+2025-03-05 13:10:02,679 - commands.lab_agent_commands - INFO - Registered lab agent commands
+2025-03-05 13:10:02,679 - __main__ - INFO - Successfully loaded extension: commands.lab_agent_commands
+2025-03-05 13:10:02,679 - __main__ - INFO - Attempting to load extension: commands.lab_meeting_commands
+2025-03-05 13:10:03,209 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:10:03,209 - llm_client - INFO - OpenAI API Key available: False
+2025-03-05 13:10:03,209 - llm_client - INFO - Anthropic API Key available: False
+2025-03-05 13:10:03,209 - llm_client - INFO - Mistral API Key available: False
+2025-03-05 13:10:03,250 - llm_client - INFO - Initialized LLM clients
+2025-03-05 13:10:03,253 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 13:10:03,253 - commands.lab_meeting_commands - INFO - Using existing lab command group
+2025-03-05 13:10:03,253 - commands.lab_meeting_commands - INFO - Registered lab meeting commands
+2025-03-05 13:10:03,253 - __main__ - INFO - Successfully loaded extension: commands.lab_meeting_commands
+2025-03-05 13:10:03,253 - __main__ - INFO - Attempting to load extension: commands.lab_transcript_commands
+2025-03-05 13:10:03,256 - commands.lab_transcript_commands - INFO - Using existing lab command group
+2025-03-05 13:10:03,256 - commands.lab_transcript_commands - INFO - Registered lab transcript commands
+2025-03-05 13:10:03,257 - __main__ - INFO - Successfully loaded extension: commands.lab_transcript_commands
+2025-03-05 13:10:03,257 - __main__ - INFO - Attempting to load extension: commands.session_commands
+2025-03-05 13:10:03,259 - commands.session_commands - INFO - SessionCommands cog initialized
+2025-03-05 13:10:03,259 - __main__ - INFO - Successfully loaded extension: commands.session_commands
+2025-03-05 13:10:03,259 - __main__ - INFO - Attempting to load extension: commands.quickstart_command
+2025-03-05 13:10:03,261 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 13:10:03,261 - commands.quickstart_command - INFO - Initialized quickstart command
+2025-03-05 13:10:03,261 - __main__ - INFO - Successfully loaded extension: commands.quickstart_command
+2025-03-05 13:10:03,261 - __main__ - INFO - Attempting to load extension: commands.help_command
+2025-03-05 13:10:03,263 - commands.help_command - INFO - Initialized help command
+2025-03-05 13:10:03,264 - __main__ - INFO - Successfully loaded extension: commands.help_command
+2025-03-05 13:10:03,264 - __main__ - INFO - Completed extension loading. Loaded 7 of 7 extensions
+2025-03-05 13:10:03,264 - __main__ - INFO - Extension loading completed successfully
+2025-03-05 13:10:03,264 - __main__ - INFO - Waiting for commands to be fully registered...
+2025-03-05 13:10:04,265 - __main__ - INFO - Starting command sync process
+2025-03-05 13:10:04,265 - __main__ - INFO - Starting bot...
+2025-03-05 13:10:04,266 - discord.client - INFO - logging in using static token
+2025-03-05 13:10:06,247 - __main__ - ERROR - Error starting bot: Improper token has been passed.
+2025-03-05 13:10:06,251 - __main__ - ERROR - Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/http.py", line 828, in static_login
+    data = await self.request(Route('GET', '/users/@me'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/http.py", line 762, in request
+    raise HTTPException(response, data)
+discord.errors.HTTPException: 401 Unauthorized (error code: 0): 401: Unauthorized
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/main.py", line 216, in main
+    await bot.start(DISCORD_TOKEN)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/client.py", line 823, in start
+    await self.login(token)
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/client.py", line 652, in login
+    data = await self.http.static_login(token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/discord/http.py", line 832, in static_login
+    raise LoginFailure('Improper token has been passed.') from exc
+discord.errors.LoginFailure: Improper token has been passed.
+
+2025-03-05 13:14:25,877 - config - INFO - Loading environment variables
+2025-03-05 13:14:25,877 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:14:25,878 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-05 13:14:25,879 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-05 13:14:25,879 - config - INFO - Set log level to INFO
+2025-03-05 13:14:25,879 - config - WARNING - No LLM provider API keys found. Some functionality will be limited.
+2025-03-05 13:14:25,879 - config - WARNING - Please set at least one of OPENAI_API_KEY, ANTHROPIC_API_KEY, or MISTRAL_API_KEY in your .env file
+2025-03-05 13:14:25,880 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-05 13:14:25,880 - __main__ - INFO - Starting extension loading process
+2025-03-05 13:14:25,880 - __main__ - INFO - Beginning extension loading sequence
+2025-03-05 13:14:25,880 - __main__ - INFO - Attempting to load extension: commands.lab_session_commands
+2025-03-05 13:14:25,884 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-05 13:14:25,885 - commands.lab_session_commands - INFO - Created new lab command group
+2025-03-05 13:14:25,885 - commands.lab_session_commands - INFO - Registered lab session commands
+2025-03-05 13:14:25,885 - __main__ - INFO - Successfully loaded extension: commands.lab_session_commands
+2025-03-05 13:14:25,885 - __main__ - INFO - Attempting to load extension: commands.lab_agent_commands
+2025-03-05 13:14:25,885 - commands.lab_agent_commands - INFO - Using existing lab command group
+2025-03-05 13:14:25,886 - commands.lab_agent_commands - INFO - Registered lab agent commands
+2025-03-05 13:14:25,886 - __main__ - INFO - Successfully loaded extension: commands.lab_agent_commands
+2025-03-05 13:14:25,886 - __main__ - INFO - Attempting to load extension: commands.lab_meeting_commands
+2025-03-05 13:14:26,283 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:14:26,283 - llm_client - INFO - OpenAI API Key available: False
+2025-03-05 13:14:26,283 - llm_client - INFO - Anthropic API Key available: False
+2025-03-05 13:14:26,283 - llm_client - INFO - Mistral API Key available: False
+2025-03-05 13:14:26,324 - llm_client - INFO - Initialized LLM clients
+2025-03-05 13:14:26,324 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 13:14:26,325 - commands.lab_meeting_commands - INFO - Using existing lab command group
+2025-03-05 13:14:26,325 - commands.lab_meeting_commands - INFO - Registered lab meeting commands
+2025-03-05 13:14:26,325 - __main__ - INFO - Successfully loaded extension: commands.lab_meeting_commands
+2025-03-05 13:14:26,325 - __main__ - INFO - Attempting to load extension: commands.lab_transcript_commands
+2025-03-05 13:14:26,325 - commands.lab_transcript_commands - INFO - Using existing lab command group
+2025-03-05 13:14:26,325 - commands.lab_transcript_commands - INFO - Registered lab transcript commands
+2025-03-05 13:14:26,325 - __main__ - INFO - Successfully loaded extension: commands.lab_transcript_commands
+2025-03-05 13:14:26,325 - __main__ - INFO - Attempting to load extension: commands.session_commands
+2025-03-05 13:14:26,326 - commands.session_commands - INFO - SessionCommands cog initialized
+2025-03-05 13:14:26,326 - __main__ - INFO - Successfully loaded extension: commands.session_commands
+2025-03-05 13:14:26,326 - __main__ - INFO - Attempting to load extension: commands.quickstart_command
+2025-03-05 13:14:26,326 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 13:14:26,326 - commands.quickstart_command - INFO - Initialized quickstart command
+2025-03-05 13:14:26,326 - __main__ - INFO - Successfully loaded extension: commands.quickstart_command
+2025-03-05 13:14:26,326 - __main__ - INFO - Attempting to load extension: commands.help_command
+2025-03-05 13:14:26,327 - commands.help_command - INFO - Initialized help command
+2025-03-05 13:14:26,327 - __main__ - INFO - Successfully loaded extension: commands.help_command
+2025-03-05 13:14:26,327 - __main__ - INFO - Completed extension loading. Loaded 7 of 7 extensions
+2025-03-05 13:14:26,327 - __main__ - INFO - Extension loading completed successfully
+2025-03-05 13:14:26,327 - __main__ - INFO - Waiting for commands to be fully registered...
+2025-03-05 13:14:27,328 - __main__ - INFO - Starting command sync process
+2025-03-05 13:14:27,328 - __main__ - INFO - Starting bot...
+2025-03-05 13:14:27,328 - discord.client - INFO - logging in using static token
+2025-03-05 13:14:31,191 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 3e6c5ec7e238fe09010e820f54eadf3c).
+2025-03-05 13:14:33,200 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-05 13:14:33,200 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-05 13:14:33,200 - __main__ - INFO - Connected to 1 guilds
+2025-03-05 13:14:33,200 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:14:33,200 - llm_client - INFO - OpenAI API Key available: False
+2025-03-05 13:14:33,200 - llm_client - INFO - Anthropic API Key available: False
+2025-03-05 13:14:33,200 - llm_client - INFO - Mistral API Key available: False
+2025-03-05 13:14:33,214 - llm_client - INFO - Initialized LLM clients
+2025-03-05 13:14:33,214 - __main__ - WARNING - No LLM providers available. Lab meeting features will be limited.
+2025-03-05 13:14:33,214 - __main__ - WARNING - Please check your API keys in the .env file.
+2025-03-05 13:14:33,214 - __main__ - INFO - Using guild ID: your_discord_server_id_here
+2025-03-05 13:14:33,214 - __main__ - INFO - Syncing commands with Discord...
+2025-03-05 13:14:33,214 - __main__ - ERROR - Error syncing commands: id parameter must be convertible to int not str
+2025-03-05 13:14:33,215 - __main__ - INFO - Bot is ready!
+2025-03-05 13:33:46,614 - config - INFO - Loading environment variables
+2025-03-05 13:33:46,614 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:33:46,615 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-05 13:33:46,616 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-05 13:33:46,616 - config - INFO - Set log level to INFO
+2025-03-05 13:33:46,617 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-05 13:33:46,617 - __main__ - INFO - Starting extension loading process
+2025-03-05 13:33:46,617 - __main__ - INFO - Beginning extension loading sequence
+2025-03-05 13:33:46,617 - __main__ - INFO - Attempting to load extension: commands.lab_session_commands
+2025-03-05 13:33:46,618 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-05 13:33:46,618 - commands.lab_session_commands - INFO - Created new lab command group
+2025-03-05 13:33:46,619 - commands.lab_session_commands - INFO - Registered lab session commands
+2025-03-05 13:33:46,619 - __main__ - INFO - Successfully loaded extension: commands.lab_session_commands
+2025-03-05 13:33:46,619 - __main__ - INFO - Attempting to load extension: commands.lab_agent_commands
+2025-03-05 13:33:46,619 - commands.lab_agent_commands - INFO - Using existing lab command group
+2025-03-05 13:33:46,620 - commands.lab_agent_commands - INFO - Registered lab agent commands
+2025-03-05 13:33:46,620 - __main__ - INFO - Successfully loaded extension: commands.lab_agent_commands
+2025-03-05 13:33:46,620 - __main__ - INFO - Attempting to load extension: commands.lab_meeting_commands
+2025-03-05 13:33:47,004 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:33:47,004 - llm_client - INFO - OpenAI API Key available: True
+2025-03-05 13:33:47,004 - llm_client - INFO - Anthropic API Key available: True
+2025-03-05 13:33:47,004 - llm_client - INFO - Mistral API Key available: True
+2025-03-05 13:33:47,041 - llm_client - INFO - Initialized LLM clients
+2025-03-05 13:33:47,041 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 13:33:47,041 - commands.lab_meeting_commands - INFO - Using existing lab command group
+2025-03-05 13:33:47,042 - commands.lab_meeting_commands - INFO - Registered lab meeting commands
+2025-03-05 13:33:47,042 - __main__ - INFO - Successfully loaded extension: commands.lab_meeting_commands
+2025-03-05 13:33:47,042 - __main__ - INFO - Attempting to load extension: commands.lab_transcript_commands
+2025-03-05 13:33:47,042 - commands.lab_transcript_commands - INFO - Using existing lab command group
+2025-03-05 13:33:47,042 - commands.lab_transcript_commands - INFO - Registered lab transcript commands
+2025-03-05 13:33:47,043 - __main__ - INFO - Successfully loaded extension: commands.lab_transcript_commands
+2025-03-05 13:33:47,043 - __main__ - INFO - Attempting to load extension: commands.session_commands
+2025-03-05 13:33:47,043 - commands.session_commands - INFO - SessionCommands cog initialized
+2025-03-05 13:33:47,043 - __main__ - INFO - Successfully loaded extension: commands.session_commands
+2025-03-05 13:33:47,043 - __main__ - INFO - Attempting to load extension: commands.quickstart_command
+2025-03-05 13:33:47,044 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 13:33:47,044 - commands.quickstart_command - INFO - Initialized quickstart command
+2025-03-05 13:33:47,044 - __main__ - INFO - Successfully loaded extension: commands.quickstart_command
+2025-03-05 13:33:47,044 - __main__ - INFO - Attempting to load extension: commands.help_command
+2025-03-05 13:33:47,044 - commands.help_command - INFO - Initialized help command
+2025-03-05 13:33:47,044 - __main__ - INFO - Successfully loaded extension: commands.help_command
+2025-03-05 13:33:47,044 - __main__ - INFO - Completed extension loading. Loaded 7 of 7 extensions
+2025-03-05 13:33:47,044 - __main__ - INFO - Extension loading completed successfully
+2025-03-05 13:33:47,044 - __main__ - INFO - Waiting for commands to be fully registered...
+2025-03-05 13:33:48,045 - __main__ - INFO - Starting command sync process
+2025-03-05 13:33:48,045 - __main__ - INFO - Starting bot...
+2025-03-05 13:33:48,045 - discord.client - INFO - logging in using static token
+2025-03-05 13:33:49,683 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 2ee0af93428b1ccc6a8e20f6db4af495).
+2025-03-05 13:33:51,694 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-05 13:33:51,695 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-05 13:33:51,695 - __main__ - INFO - Connected to 1 guilds
+2025-03-05 13:33:51,695 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:33:51,695 - llm_client - INFO - OpenAI API Key available: True
+2025-03-05 13:33:51,695 - llm_client - INFO - Anthropic API Key available: True
+2025-03-05 13:33:51,695 - llm_client - INFO - Mistral API Key available: True
+2025-03-05 13:33:51,738 - llm_client - INFO - Initialized LLM clients
+2025-03-05 13:33:51,738 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-05 13:33:51,738 - __main__ - INFO - Default models per provider:
+2025-03-05 13:33:51,738 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-05 13:33:51,738 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-05 13:33:51,738 - __main__ - INFO -   - mistral: mistral-large
+2025-03-05 13:33:51,738 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-05 13:33:51,738 - __main__ - INFO - Syncing commands with Discord...
+2025-03-05 13:33:52,163 - __main__ - INFO - Slash commands synced globally
+2025-03-05 13:33:52,163 - __main__ - INFO - Bot is ready!

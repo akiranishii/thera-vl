@@ -82,6 +82,9 @@ You can also use these commands with the helper script:
 # Check environment setup without running the bot
 ./run.py --check-env
 
+# Check if the API connection is working properly
+./run.py --check-api
+
 # Run mock tests
 ./run.py --test
 
@@ -154,6 +157,18 @@ Common issues:
 1. **API Key Issues**: Ensure your LLM provider API keys are correctly set in the `.env` file
 2. **Discord Connection Issues**: Check your bot token and ensure the bot has the necessary permissions
 3. **Import Errors**: Ensure all dependencies are installed: `pip install -r requirements.txt`
+4. **API Connection Issues**: 
+   - Run `./run.py --check-api` to verify the API connection
+   - Make sure the `API_BASE_URL` in your `.env` file is correct
+   - Check for duplicated `/api` in the URL (e.g., `http://localhost:3000/api/api/`). This can cause 404 errors
+   - Ensure the backend API is running and accessible
+
+If you see errors like:
+```
+The API service is currently unavailable. Please try again later.
+GET /api/api/discord/sessions/active?userId=... 404
+```
+This typically indicates a duplicated `/api` in the URL. Edit your `.env` file to fix the `API_BASE_URL` value.
 
 ## Contributing
 
