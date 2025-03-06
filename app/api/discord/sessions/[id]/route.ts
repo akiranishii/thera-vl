@@ -33,10 +33,17 @@ export async function GET(
       )
     }
 
+    // Transform the session to include a status field for Python client compatibility
+    const transformedSession = {
+      ...session,
+      status: session.isActive ? "active" : "ended",
+      is_public: session.isPublic // Add snake_case version for Python compatibility
+    };
+
     return NextResponse.json({
       isSuccess: true,
       message: "Session retrieved successfully",
-      data: session
+      data: transformedSession
     })
   } catch (error) {
     console.error("Error getting session:", error)

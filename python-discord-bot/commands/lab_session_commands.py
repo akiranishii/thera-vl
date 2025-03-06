@@ -145,13 +145,13 @@ class LabSessionCommands(commands.Cog):
     )
     @app_commands.describe(
         confirm="Confirm that you want to end the session",
-        public="Make the session public after ending it"
+        is_public="Make the session public after ending it"
     )
     async def end_session(
         self, 
         interaction: discord.Interaction,
         confirm: Optional[bool] = False,
-        public: Optional[bool] = False
+        is_public: Optional[bool] = False
     ):
         """End the user's active lab session."""
         # Acknowledge the command to avoid timeout
@@ -181,10 +181,10 @@ class LabSessionCommands(commands.Cog):
             session_id = session_data.get("id")
             
             # Update session visibility if requested
-            if public:
+            if is_public:
                 await db_client.update_session(
                     session_id=session_id,
-                    updates={"is_public": True}
+                    updates={"isPublic": True}  # Use camelCase to match Next.js API expectations
                 )
             
             # End the session
@@ -210,7 +210,7 @@ class LabSessionCommands(commands.Cog):
             )
             embed.add_field(
                 name="Visibility",
-                value="Public" if public else "Private",
+                value="Public" if is_public else "Private",
                 inline=True
             )
             embed.add_field(
@@ -386,6 +386,8 @@ class LabSessionCommands(commands.Cog):
                 )
                 return
             
+            reopened_data = reopen_result.get("data", {})
+            
             # Create response embed
             embed = discord.Embed(
                 title="Session Reopened",
@@ -414,11 +416,20 @@ class LabSessionCommands(commands.Cog):
             )
             
         except Exception as e:
-            logger.error(f"Error in reopen_session command: {e}")
-            await interaction.followup.send(
-                "An error occurred while reopening the session. Please try again later.",
-                ephemeral=True
-            )
+            logger.error(f"Error reopening session: {str(e)}", exc_info=True)
+            try:
+                if interaction.response.is_done():
+                    await interaction.followup.send(
+                        "An error occurred while reopening the session. Please try again later.",
+                        ephemeral=True
+                    )
+                else:
+                    await interaction.response.send_message(
+                        "An error occurred while reopening the session. Please try again later.",
+                        ephemeral=True
+                    )
+            except Exception as follow_up_error:
+                logger.error(f"Failed to send error message: {follow_up_error}")
 
     async def start_session_callback(self, interaction: discord.Interaction, title: str, description: Optional[str] = None, is_public: Optional[bool] = False):
         """Callback for the start_session command."""
@@ -545,10 +556,76 @@ class LabSessionCommands(commands.Cog):
             # Immediately acknowledge the interaction to prevent timeout
             await interaction.response.defer(ephemeral=True)
             
-            # Implement the list sessions functionality directly here
-            # This would require a new endpoint in the API
+            user_id = str(interaction.user.id)
+            
+            # Get user's sessions
+            sessions_result = await db_client.get_user_sessions(user_id=user_id)
+            
+            if not sessions_result.get("isSuccess", False):
+                await interaction.followup.send(
+                    f"Failed to fetch sessions: {sessions_result.get('message', 'Unknown error')}",
+                    ephemeral=True
+                )
+                return
+            
+            sessions = sessions_result.get("data", [])
+            
+            if not sessions:
+                await interaction.followup.send(
+                    "You don't have any lab sessions yet. Use `/lab start` to create one.",
+                    ephemeral=True
+                )
+                return
+            
+            # Filter sessions based on include_closed parameter
+            if not include_closed:
+                # Only include active and recently closed sessions
+                sessions = [s for s in sessions if s.get("status") == "active" or s.get("status") == "ended"]
+            
+            # Apply limit
+            sessions = sessions[:limit]
+            
+            # Create response embed
+            embed = discord.Embed(
+                title="Your Lab Sessions",
+                description=f"Showing up to {limit} sessions" + (" (including closed)" if include_closed else ""),
+                color=discord.Color.blue()
+            )
+            
+            # Add active session if exists
+            active_session = next((s for s in sessions if s.get("status") == "active"), None)
+            if active_session:
+                embed.add_field(
+                    name="🟢 Active Session",
+                    value=(
+                        f"**{active_session.get('title')}**\n"
+                        f"ID: {active_session.get('id')}\n"
+                        f"Status: Active\n"
+                        f"Privacy: {'Public' if active_session.get('is_public') else 'Private'}"
+                    ),
+                    inline=False
+                )
+            
+            # Add other sessions
+            other_sessions = [s for s in sessions if s.get("status") != "active"]
+            if other_sessions:
+                other_list = []
+                for session in other_sessions:
+                    status_emoji = "🔴" if session.get("status") == "ended" else "⚪"
+                    other_list.append(
+                        f"{status_emoji} **{session.get('title')}**\n"
+                        f"ID: {session.get('id')}\n"
+                        f"Status: {session.get('status', 'Unknown').title()}\n"
+                        f"Privacy: {'Public' if session.get('is_public') else 'Private'}"
+                    )
+                embed.add_field(
+                    name="Other Sessions",
+                    value="\n\n".join(other_list) if other_list else "No other sessions",
+                    inline=False
+                )
+            
             await interaction.followup.send(
-                "The list sessions functionality is not yet implemented.",
+                embed=embed,
                 ephemeral=True
             )
         except Exception as e:
@@ -556,12 +633,7 @@ class LabSessionCommands(commands.Cog):
             try:
                 if interaction.response.is_done():
                     await interaction.followup.send(
-                        "An error occurred. Please try again later.",
-                        ephemeral=True
-                    )
-                else:
-                    await interaction.response.send_message(
-                        "An error occurred. Please try again later.",
+                        "An error occurred while listing sessions.",
                         ephemeral=True
                     )
             except Exception as follow_up_error:
@@ -573,10 +645,81 @@ class LabSessionCommands(commands.Cog):
             # Immediately acknowledge the interaction to prevent timeout
             await interaction.response.defer(ephemeral=True)
             
-            # Implement the reopen session functionality directly here
-            # This would require a new endpoint in the API
+            user_id = str(interaction.user.id)
+            
+            # Check if user has an active session
+            active_session = await db_client.get_active_session(user_id=user_id)
+            if active_session.get("isSuccess") and active_session.get("data"):
+                # End the current session
+                await db_client.end_session(
+                    session_id=active_session["data"]["id"]
+                )
+                logger.info(f"Ended previous active session for user {user_id}")
+            
+            # Get the session to reopen
+            session_result = await db_client.get_session(session_id=session_id)
+            
+            if not session_result.get("isSuccess") or not session_result.get("data"):
+                await interaction.followup.send(
+                    "Session not found. Please check the session ID and try again.",
+                    ephemeral=True
+                )
+                return
+            
+            session_data = session_result.get("data", {})
+            
+            # Verify ownership
+            if session_data.get("user_id") != user_id:
+                await interaction.followup.send(
+                    "You can only reopen your own sessions.",
+                    ephemeral=True
+                )
+                return
+            
+            # Verify session is ended
+            if session_data.get("status") == "active":
+                await interaction.followup.send(
+                    "This session is already active.",
+                    ephemeral=True
+                )
+                return
+            
+            # Reopen the session
+            reopen_result = await db_client.reopen_session(session_id=session_id)
+            
+            if not reopen_result.get("isSuccess"):
+                await interaction.followup.send(
+                    f"Failed to reopen session: {reopen_result.get('message', 'Unknown error')}",
+                    ephemeral=True
+                )
+                return
+            
+            reopened_data = reopen_result.get("data", {})
+            
+            # Create response embed
+            embed = discord.Embed(
+                title="Session Reopened",
+                description=f"Session '{session_data.get('title')}' has been reopened.",
+                color=discord.Color.green()
+            )
+            embed.add_field(
+                name="Session ID",
+                value=session_id,
+                inline=True
+            )
+            embed.add_field(
+                name="Privacy",
+                value="Public" if session_data.get("is_public") else "Private",
+                inline=True
+            )
+            embed.add_field(
+                name="Next Steps",
+                value="Use `/lab agent create` to add agents or `/lab team_meeting` to begin a discussion.",
+                inline=False
+            )
+            
             await interaction.followup.send(
-                "The reopen session functionality is not yet implemented.",
+                embed=embed,
                 ephemeral=True
             )
         except Exception as e:
@@ -584,12 +727,12 @@ class LabSessionCommands(commands.Cog):
             try:
                 if interaction.response.is_done():
                     await interaction.followup.send(
-                        "An error occurred. Please try again later.",
+                        "An error occurred while reopening the session. Please try again later.",
                         ephemeral=True
                     )
                 else:
                     await interaction.response.send_message(
-                        "An error occurred. Please try again later.",
+                        "An error occurred while reopening the session. Please try again later.",
                         ephemeral=True
                     )
             except Exception as follow_up_error:

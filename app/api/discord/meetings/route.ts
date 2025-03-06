@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { sessionId, title, agenda, taskDescription, maxRounds } = body
+    const { sessionId, title, agenda, taskDescription, maxRounds, parallelIndex } = body
 
     if (!sessionId || !title) {
       return NextResponse.json(
@@ -58,7 +58,9 @@ export async function POST(request: NextRequest) {
         title,
         agenda,
         taskDescription,
-        maxRounds
+        maxRounds,
+        parallelIndex,
+        isParallel: parallelIndex !== undefined && parallelIndex > 0 // Set isParallel based on parallelIndex
       })
       .returning()
 

@@ -30,11 +30,11 @@ bot = commands.Bot(
 
 # Extension/cog settings
 INITIAL_EXTENSIONS = [
-    "commands.lab_session_commands",
+    "commands.lab_session_commands",  # Use this for all session-related commands
     "commands.lab_agent_commands",
     "commands.lab_meeting_commands",
     "commands.lab_transcript_commands",
-    "commands.session_commands",
+    # "commands.session_commands",  # DEPRECATED: Do not use, replaced by lab_session_commands.py
     "commands.quickstart_command",
     "commands.help_command"
 ]

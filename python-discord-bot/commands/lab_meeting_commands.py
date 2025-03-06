@@ -105,6 +105,7 @@ class LabMeetingCommands(commands.Cog):
                 # Create PI
                 await db_client.create_agent(
                     session_id=session_id,
+                    user_id=user_id,
                     name=ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE,
                     role="Lead",
                     goal="Oversee experiment design and coordinate discussion",
@@ -125,6 +126,7 @@ class LabMeetingCommands(commands.Cog):
                     expertise = expertise_areas[i % len(expertise_areas)]
                     await db_client.create_agent(
                         session_id=session_id,
+                        user_id=user_id,
                         name=f"Scientist {i+1}",
                         role=ModelConfig.SCIENTIST_ROLE,
                         expertise=expertise,
@@ -136,6 +138,7 @@ class LabMeetingCommands(commands.Cog):
                 if auto_include_critic:
                     await db_client.create_agent(
                         session_id=session_id,
+                        user_id=user_id,
                         name=ModelConfig.CRITIC_ROLE,
                         role="Critical Reviewer",
                         goal="Challenge assumptions and ensure scientific rigor",

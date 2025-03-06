@@ -63,7 +63,7 @@ class LabTranscriptCommands(commands.Cog):
             
             if not session_result.get("isSuccess") or not session_result.get("data"):
                 await interaction.followup.send(
-                    "You don't have an active session. Use `/lab session_start` to create one.",
+                    "You don't have an active session. Use `/lab start` to create one.",
                     ephemeral=True
                 )
                 return

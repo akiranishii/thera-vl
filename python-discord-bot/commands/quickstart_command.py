@@ -95,6 +95,7 @@ class QuickstartCommand(commands.Cog):
             # Create Principal Investigator
             await db_client.create_agent(
                 session_id=session_id,
+                user_id=user_id,
                 name=ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE,
                 role="Lead",
                 goal="Oversee experiment design and coordinate discussion",
@@ -115,6 +116,7 @@ class QuickstartCommand(commands.Cog):
                 expertise = expertise_areas[i % len(expertise_areas)]
                 await db_client.create_agent(
                     session_id=session_id,
+                    user_id=user_id,
                     name=f"Scientist {i+1}",
                     role=ModelConfig.SCIENTIST_ROLE,
                     expertise=expertise,
@@ -126,6 +128,7 @@ class QuickstartCommand(commands.Cog):
             if include_critic:
                 await db_client.create_agent(
                     session_id=session_id,
+                    user_id=user_id,
                     name="Critic",
                     role=ModelConfig.CRITIC_ROLE,
                     goal="Challenge assumptions and identify potential issues",

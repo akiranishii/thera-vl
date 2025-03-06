@@ -18,10 +18,16 @@ export async function PUT(
       )
     }
 
-    // End the meeting
+    // Get current timestamp
+    const now = new Date()
+
+    // End the meeting by setting status to 'completed' and adding a completedAt timestamp
     const [updatedMeeting] = await db
       .update(meetingsTable)
-      .set({ status: "completed" })
+      .set({ 
+        status: "completed",
+        completedAt: now 
+      })
       .where(eq(meetingsTable.id, id))
       .returning()
 

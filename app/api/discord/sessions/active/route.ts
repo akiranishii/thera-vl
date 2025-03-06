@@ -29,10 +29,17 @@ export async function GET(request: NextRequest) {
 
       console.log(`Active session result:`, activeSession)
 
+      // Transform the session to include a status field for Python client compatibility
+      const transformedSession = activeSession ? {
+        ...activeSession,
+        status: "active", // By definition, this session is active
+        is_public: activeSession.isPublic // Add snake_case version for Python compatibility
+      } : null;
+
       return NextResponse.json({
         isSuccess: true, 
         message: activeSession ? "Active session retrieved" : "No active session found",
-        data: activeSession || null
+        data: transformedSession
       })
     } catch (dbError) {
       console.error("Database error:", dbError)

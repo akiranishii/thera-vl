@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db/db"
 import { meetingsTable } from "@/db/schema"
-import { and, eq, isNull } from "drizzle-orm"
+import { and, eq, not, or } from "drizzle-orm"
 
 /**
  * API route for getting active meetings for a session
@@ -20,11 +20,14 @@ export async function GET(req: NextRequest) {
     }
 
     // Get active meetings for the session
-    // We determine a meeting is active if completedAt is null and status is not 'completed'
+    // We determine a meeting is active if status is 'pending' or 'in_progress'
     const meetings = await db.query.meetings.findMany({
       where: and(
         eq(meetingsTable.sessionId, sessionId),
-        isNull(meetingsTable.completedAt)
+        or(
+          eq(meetingsTable.status, "pending"),
+          eq(meetingsTable.status, "in_progress")
+        )
       ),
     })
 

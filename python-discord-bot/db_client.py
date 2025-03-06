@@ -156,6 +156,9 @@ class DatabaseClient:
     async def get_active_session(self, user_id: str) -> Dict[str, Any]:
         """Get the active session for a user.
         
+        Sessions use a boolean 'isActive' field to track their status.
+        A session is considered active if isActive = true.
+        
         Args:
             user_id: ID of the user
             
@@ -229,6 +232,7 @@ class DatabaseClient:
         session_id: str,
         name: str,
         role: str,
+        user_id: str,
         goal: Optional[str] = None,
         expertise: Optional[str] = None,
         model: Optional[str] = None
@@ -239,6 +243,7 @@ class DatabaseClient:
             session_id: ID of the session
             name: Name of the agent
             role: Role of the agent
+            user_id: Discord user ID of the creator
             goal: Optional goal or description of the agent
             expertise: Optional area of expertise
             model: Optional model to use for the agent
@@ -247,7 +252,7 @@ class DatabaseClient:
             Agent data or error information
         """
         data = {
-            "userId": session_id,  # Using sessionId as userId for now
+            "userId": user_id,
             "sessionId": session_id,
             "name": name,
             "role": role
@@ -426,6 +431,9 @@ class DatabaseClient:
     async def get_active_meetings(self, session_id: str) -> Dict[str, Any]:
         """Get active meetings for a session.
         
+        Meetings use a status enum field: 'pending', 'in_progress', 'completed', 'failed'.
+        A meeting is considered active if status = 'pending' or 'in_progress'.
+        
         Args:
             session_id: ID of the session
             
@@ -532,6 +540,38 @@ class DatabaseClient:
             params["limit"] = limit
             
         return await self._make_request("GET", "/discord/transcripts", params=params)
+
+    async def get_agent_by_name(self, session_id: str, agent_name: str) -> Dict[str, Any]:
+        """Get an agent by name within a session.
+        
+        Args:
+            session_id: ID of the session
+            agent_name: Name of the agent to find
+            
+        Returns:
+            Agent data or error information
+        """
+        # Use the existing get_agents_by_names method with a single name
+        result = await self.get_agents_by_names(session_id, [agent_name])
+        
+        if not result.get("isSuccess", False):
+            return result
+        
+        agents = result.get("data", [])
+        
+        if not agents:
+            return {
+                "isSuccess": False,
+                "message": f"Agent with name '{agent_name}' not found in session {session_id}",
+                "data": None
+            }
+        
+        # Return the first (and hopefully only) agent with this name
+        return {
+            "isSuccess": True,
+            "message": "Agent retrieved successfully",
+            "data": agents[0]
+        }
 
 # Create a singleton instance
 db_client = DatabaseClient() 

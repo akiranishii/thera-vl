@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/db/db"
 import { agentsTable } from "@/db/schema"
-import { eq } from "drizzle-orm"
+import { and, eq, inArray } from "drizzle-orm"
 
 export async function GET(
   request: NextRequest,
@@ -12,6 +12,7 @@ export async function GET(
     const { id } = await params
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get("userId")
+    const namesParam = searchParams.get("names")
 
     if (!id) {
       return NextResponse.json(
@@ -27,10 +28,25 @@ export async function GET(
       )
     }
 
-    // Get agents for the user
-    // In a real implementation, you would filter by session ID if that relationship exists
+    // Build the where conditions
+    let whereConditions = [eq(agentsTable.sessionId, id)];
+    
+    // Add userId condition if provided
+    if (userId) {
+      whereConditions.push(eq(agentsTable.userId, userId));
+    }
+    
+    // Add names condition if provided
+    if (namesParam) {
+      const names = namesParam.split(',');
+      if (names.length > 0) {
+        whereConditions.push(inArray(agentsTable.name, names));
+      }
+    }
+
+    // Get agents for the specific session with additional filters
     const agents = await db.query.agents.findMany({
-      where: eq(agentsTable.userId, userId)
+      where: and(...whereConditions)
     })
 
     return NextResponse.json({

@@ -14,6 +14,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Set default model if not provided
+    const defaultModel = "openai" // Default to openai if no model specified
+    
     // Create the agent
     const [newAgent] = await db
       .insert(agentsTable)
@@ -23,6 +26,7 @@ export async function POST(request: NextRequest) {
         role,
         expertise,
         description: goal,
+        model: model || defaultModel, // Use provided model or default
         prompt: `You are ${name}, a ${role}${expertise ? ` with expertise in ${expertise}` : ''}${goal ? `. Your goal is to ${goal}` : ''}`
       })
       .returning()

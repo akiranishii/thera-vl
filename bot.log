@@ -11426,3 +11426,1578 @@ discord.errors.LoginFailure: Improper token has been passed.
 2025-03-05 13:35:34,639 - orchestrator - INFO - Initialized meeting 7a4e3585-4958-45c9-8073-a0a2d142bf2f (parallel index 0) for session dfe746ac-1812-49a2-9875-e9118360116f
 2025-03-05 13:35:34,639 - orchestrator - INFO - Starting conversation for meeting 7a4e3585-4958-45c9-8073-a0a2d142bf2f (live_mode: True)
 2025-03-05 13:35:50,498 - commands.lab_session_commands - INFO - Ended previous active session for user 1050933498640343082
+2025-03-05 13:55:21,387 - config - INFO - Loading environment variables
+2025-03-05 13:55:21,387 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:55:21,388 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-05 13:55:21,389 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-05 13:55:21,389 - config - INFO - Set log level to INFO
+2025-03-05 13:55:21,389 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-05 13:55:21,390 - __main__ - INFO - Starting extension loading process
+2025-03-05 13:55:21,390 - __main__ - INFO - Beginning extension loading sequence
+2025-03-05 13:55:21,390 - __main__ - INFO - Attempting to load extension: commands.lab_session_commands
+2025-03-05 13:55:21,391 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-05 13:55:21,392 - commands.lab_session_commands - INFO - Created new lab command group
+2025-03-05 13:55:21,392 - commands.lab_session_commands - INFO - Registered lab session commands
+2025-03-05 13:55:21,392 - __main__ - INFO - Successfully loaded extension: commands.lab_session_commands
+2025-03-05 13:55:21,392 - __main__ - INFO - Attempting to load extension: commands.lab_agent_commands
+2025-03-05 13:55:21,393 - commands.lab_agent_commands - INFO - Using existing lab command group
+2025-03-05 13:55:21,393 - commands.lab_agent_commands - INFO - Registered lab agent commands
+2025-03-05 13:55:21,393 - __main__ - INFO - Successfully loaded extension: commands.lab_agent_commands
+2025-03-05 13:55:21,393 - __main__ - INFO - Attempting to load extension: commands.lab_meeting_commands
+2025-03-05 13:55:21,684 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:55:21,684 - llm_client - INFO - OpenAI API Key available: True
+2025-03-05 13:55:21,684 - llm_client - INFO - Anthropic API Key available: True
+2025-03-05 13:55:21,684 - llm_client - INFO - Mistral API Key available: True
+2025-03-05 13:55:21,711 - llm_client - INFO - Initialized LLM clients
+2025-03-05 13:55:21,712 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 13:55:21,712 - commands.lab_meeting_commands - INFO - Using existing lab command group
+2025-03-05 13:55:21,712 - commands.lab_meeting_commands - INFO - Registered lab meeting commands
+2025-03-05 13:55:21,712 - __main__ - INFO - Successfully loaded extension: commands.lab_meeting_commands
+2025-03-05 13:55:21,712 - __main__ - INFO - Attempting to load extension: commands.lab_transcript_commands
+2025-03-05 13:55:21,713 - commands.lab_transcript_commands - INFO - Using existing lab command group
+2025-03-05 13:55:21,713 - commands.lab_transcript_commands - INFO - Registered lab transcript commands
+2025-03-05 13:55:21,713 - __main__ - INFO - Successfully loaded extension: commands.lab_transcript_commands
+2025-03-05 13:55:21,713 - __main__ - INFO - Attempting to load extension: commands.quickstart_command
+2025-03-05 13:55:21,713 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 13:55:21,713 - commands.quickstart_command - INFO - Initialized quickstart command
+2025-03-05 13:55:21,713 - __main__ - INFO - Successfully loaded extension: commands.quickstart_command
+2025-03-05 13:55:21,713 - __main__ - INFO - Attempting to load extension: commands.help_command
+2025-03-05 13:55:21,714 - commands.help_command - INFO - Initialized help command
+2025-03-05 13:55:21,714 - __main__ - INFO - Successfully loaded extension: commands.help_command
+2025-03-05 13:55:21,714 - __main__ - INFO - Completed extension loading. Loaded 6 of 6 extensions
+2025-03-05 13:55:21,714 - __main__ - INFO - Extension loading completed successfully
+2025-03-05 13:55:21,714 - __main__ - INFO - Waiting for commands to be fully registered...
+2025-03-05 13:55:22,718 - __main__ - INFO - Starting command sync process
+2025-03-05 13:55:22,718 - __main__ - INFO - Starting bot...
+2025-03-05 13:55:22,719 - discord.client - INFO - logging in using static token
+2025-03-05 13:55:24,087 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 32e265ad4bd702ccc039ec8138af2993).
+2025-03-05 13:55:26,099 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-05 13:55:26,099 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-05 13:55:26,099 - __main__ - INFO - Connected to 1 guilds
+2025-03-05 13:55:26,100 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 13:55:26,100 - llm_client - INFO - OpenAI API Key available: True
+2025-03-05 13:55:26,100 - llm_client - INFO - Anthropic API Key available: True
+2025-03-05 13:55:26,100 - llm_client - INFO - Mistral API Key available: True
+2025-03-05 13:55:26,128 - llm_client - INFO - Initialized LLM clients
+2025-03-05 13:55:26,128 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-05 13:55:26,128 - __main__ - INFO - Default models per provider:
+2025-03-05 13:55:26,128 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-05 13:55:26,128 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-05 13:55:26,128 - __main__ - INFO -   - mistral: mistral-large
+2025-03-05 13:55:26,128 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-05 13:55:26,128 - __main__ - INFO - Syncing commands with Discord...
+2025-03-05 13:55:26,446 - __main__ - INFO - Slash commands synced globally
+2025-03-05 13:55:26,447 - __main__ - INFO - Bot is ready!
+2025-03-05 13:56:16,836 - commands.quickstart_command - INFO - Starting quickstart for user 1050933498640343082 on topic: What is diabetes ?
+2025-03-05 13:56:16,838 - db_client - INFO - Performing health check to: http://localhost:3000/api/health
+2025-03-05 13:56:17,288 - commands.quickstart_command - INFO - Creating new session for user 1050933498640343082
+2025-03-05 13:56:20,429 - orchestrator - INFO - Initializing meeting 60d0387e-38a6-4c4a-aaa7-c12161c9924e
+2025-03-05 13:56:20,429 - orchestrator - INFO - Initialized meeting 60d0387e-38a6-4c4a-aaa7-c12161c9924e (parallel index 0) for session 1528dabc-d7c0-4c74-805c-441accea1731
+2025-03-05 13:56:20,430 - orchestrator - INFO - Starting conversation for meeting 60d0387e-38a6-4c4a-aaa7-c12161c9924e (live_mode: True)
+2025-03-05 13:56:40,352 - commands.lab_session_commands - INFO - Ended previous active session for user 1050933498640343082
+2025-03-05 16:19:17,460 - config - INFO - Loading environment variables
+2025-03-05 16:19:17,460 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 16:19:17,461 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-05 16:19:17,462 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-05 16:19:17,463 - config - INFO - Set log level to INFO
+2025-03-05 16:19:17,463 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-05 16:19:17,463 - __main__ - INFO - Starting extension loading process
+2025-03-05 16:19:17,463 - __main__ - INFO - Beginning extension loading sequence
+2025-03-05 16:19:17,463 - __main__ - INFO - Attempting to load extension: commands.lab_session_commands
+2025-03-05 16:19:17,471 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-05 16:19:17,471 - commands.lab_session_commands - INFO - Created new lab command group
+2025-03-05 16:19:17,472 - commands.lab_session_commands - INFO - Registered lab session commands
+2025-03-05 16:19:17,472 - __main__ - INFO - Successfully loaded extension: commands.lab_session_commands
+2025-03-05 16:19:17,472 - __main__ - INFO - Attempting to load extension: commands.lab_agent_commands
+2025-03-05 16:19:17,474 - commands.lab_agent_commands - INFO - Using existing lab command group
+2025-03-05 16:19:17,475 - commands.lab_agent_commands - INFO - Registered lab agent commands
+2025-03-05 16:19:17,475 - __main__ - INFO - Successfully loaded extension: commands.lab_agent_commands
+2025-03-05 16:19:17,475 - __main__ - INFO - Attempting to load extension: commands.lab_meeting_commands
+2025-03-05 16:19:17,786 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 16:19:17,786 - llm_client - INFO - OpenAI API Key available: True
+2025-03-05 16:19:17,786 - llm_client - INFO - Anthropic API Key available: True
+2025-03-05 16:19:17,786 - llm_client - INFO - Mistral API Key available: True
+2025-03-05 16:19:17,813 - llm_client - INFO - Initialized LLM clients
+2025-03-05 16:19:17,814 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 16:19:17,814 - commands.lab_meeting_commands - INFO - Using existing lab command group
+2025-03-05 16:19:17,814 - commands.lab_meeting_commands - INFO - Registered lab meeting commands
+2025-03-05 16:19:17,814 - __main__ - INFO - Successfully loaded extension: commands.lab_meeting_commands
+2025-03-05 16:19:17,814 - __main__ - INFO - Attempting to load extension: commands.lab_transcript_commands
+2025-03-05 16:19:17,814 - commands.lab_transcript_commands - INFO - Using existing lab command group
+2025-03-05 16:19:17,814 - commands.lab_transcript_commands - INFO - Registered lab transcript commands
+2025-03-05 16:19:17,814 - __main__ - INFO - Successfully loaded extension: commands.lab_transcript_commands
+2025-03-05 16:19:17,814 - __main__ - INFO - Attempting to load extension: commands.quickstart_command
+2025-03-05 16:19:17,816 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-05 16:19:17,817 - commands.quickstart_command - INFO - Initialized quickstart command
+2025-03-05 16:19:17,817 - __main__ - INFO - Successfully loaded extension: commands.quickstart_command
+2025-03-05 16:19:17,817 - __main__ - INFO - Attempting to load extension: commands.help_command
+2025-03-05 16:19:17,817 - commands.help_command - INFO - Initialized help command
+2025-03-05 16:19:17,817 - __main__ - INFO - Successfully loaded extension: commands.help_command
+2025-03-05 16:19:17,817 - __main__ - INFO - Completed extension loading. Loaded 6 of 6 extensions
+2025-03-05 16:19:17,817 - __main__ - INFO - Extension loading completed successfully
+2025-03-05 16:19:17,817 - __main__ - INFO - Waiting for commands to be fully registered...
+2025-03-05 16:19:18,819 - __main__ - INFO - Starting command sync process
+2025-03-05 16:19:18,820 - __main__ - INFO - Starting bot...
+2025-03-05 16:19:18,821 - discord.client - INFO - logging in using static token
+2025-03-05 16:19:19,827 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 8a6bb45373f8d4dee518a6a164ddb8b5).
+2025-03-05 16:19:21,865 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-05 16:19:21,865 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-05 16:19:21,865 - __main__ - INFO - Connected to 1 guilds
+2025-03-05 16:19:21,865 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 16:19:21,865 - llm_client - INFO - OpenAI API Key available: True
+2025-03-05 16:19:21,865 - llm_client - INFO - Anthropic API Key available: True
+2025-03-05 16:19:21,865 - llm_client - INFO - Mistral API Key available: True
+2025-03-05 16:19:21,892 - llm_client - INFO - Initialized LLM clients
+2025-03-05 16:19:21,892 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-05 16:19:21,892 - __main__ - INFO - Default models per provider:
+2025-03-05 16:19:21,892 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-05 16:19:21,892 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-05 16:19:21,892 - __main__ - INFO -   - mistral: mistral-large
+2025-03-05 16:19:21,892 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-05 16:19:21,892 - __main__ - INFO - Syncing commands with Discord...
+2025-03-05 16:19:22,519 - __main__ - INFO - Slash commands synced globally
+2025-03-05 16:19:22,520 - __main__ - INFO - Bot is ready!
+2025-03-05 16:19:51,311 - commands.quickstart_command - INFO - Starting quickstart for user 1050933498640343082 on topic: What is the purpose of biomedical research?
+2025-03-05 16:19:51,312 - db_client - INFO - Performing health check to: http://localhost:3000/api/health
+2025-03-05 16:19:51,667 - commands.quickstart_command - INFO - Creating new session for user 1050933498640343082
+2025-03-05 16:19:52,106 - orchestrator - INFO - Initializing meeting fc2a88f7-795d-4400-adc8-fb6207105766
+2025-03-05 16:19:52,106 - orchestrator - INFO - Initialized meeting fc2a88f7-795d-4400-adc8-fb6207105766 (parallel index 0) for session 79f4b5c8-7944-44b8-bae6-e1ca88c6ca76
+2025-03-05 16:19:52,106 - orchestrator - INFO - Starting conversation for meeting fc2a88f7-795d-4400-adc8-fb6207105766 (live_mode: True)
+2025-03-05 17:27:57,163 - discord.client - ERROR - Attempting a reconnect in 1.05s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 17:27:58,244 - discord.client - ERROR - Attempting a reconnect in 0.84s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 17:27:59,094 - discord.client - ERROR - Attempting a reconnect in 3.05s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 17:43:48,931 - discord.client - ERROR - Attempting a reconnect in 8.42s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 17:43:57,554 - discord.client - ERROR - Attempting a reconnect in 7.19s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 18:19:00,570 - discord.client - ERROR - Attempting a reconnect in 45.74s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 20:12:54,636 - discord.client - ERROR - Attempting a reconnect in 64.55s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 20:26:41,141 - discord.client - ERROR - Attempting a reconnect in 126.33s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 20:28:47,500 - discord.client - ERROR - Attempting a reconnect in 275.98s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 20:33:53,667 - discord.client - ERROR - Attempting a reconnect in 990.89s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1362, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 995, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1026, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/resolver.py", line 36, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 701, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 375, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/http.py", line 554, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 1004, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client.py", line 703, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 548, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1056, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/connector.py", line 1368, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-b.discord.gg:443 ssl:default [nodename nor servname provided, or not known]
+2025-03-05 21:43:47,389 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-05 21:43:52,945 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: e6340b908cd4bd041eda46972e9d2ebc).
+2025-03-05 21:43:54,957 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-05 21:43:54,958 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-05 21:43:54,958 - __main__ - INFO - Connected to 1 guilds
+2025-03-05 21:43:54,958 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 21:43:54,959 - llm_client - INFO - OpenAI API Key available: True
+2025-03-05 21:43:54,959 - llm_client - INFO - Anthropic API Key available: True
+2025-03-05 21:43:54,959 - llm_client - INFO - Mistral API Key available: True
+2025-03-05 21:43:54,991 - llm_client - INFO - Initialized LLM clients
+2025-03-05 21:43:54,991 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-05 21:43:54,991 - __main__ - INFO - Default models per provider:
+2025-03-05 21:43:54,992 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-05 21:43:54,992 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-05 21:43:54,992 - __main__ - INFO -   - mistral: mistral-large
+2025-03-05 21:43:54,992 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-05 21:43:54,992 - __main__ - INFO - Syncing commands with Discord...
+2025-03-05 21:43:55,399 - __main__ - INFO - Slash commands synced globally
+2025-03-05 21:43:55,401 - __main__ - INFO - Bot is ready!
+2025-03-05 23:55:03,307 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-05 23:55:08,695 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: f093600fdeb282349b02871f9be7aeea).
+2025-03-05 23:55:10,728 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-05 23:55:10,729 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-05 23:55:10,729 - __main__ - INFO - Connected to 1 guilds
+2025-03-05 23:55:10,729 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-05 23:55:10,731 - llm_client - INFO - OpenAI API Key available: True
+2025-03-05 23:55:10,731 - llm_client - INFO - Anthropic API Key available: True
+2025-03-05 23:55:10,731 - llm_client - INFO - Mistral API Key available: True
+2025-03-05 23:55:10,769 - llm_client - INFO - Initialized LLM clients
+2025-03-05 23:55:10,770 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-05 23:55:10,770 - __main__ - INFO - Default models per provider:
+2025-03-05 23:55:10,770 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-05 23:55:10,770 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-05 23:55:10,770 - __main__ - INFO -   - mistral: mistral-large
+2025-03-05 23:55:10,770 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-05 23:55:10,770 - __main__ - INFO - Syncing commands with Discord...
+2025-03-05 23:55:11,197 - __main__ - INFO - Slash commands synced globally
+2025-03-05 23:55:11,199 - __main__ - INFO - Bot is ready!
+2025-03-06 00:04:05,493 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 00:04:11,120 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: cdfd731cedd83975fee35458c3928300).
+2025-03-06 00:04:13,169 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 00:04:13,169 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 00:04:13,169 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 00:04:13,169 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 00:04:13,170 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 00:04:13,170 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 00:04:13,170 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 00:04:13,196 - llm_client - INFO - Initialized LLM clients
+2025-03-06 00:04:13,196 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 00:04:13,196 - __main__ - INFO - Default models per provider:
+2025-03-06 00:04:13,196 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 00:04:13,196 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 00:04:13,196 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 00:04:13,196 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 00:04:13,196 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 00:04:13,602 - __main__ - INFO - Slash commands synced globally
+2025-03-06 00:04:13,603 - __main__ - INFO - Bot is ready!
+2025-03-06 00:19:44,374 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 00:19:49,855 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 4a45f4a5c015dd2884409819af8cce59).
+2025-03-06 00:19:51,876 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 00:19:51,876 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 00:19:51,876 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 00:19:51,876 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 00:19:51,876 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 00:19:51,877 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 00:19:51,877 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 00:19:51,915 - llm_client - INFO - Initialized LLM clients
+2025-03-06 00:19:51,915 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 00:19:51,915 - __main__ - INFO - Default models per provider:
+2025-03-06 00:19:51,915 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 00:19:51,915 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 00:19:51,915 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 00:19:51,915 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 00:19:51,915 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 00:19:52,349 - __main__ - INFO - Slash commands synced globally
+2025-03-06 00:19:52,350 - __main__ - INFO - Bot is ready!
+2025-03-06 00:21:15,516 - discord.gateway - WARNING - Can't keep up, shard ID None websocket is 37.3s behind.
+2025-03-06 00:37:39,135 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 00:37:44,546 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 3b9234cee8635b9401cf0a4d010e28c1).
+2025-03-06 00:37:46,573 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 00:37:46,573 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 00:37:46,573 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 00:37:46,574 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 00:37:46,574 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 00:37:46,575 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 00:37:46,575 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 00:37:46,608 - llm_client - INFO - Initialized LLM clients
+2025-03-06 00:37:46,608 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 00:37:46,608 - __main__ - INFO - Default models per provider:
+2025-03-06 00:37:46,608 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 00:37:46,608 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 00:37:46,608 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 00:37:46,608 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 00:37:46,608 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 00:37:46,937 - __main__ - INFO - Slash commands synced globally
+2025-03-06 00:37:46,938 - __main__ - INFO - Bot is ready!
+2025-03-06 00:54:44,205 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 00:54:49,634 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: f45fa59854ec4c7f4164a42587483745).
+2025-03-06 00:54:51,671 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 00:54:51,671 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 00:54:51,671 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 00:54:51,672 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 00:54:51,672 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 00:54:51,672 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 00:54:51,672 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 00:54:51,707 - llm_client - INFO - Initialized LLM clients
+2025-03-06 00:54:51,708 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 00:54:51,708 - __main__ - INFO - Default models per provider:
+2025-03-06 00:54:51,708 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 00:54:51,708 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 00:54:51,708 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 00:54:51,708 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 00:54:51,708 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 00:54:52,091 - __main__ - INFO - Slash commands synced globally
+2025-03-06 00:54:52,091 - __main__ - INFO - Bot is ready!
+2025-03-06 01:10:23,471 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 01:10:29,008 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 81c6faa7dca4ffed5dd2f743395dcd31).
+2025-03-06 01:10:31,029 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 01:10:31,029 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 01:10:31,030 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 01:10:31,030 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 01:10:31,030 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 01:10:31,030 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 01:10:31,030 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 01:10:31,064 - llm_client - INFO - Initialized LLM clients
+2025-03-06 01:10:31,064 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 01:10:31,064 - __main__ - INFO - Default models per provider:
+2025-03-06 01:10:31,064 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 01:10:31,065 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 01:10:31,065 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 01:10:31,065 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 01:10:31,065 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 01:10:31,383 - __main__ - INFO - Slash commands synced globally
+2025-03-06 01:10:31,384 - __main__ - INFO - Bot is ready!
+2025-03-06 01:20:26,829 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 01:20:32,438 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: df5e77c2be17d2be709865ac46a831bb).
+2025-03-06 01:20:34,462 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 01:20:34,462 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 01:20:34,462 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 01:20:34,462 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 01:20:34,463 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 01:20:34,463 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 01:20:34,463 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 01:20:34,497 - llm_client - INFO - Initialized LLM clients
+2025-03-06 01:20:34,497 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 01:20:34,497 - __main__ - INFO - Default models per provider:
+2025-03-06 01:20:34,497 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 01:20:34,497 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 01:20:34,497 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 01:20:34,497 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 01:20:34,497 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 01:20:34,788 - __main__ - INFO - Slash commands synced globally
+2025-03-06 01:20:34,789 - __main__ - INFO - Bot is ready!
+2025-03-06 01:25:11,430 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 01:25:16,842 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: c4713d078ef22ed76803a72070c43afd).
+2025-03-06 01:25:18,874 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 01:25:18,875 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 01:25:18,875 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 01:25:18,875 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 01:25:18,875 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 01:25:18,876 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 01:25:18,876 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 01:25:18,915 - llm_client - INFO - Initialized LLM clients
+2025-03-06 01:25:18,915 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 01:25:18,915 - __main__ - INFO - Default models per provider:
+2025-03-06 01:25:18,915 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 01:25:18,915 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 01:25:18,915 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 01:25:18,915 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 01:25:18,915 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 01:25:19,393 - __main__ - INFO - Slash commands synced globally
+2025-03-06 01:25:19,394 - __main__ - INFO - Bot is ready!
+2025-03-06 01:30:06,947 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 01:30:12,326 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 33cc2bdc55b2773cf2f2c67d66c31279).
+2025-03-06 01:30:14,365 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 01:30:14,366 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 01:30:14,366 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 01:30:14,366 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 01:30:14,366 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 01:30:14,366 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 01:30:14,366 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 01:30:14,400 - llm_client - INFO - Initialized LLM clients
+2025-03-06 01:30:14,400 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 01:30:14,400 - __main__ - INFO - Default models per provider:
+2025-03-06 01:30:14,400 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 01:30:14,400 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 01:30:14,400 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 01:30:14,400 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 01:30:14,400 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 01:30:14,809 - __main__ - INFO - Slash commands synced globally
+2025-03-06 01:30:14,810 - __main__ - INFO - Bot is ready!
+2025-03-06 01:35:30,823 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 01:35:36,220 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 141d646c3c303520d798f415ae009771).
+2025-03-06 01:35:38,266 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 01:35:38,267 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 01:35:38,267 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 01:35:38,267 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 01:35:38,267 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 01:35:38,267 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 01:35:38,268 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 01:35:38,305 - llm_client - INFO - Initialized LLM clients
+2025-03-06 01:35:38,305 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 01:35:38,305 - __main__ - INFO - Default models per provider:
+2025-03-06 01:35:38,305 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 01:35:38,306 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 01:35:38,306 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 01:35:38,306 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 01:35:38,306 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 01:35:38,609 - __main__ - INFO - Slash commands synced globally
+2025-03-06 01:35:38,610 - __main__ - INFO - Bot is ready!
+2025-03-06 01:39:45,594 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 01:39:51,010 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: bf7cdf2b8a77ff50489970305a1c4ff8).
+2025-03-06 01:39:53,081 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 01:39:53,082 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 01:39:53,082 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 01:39:53,082 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 01:39:53,083 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 01:39:53,083 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 01:39:53,083 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 01:39:53,117 - llm_client - INFO - Initialized LLM clients
+2025-03-06 01:39:53,117 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 01:39:53,117 - __main__ - INFO - Default models per provider:
+2025-03-06 01:39:53,117 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 01:39:53,117 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 01:39:53,117 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 01:39:53,117 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 01:39:53,117 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 01:39:53,578 - __main__ - INFO - Slash commands synced globally
+2025-03-06 01:39:53,579 - __main__ - INFO - Bot is ready!
+2025-03-06 01:58:25,397 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 01:58:30,807 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 1159055ae76fe81bf52b76f2f731a321).
+2025-03-06 01:58:32,821 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 01:58:32,822 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 01:58:32,822 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 01:58:32,822 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 01:58:32,822 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 01:58:32,823 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 01:58:32,823 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 01:58:32,860 - llm_client - INFO - Initialized LLM clients
+2025-03-06 01:58:32,860 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 01:58:32,860 - __main__ - INFO - Default models per provider:
+2025-03-06 01:58:32,860 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 01:58:32,860 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 01:58:32,860 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 01:58:32,860 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 01:58:32,861 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 01:58:33,346 - __main__ - INFO - Slash commands synced globally
+2025-03-06 01:58:33,346 - __main__ - INFO - Bot is ready!
+2025-03-06 01:59:56,579 - discord.gateway - WARNING - Can't keep up, shard ID None websocket is 24.4s behind.
+2025-03-06 02:16:14,568 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 02:16:20,261 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 521cd82f9b9bec44dfca17ff0a58e5ba).
+2025-03-06 02:16:22,275 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 02:16:22,275 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 02:16:22,275 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 02:16:22,275 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 02:16:22,276 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 02:16:22,276 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 02:16:22,276 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 02:16:22,313 - llm_client - INFO - Initialized LLM clients
+2025-03-06 02:16:22,313 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 02:16:22,313 - __main__ - INFO - Default models per provider:
+2025-03-06 02:16:22,313 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 02:16:22,313 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 02:16:22,313 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 02:16:22,313 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 02:16:22,313 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 02:16:22,724 - __main__ - INFO - Slash commands synced globally
+2025-03-06 02:16:22,725 - __main__ - INFO - Bot is ready!
+2025-03-06 02:33:21,897 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 02:33:27,660 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: e0fdb4a44479607ec88ae33796012566).
+2025-03-06 02:33:29,673 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 02:33:29,674 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 02:33:29,674 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 02:33:29,674 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 02:33:29,674 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 02:33:29,674 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 02:33:29,675 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 02:33:29,706 - llm_client - INFO - Initialized LLM clients
+2025-03-06 02:33:29,707 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 02:33:29,707 - __main__ - INFO - Default models per provider:
+2025-03-06 02:33:29,707 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 02:33:29,707 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 02:33:29,707 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 02:33:29,707 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 02:33:29,707 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 02:33:30,174 - __main__ - INFO - Slash commands synced globally
+2025-03-06 02:33:30,175 - __main__ - INFO - Bot is ready!
+2025-03-06 02:41:12,262 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 02:41:17,693 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: c20f79cbd923e83ce7628fe16c686faa).
+2025-03-06 02:41:19,721 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 02:41:19,722 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 02:41:19,722 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 02:41:19,722 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 02:41:19,722 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 02:41:19,723 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 02:41:19,723 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 02:41:19,763 - llm_client - INFO - Initialized LLM clients
+2025-03-06 02:41:19,763 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 02:41:19,763 - __main__ - INFO - Default models per provider:
+2025-03-06 02:41:19,763 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 02:41:19,763 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 02:41:19,763 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 02:41:19,763 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 02:41:19,763 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 02:41:20,034 - __main__ - INFO - Slash commands synced globally
+2025-03-06 02:41:20,035 - __main__ - INFO - Bot is ready!
+2025-03-06 02:57:45,288 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 02:57:50,765 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 1a1510d57274ed91459e8f2a1efc9119).
+2025-03-06 02:57:52,783 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 02:57:52,784 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 02:57:52,784 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 02:57:52,784 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 02:57:52,784 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 02:57:52,784 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 02:57:52,784 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 02:57:52,820 - llm_client - INFO - Initialized LLM clients
+2025-03-06 02:57:52,820 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 02:57:52,820 - __main__ - INFO - Default models per provider:
+2025-03-06 02:57:52,820 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 02:57:52,820 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 02:57:52,820 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 02:57:52,820 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 02:57:52,820 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 02:57:53,267 - __main__ - INFO - Slash commands synced globally
+2025-03-06 02:57:53,268 - __main__ - INFO - Bot is ready!
+2025-03-06 03:14:01,977 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 03:14:07,552 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: c2f1abefab760d8d3dc2e4afbc14a317).
+2025-03-06 03:14:09,570 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 03:14:09,571 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 03:14:09,571 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 03:14:09,571 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 03:14:09,571 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 03:14:09,571 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 03:14:09,571 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 03:14:09,613 - llm_client - INFO - Initialized LLM clients
+2025-03-06 03:14:09,613 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 03:14:09,613 - __main__ - INFO - Default models per provider:
+2025-03-06 03:14:09,613 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 03:14:09,613 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 03:14:09,613 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 03:14:09,613 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 03:14:09,613 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 03:14:09,904 - __main__ - INFO - Slash commands synced globally
+2025-03-06 03:14:09,904 - __main__ - INFO - Bot is ready!
+2025-03-06 03:14:51,890 - discord.gateway - WARNING - Can't keep up, shard ID None websocket is 31.0s behind.
+2025-03-06 03:31:33,021 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 03:31:38,424 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 225034c18b3f6e009f78dfa1c8891ae2).
+2025-03-06 03:31:40,454 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 03:31:40,455 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 03:31:40,455 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 03:31:40,455 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 03:31:40,455 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 03:31:40,455 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 03:31:40,455 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 03:31:40,489 - llm_client - INFO - Initialized LLM clients
+2025-03-06 03:31:40,490 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 03:31:40,490 - __main__ - INFO - Default models per provider:
+2025-03-06 03:31:40,490 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 03:31:40,490 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 03:31:40,490 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 03:31:40,490 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 03:31:40,490 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 03:31:40,875 - __main__ - INFO - Slash commands synced globally
+2025-03-06 03:31:40,876 - __main__ - INFO - Bot is ready!
+2025-03-06 03:41:59,559 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 03:42:05,386 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: f68ed39eb9269413df5406f8afb25288).
+2025-03-06 03:42:07,433 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 03:42:07,434 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 03:42:07,434 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 03:42:07,434 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 03:42:07,434 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 03:42:07,434 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 03:42:07,434 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 03:42:07,467 - llm_client - INFO - Initialized LLM clients
+2025-03-06 03:42:07,467 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 03:42:07,467 - __main__ - INFO - Default models per provider:
+2025-03-06 03:42:07,467 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 03:42:07,467 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 03:42:07,467 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 03:42:07,467 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 03:42:07,467 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 03:42:07,913 - __main__ - INFO - Slash commands synced globally
+2025-03-06 03:42:07,915 - __main__ - INFO - Bot is ready!
+2025-03-06 03:57:58,725 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 03:58:04,136 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: d2d131873844c4b37768cf7b5f66534a).
+2025-03-06 03:58:06,156 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 03:58:06,156 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 03:58:06,156 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 03:58:06,156 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 03:58:06,157 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 03:58:06,157 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 03:58:06,157 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 03:58:06,197 - llm_client - INFO - Initialized LLM clients
+2025-03-06 03:58:06,197 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 03:58:06,197 - __main__ - INFO - Default models per provider:
+2025-03-06 03:58:06,197 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 03:58:06,197 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 03:58:06,197 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 03:58:06,197 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 03:58:06,197 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 03:58:06,798 - __main__ - INFO - Slash commands synced globally
+2025-03-06 03:58:06,799 - __main__ - INFO - Bot is ready!
+2025-03-06 04:13:58,411 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 04:14:03,840 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: ec2996397fa051bbc37501b024d197d4).
+2025-03-06 04:14:05,883 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 04:14:05,883 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 04:14:05,883 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 04:14:05,884 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 04:14:05,884 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 04:14:05,884 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 04:14:05,884 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 04:14:05,923 - llm_client - INFO - Initialized LLM clients
+2025-03-06 04:14:05,924 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 04:14:05,924 - __main__ - INFO - Default models per provider:
+2025-03-06 04:14:05,924 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 04:14:05,924 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 04:14:05,924 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 04:14:05,924 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 04:14:05,924 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 04:14:06,241 - __main__ - INFO - Slash commands synced globally
+2025-03-06 04:14:06,242 - __main__ - INFO - Bot is ready!
+2025-03-06 04:29:58,274 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 04:30:03,835 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 5e2e843fd58026b349592f2cef541f4c).
+2025-03-06 04:30:05,854 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 04:30:05,855 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 04:30:05,855 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 04:30:05,855 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 04:30:05,855 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 04:30:05,855 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 04:30:05,855 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 04:30:05,882 - llm_client - INFO - Initialized LLM clients
+2025-03-06 04:30:05,882 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 04:30:05,882 - __main__ - INFO - Default models per provider:
+2025-03-06 04:30:05,882 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 04:30:05,883 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 04:30:05,883 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 04:30:05,883 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 04:30:05,883 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 04:30:06,211 - __main__ - INFO - Slash commands synced globally
+2025-03-06 04:30:06,211 - __main__ - INFO - Bot is ready!
+2025-03-06 04:43:00,299 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 04:43:05,799 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: f316d8a377b6520ae4126116445cc9ca).
+2025-03-06 04:43:07,849 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 04:43:07,849 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 04:43:07,850 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 04:43:07,850 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 04:43:07,850 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 04:43:07,850 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 04:43:07,850 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 04:43:07,880 - llm_client - INFO - Initialized LLM clients
+2025-03-06 04:43:07,880 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 04:43:07,881 - __main__ - INFO - Default models per provider:
+2025-03-06 04:43:07,881 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 04:43:07,881 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 04:43:07,881 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 04:43:07,881 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 04:43:07,881 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 04:43:08,307 - __main__ - INFO - Slash commands synced globally
+2025-03-06 04:43:08,308 - __main__ - INFO - Bot is ready!
+2025-03-06 04:44:03,455 - discord.client - ERROR - Attempting a reconnect in 1.93s
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/client.py", line 704, in connect
+    await self.ws.poll_event()
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 627, in poll_event
+    await self.received_message(msg.data)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 532, in received_message
+    await self.send_as_json(beat)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 663, in send_as_json
+    await self.send(utils._to_json(data))
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/discord/gateway.py", line 659, in send
+    await self.socket.send_str(data)
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/client_ws.py", line 245, in send_str
+    await self._writer.send_frame(
+        data.encode("utf-8"), WSMsgType.TEXT, compress=compress
+    )
+  File "/opt/anaconda3/envs/discord_bot/lib/python3.13/site-packages/aiohttp/_websocket/writer.py", line 125, in send_frame
+    raise ClientConnectionResetError("Cannot write to closing transport")
+aiohttp.client_exceptions.ClientConnectionResetError: Cannot write to closing transport
+2025-03-06 04:44:05,656 - discord.gateway - INFO - Shard ID None has successfully RESUMED session f316d8a377b6520ae4126116445cc9ca.
+2025-03-06 05:00:12,639 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 05:00:18,120 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: c707a6909a6f647bc40635d580b53a33).
+2025-03-06 05:00:20,148 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 05:00:20,148 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 05:00:20,148 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 05:00:20,148 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 05:00:20,148 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 05:00:20,149 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 05:00:20,149 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 05:00:20,182 - llm_client - INFO - Initialized LLM clients
+2025-03-06 05:00:20,182 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 05:00:20,182 - __main__ - INFO - Default models per provider:
+2025-03-06 05:00:20,183 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 05:00:20,183 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 05:00:20,183 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 05:00:20,183 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 05:00:20,183 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 05:00:20,619 - __main__ - INFO - Slash commands synced globally
+2025-03-06 05:00:20,620 - __main__ - INFO - Bot is ready!
+2025-03-06 05:17:12,066 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 05:17:17,496 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 7a935b8f1fcd3ed8c2effad84e4491c9).
+2025-03-06 05:17:19,523 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 05:17:19,524 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 05:17:19,524 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 05:17:19,524 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 05:17:19,524 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 05:17:19,524 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 05:17:19,524 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 05:17:19,561 - llm_client - INFO - Initialized LLM clients
+2025-03-06 05:17:19,561 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 05:17:19,561 - __main__ - INFO - Default models per provider:
+2025-03-06 05:17:19,561 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 05:17:19,561 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 05:17:19,561 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 05:17:19,561 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 05:17:19,561 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 05:17:19,925 - __main__ - INFO - Slash commands synced globally
+2025-03-06 05:17:19,926 - __main__ - INFO - Bot is ready!
+2025-03-06 05:36:32,438 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 05:36:37,958 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: cb1ac5f7c71086983ab7cf8f85560804).
+2025-03-06 05:36:39,975 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 05:36:39,975 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 05:36:39,975 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 05:36:39,975 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 05:36:39,975 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 05:36:39,975 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 05:36:39,976 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 05:36:40,006 - llm_client - INFO - Initialized LLM clients
+2025-03-06 05:36:40,007 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 05:36:40,007 - __main__ - INFO - Default models per provider:
+2025-03-06 05:36:40,007 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 05:36:40,007 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 05:36:40,007 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 05:36:40,007 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 05:36:40,007 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 05:36:40,412 - __main__ - INFO - Slash commands synced globally
+2025-03-06 05:36:40,413 - __main__ - INFO - Bot is ready!
+2025-03-06 05:43:44,041 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 05:43:49,515 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 22f8e4085198715fa36304298043b017).
+2025-03-06 05:43:51,561 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 05:43:51,561 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 05:43:51,562 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 05:43:51,562 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 05:43:51,562 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 05:43:51,562 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 05:43:51,562 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 05:43:51,601 - llm_client - INFO - Initialized LLM clients
+2025-03-06 05:43:51,602 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 05:43:51,602 - __main__ - INFO - Default models per provider:
+2025-03-06 05:43:51,602 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 05:43:51,602 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 05:43:51,602 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 05:43:51,602 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 05:43:51,602 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 05:43:51,947 - __main__ - INFO - Slash commands synced globally
+2025-03-06 05:43:51,948 - __main__ - INFO - Bot is ready!
+2025-03-06 06:01:38,073 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 06:01:43,464 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 805bea869552f56d95c196adc5b07624).
+2025-03-06 06:01:45,498 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 06:01:45,499 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 06:01:45,499 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 06:01:45,499 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 06:01:45,499 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 06:01:45,499 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 06:01:45,500 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 06:01:45,542 - llm_client - INFO - Initialized LLM clients
+2025-03-06 06:01:45,542 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 06:01:45,542 - __main__ - INFO - Default models per provider:
+2025-03-06 06:01:45,542 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 06:01:45,542 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 06:01:45,542 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 06:01:45,542 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 06:01:45,543 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 06:01:45,948 - __main__ - INFO - Slash commands synced globally
+2025-03-06 06:01:45,949 - __main__ - INFO - Bot is ready!
+2025-03-06 06:18:54,006 - discord.gateway - INFO - Shard ID None session has been invalidated.
+2025-03-06 06:18:59,458 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: efcb03e3f6ecc35a26416ae481cf7ec3).
+2025-03-06 06:19:01,512 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 06:19:01,512 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 06:19:01,512 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 06:19:01,512 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 06:19:01,512 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 06:19:01,512 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 06:19:01,512 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 06:19:01,550 - llm_client - INFO - Initialized LLM clients
+2025-03-06 06:19:01,553 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 06:19:01,553 - __main__ - INFO - Default models per provider:
+2025-03-06 06:19:01,553 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 06:19:01,553 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 06:19:01,553 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 06:19:01,553 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 06:19:01,553 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 06:19:01,983 - __main__ - INFO - Slash commands synced globally
+2025-03-06 06:19:01,984 - __main__ - INFO - Bot is ready!
+2025-03-06 06:24:32,780 - discord.gateway - WARNING - Can't keep up, shard ID None websocket is 37.3s behind.
+2025-03-06 06:35:14,019 - discord.gateway - INFO - Shard ID None has successfully RESUMED session efcb03e3f6ecc35a26416ae481cf7ec3.
+2025-03-06 07:37:52,667 - discord.gateway - INFO - Shard ID None has successfully RESUMED session efcb03e3f6ecc35a26416ae481cf7ec3.
+2025-03-06 07:38:30,822 - config - INFO - Loading environment variables
+2025-03-06 07:38:30,823 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 07:38:30,824 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-06 07:38:30,825 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-06 07:38:30,825 - config - INFO - Set log level to INFO
+2025-03-06 07:38:30,825 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-06 07:38:30,826 - __main__ - INFO - Starting extension loading process
+2025-03-06 07:38:30,826 - __main__ - INFO - Beginning extension loading sequence
+2025-03-06 07:38:30,826 - __main__ - INFO - Attempting to load extension: commands.lab_session_commands
+2025-03-06 07:38:30,834 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-06 07:38:30,835 - commands.lab_session_commands - INFO - Created new lab command group
+2025-03-06 07:38:30,835 - commands.lab_session_commands - INFO - Registered lab session commands
+2025-03-06 07:38:30,835 - __main__ - INFO - Successfully loaded extension: commands.lab_session_commands
+2025-03-06 07:38:30,835 - __main__ - INFO - Attempting to load extension: commands.lab_agent_commands
+2025-03-06 07:38:30,836 - commands.lab_agent_commands - INFO - Using existing lab command group
+2025-03-06 07:38:30,836 - commands.lab_agent_commands - INFO - Registered lab agent commands
+2025-03-06 07:38:30,836 - __main__ - INFO - Successfully loaded extension: commands.lab_agent_commands
+2025-03-06 07:38:30,836 - __main__ - INFO - Attempting to load extension: commands.lab_meeting_commands
+2025-03-06 07:38:31,242 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 07:38:31,242 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 07:38:31,242 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 07:38:31,242 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 07:38:31,274 - llm_client - INFO - Initialized LLM clients
+2025-03-06 07:38:31,275 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-06 07:38:31,275 - commands.lab_meeting_commands - INFO - Using existing lab command group
+2025-03-06 07:38:31,275 - commands.lab_meeting_commands - INFO - Registered lab meeting commands
+2025-03-06 07:38:31,275 - __main__ - INFO - Successfully loaded extension: commands.lab_meeting_commands
+2025-03-06 07:38:31,275 - __main__ - INFO - Attempting to load extension: commands.lab_transcript_commands
+2025-03-06 07:38:31,278 - commands.lab_transcript_commands - INFO - Using existing lab command group
+2025-03-06 07:38:31,279 - commands.lab_transcript_commands - INFO - Registered lab transcript commands
+2025-03-06 07:38:31,279 - __main__ - INFO - Successfully loaded extension: commands.lab_transcript_commands
+2025-03-06 07:38:31,279 - __main__ - INFO - Attempting to load extension: commands.quickstart_command
+2025-03-06 07:38:31,279 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-06 07:38:31,279 - commands.quickstart_command - INFO - Initialized quickstart command
+2025-03-06 07:38:31,279 - __main__ - INFO - Successfully loaded extension: commands.quickstart_command
+2025-03-06 07:38:31,279 - __main__ - INFO - Attempting to load extension: commands.help_command
+2025-03-06 07:38:31,281 - commands.help_command - INFO - Initialized help command
+2025-03-06 07:38:31,281 - __main__ - INFO - Successfully loaded extension: commands.help_command
+2025-03-06 07:38:31,281 - __main__ - INFO - Completed extension loading. Loaded 6 of 6 extensions
+2025-03-06 07:38:31,282 - __main__ - INFO - Extension loading completed successfully
+2025-03-06 07:38:31,282 - __main__ - INFO - Waiting for commands to be fully registered...
+2025-03-06 07:38:32,283 - __main__ - INFO - Starting command sync process
+2025-03-06 07:38:32,284 - __main__ - INFO - Starting bot...
+2025-03-06 07:38:32,284 - discord.client - INFO - logging in using static token
+2025-03-06 07:38:34,651 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 8f95ec3b5b8ff76a792931cd86647edf).
+2025-03-06 07:38:36,703 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 07:38:36,704 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 07:38:36,704 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 07:38:36,704 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 07:38:36,705 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 07:38:36,705 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 07:38:36,706 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 07:38:36,734 - llm_client - INFO - Initialized LLM clients
+2025-03-06 07:38:36,734 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 07:38:36,734 - __main__ - INFO - Default models per provider:
+2025-03-06 07:38:36,734 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 07:38:36,734 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 07:38:36,734 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 07:38:36,734 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 07:38:36,734 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 07:38:37,084 - __main__ - INFO - Slash commands synced globally
+2025-03-06 07:38:37,085 - __main__ - INFO - Bot is ready!
+2025-03-06 07:39:15,040 - commands.quickstart_command - INFO - Starting quickstart for user 1050933498640343082 on topic: hello
+2025-03-06 07:39:15,042 - db_client - INFO - Performing health check to: http://localhost:3000/api/health
+2025-03-06 07:39:17,057 - commands.quickstart_command - INFO - Found active session 79f4b5c8-7944-44b8-bae6-e1ca88c6ca76 for user 1050933498640343082
+2025-03-06 07:39:18,362 - commands.quickstart_command - INFO - Ended previous active session 79f4b5c8-7944-44b8-bae6-e1ca88c6ca76 for user 1050933498640343082
+2025-03-06 07:39:18,362 - commands.quickstart_command - INFO - Creating new session for user 1050933498640343082
+2025-03-06 07:39:21,056 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:21,996 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:22,349 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:22,539 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:22,725 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:23,865 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to get session agents","data":null}
+2025-03-06 07:39:23,865 - commands.quickstart_command - ERROR - Failed to retrieve agents: API error (500): {"isSuccess":false,"message":"Failed to get session agents","data":null}
+2025-03-06 07:39:33,659 - commands.quickstart_command - INFO - Starting quickstart for user 1050933498640343082 on topic: What is cancer
+2025-03-06 07:39:33,660 - db_client - INFO - Performing health check to: http://localhost:3000/api/health
+2025-03-06 07:39:33,996 - commands.quickstart_command - INFO - Found active session 28717c3e-ff2d-4e94-8bfb-6d441ef7dec9 for user 1050933498640343082
+2025-03-06 07:39:34,319 - commands.quickstart_command - INFO - Ended previous active session 28717c3e-ff2d-4e94-8bfb-6d441ef7dec9 for user 1050933498640343082
+2025-03-06 07:39:34,319 - commands.quickstart_command - INFO - Creating new session for user 1050933498640343082
+2025-03-06 07:39:35,612 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:36,651 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:37,095 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:37,347 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:38,684 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:39:38,912 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to get session agents","data":null}
+2025-03-06 07:39:38,913 - commands.quickstart_command - ERROR - Failed to retrieve agents: API error (500): {"isSuccess":false,"message":"Failed to get session agents","data":null}
+2025-03-06 07:40:22,090 - commands.quickstart_command - INFO - Starting quickstart for user 1050933498640343082 on topic: What is cancer
+2025-03-06 07:40:22,091 - db_client - INFO - Performing health check to: http://localhost:3000/api/health
+2025-03-06 07:40:24,654 - commands.quickstart_command - INFO - Found active session bd448d63-5fb6-4756-bf90-c6a9651b90e8 for user 1050933498640343082
+2025-03-06 07:40:26,625 - commands.quickstart_command - INFO - Ended previous active session bd448d63-5fb6-4756-bf90-c6a9651b90e8 for user 1050933498640343082
+2025-03-06 07:40:26,625 - commands.quickstart_command - INFO - Creating new session for user 1050933498640343082
+2025-03-06 07:40:29,793 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:40:30,980 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:40:31,170 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:40:31,356 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:40:31,534 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 07:40:32,965 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to get session agents","data":null}
+2025-03-06 07:40:32,966 - commands.quickstart_command - ERROR - Failed to retrieve agents: API error (500): {"isSuccess":false,"message":"Failed to get session agents","data":null}
+2025-03-06 08:01:54,527 - config - INFO - Loading environment variables
+2025-03-06 08:01:54,527 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 08:01:54,528 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-06 08:01:54,529 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-06 08:01:54,529 - config - INFO - Set log level to INFO
+2025-03-06 08:01:54,529 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-06 08:01:54,530 - __main__ - INFO - Starting extension loading process
+2025-03-06 08:01:54,530 - __main__ - INFO - Beginning extension loading sequence
+2025-03-06 08:01:54,530 - __main__ - INFO - Attempting to load extension: commands.lab_session_commands
+2025-03-06 08:01:54,531 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-06 08:01:54,531 - commands.lab_session_commands - INFO - Created new lab command group
+2025-03-06 08:01:54,531 - commands.lab_session_commands - INFO - Registered lab session commands
+2025-03-06 08:01:54,531 - __main__ - INFO - Successfully loaded extension: commands.lab_session_commands
+2025-03-06 08:01:54,531 - __main__ - INFO - Attempting to load extension: commands.lab_agent_commands
+2025-03-06 08:01:54,532 - commands.lab_agent_commands - INFO - Using existing lab command group
+2025-03-06 08:01:54,532 - commands.lab_agent_commands - INFO - Registered lab agent commands
+2025-03-06 08:01:54,532 - __main__ - INFO - Successfully loaded extension: commands.lab_agent_commands
+2025-03-06 08:01:54,532 - __main__ - INFO - Attempting to load extension: commands.lab_meeting_commands
+2025-03-06 08:01:54,847 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 08:01:54,847 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 08:01:54,847 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 08:01:54,847 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 08:01:54,876 - llm_client - INFO - Initialized LLM clients
+2025-03-06 08:01:54,877 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-06 08:01:54,877 - commands.lab_meeting_commands - INFO - Using existing lab command group
+2025-03-06 08:01:54,877 - commands.lab_meeting_commands - INFO - Registered lab meeting commands
+2025-03-06 08:01:54,877 - __main__ - INFO - Successfully loaded extension: commands.lab_meeting_commands
+2025-03-06 08:01:54,877 - __main__ - INFO - Attempting to load extension: commands.lab_transcript_commands
+2025-03-06 08:01:54,878 - commands.lab_transcript_commands - INFO - Using existing lab command group
+2025-03-06 08:01:54,878 - commands.lab_transcript_commands - INFO - Registered lab transcript commands
+2025-03-06 08:01:54,878 - __main__ - INFO - Successfully loaded extension: commands.lab_transcript_commands
+2025-03-06 08:01:54,878 - __main__ - INFO - Attempting to load extension: commands.quickstart_command
+2025-03-06 08:01:54,878 - orchestrator - INFO - Initialized AgentOrchestrator
+2025-03-06 08:01:54,878 - commands.quickstart_command - INFO - Initialized quickstart command
+2025-03-06 08:01:54,878 - __main__ - INFO - Successfully loaded extension: commands.quickstart_command
+2025-03-06 08:01:54,878 - __main__ - INFO - Attempting to load extension: commands.help_command
+2025-03-06 08:01:54,879 - commands.help_command - INFO - Initialized help command
+2025-03-06 08:01:54,879 - __main__ - INFO - Successfully loaded extension: commands.help_command
+2025-03-06 08:01:54,879 - __main__ - INFO - Completed extension loading. Loaded 6 of 6 extensions
+2025-03-06 08:01:54,879 - __main__ - INFO - Extension loading completed successfully
+2025-03-06 08:01:54,879 - __main__ - INFO - Waiting for commands to be fully registered...
+2025-03-06 08:01:55,880 - __main__ - INFO - Starting command sync process
+2025-03-06 08:01:55,880 - __main__ - INFO - Starting bot...
+2025-03-06 08:01:55,881 - discord.client - INFO - logging in using static token
+2025-03-06 08:01:57,207 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: e45f09d66b681e6656e776d4163b9940).
+2025-03-06 08:01:59,242 - __main__ - INFO - Co-Scientist is connected to Discord!
+2025-03-06 08:01:59,242 - __main__ - INFO - Bot ID: 1344103520856707235
+2025-03-06 08:01:59,243 - __main__ - INFO - Connected to 1 guilds
+2025-03-06 08:01:59,243 - llm_client - INFO - Loaded environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 08:01:59,243 - llm_client - INFO - OpenAI API Key available: True
+2025-03-06 08:01:59,243 - llm_client - INFO - Anthropic API Key available: True
+2025-03-06 08:01:59,243 - llm_client - INFO - Mistral API Key available: True
+2025-03-06 08:01:59,271 - llm_client - INFO - Initialized LLM clients
+2025-03-06 08:01:59,271 - __main__ - INFO - Available LLM providers: openai, anthropic, mistral
+2025-03-06 08:01:59,271 - __main__ - INFO - Default models per provider:
+2025-03-06 08:01:59,271 - __main__ - INFO -   - openai: gpt-4-turbo-preview
+2025-03-06 08:01:59,271 - __main__ - INFO -   - anthropic: claude-3-opus-20240229
+2025-03-06 08:01:59,272 - __main__ - INFO -   - mistral: mistral-large
+2025-03-06 08:01:59,272 - __main__ - INFO - No guild ID specified. Commands will be registered globally.
+2025-03-06 08:01:59,272 - __main__ - INFO - Syncing commands with Discord...
+2025-03-06 08:01:59,588 - __main__ - INFO - Slash commands synced globally
+2025-03-06 08:01:59,589 - __main__ - INFO - Bot is ready!
+2025-03-06 08:02:13,042 - commands.quickstart_command - INFO - Starting quickstart for user 1050933498640343082 on topic: what is cancer?
+2025-03-06 08:02:13,044 - db_client - INFO - Performing health check to: http://localhost:3000/api/health
+2025-03-06 08:02:15,799 - commands.quickstart_command - INFO - Found active session ecb53ccb-36f0-4ac1-9367-4543ab8c33ff for user 1050933498640343082
+2025-03-06 08:02:17,693 - commands.quickstart_command - INFO - Ended previous active session ecb53ccb-36f0-4ac1-9367-4543ab8c33ff for user 1050933498640343082
+2025-03-06 08:02:17,693 - commands.quickstart_command - INFO - Creating new session for user 1050933498640343082
+2025-03-06 08:02:26,421 - orchestrator - INFO - Initializing meeting 4aee14bd-3b1e-45a4-bfb9-353da2ceba4c
+2025-03-06 08:02:26,422 - orchestrator - INFO - Initialized meeting 4aee14bd-3b1e-45a4-bfb9-353da2ceba4c (parallel index 0) for session f83e0549-185c-4c3a-bb18-c34b6d9314fe
+2025-03-06 08:02:26,422 - orchestrator - INFO - Starting conversation for meeting 4aee14bd-3b1e-45a4-bfb9-353da2ceba4c (live_mode: True)
+2025-03-06 08:20:47,970 - discord.gateway - INFO - Shard ID None has successfully RESUMED session e45f09d66b681e6656e776d4163b9940.
+2025-03-06 08:57:06,242 - __main__ - ERROR - App command error: Application command 'create_agent' not found
+2025-03-06 09:00:15,643 - commands.quickstart_command - INFO - Starting quickstart for user 1050933498640343082 on topic: hello
+2025-03-06 09:00:15,644 - db_client - INFO - Performing health check to: http://localhost:3000/api/health
+2025-03-06 09:00:17,505 - commands.quickstart_command - INFO - Found active session f83e0549-185c-4c3a-bb18-c34b6d9314fe for user 1050933498640343082
+2025-03-06 09:00:18,938 - commands.quickstart_command - INFO - Ended previous active session f83e0549-185c-4c3a-bb18-c34b6d9314fe for user 1050933498640343082
+2025-03-06 09:00:18,938 - commands.quickstart_command - INFO - Creating new session for user 1050933498640343082
+2025-03-06 09:00:23,228 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 09:00:24,229 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 09:00:24,517 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 09:00:24,733 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 09:00:25,020 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to create agent","data":null}
+2025-03-06 09:00:26,827 - db_client - ERROR - API error (500): {"isSuccess":false,"message":"Failed to get session agents","data":null}
+2025-03-06 09:00:26,828 - commands.quickstart_command - ERROR - Failed to retrieve agents: API error (500): {"isSuccess":false,"message":"Failed to get session agents","data":null}

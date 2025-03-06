@@ -121,6 +121,7 @@ class LabAgentCommands(commands.Cog):
             # Create the agent
             agent_result = await db_client.create_agent(
                 session_id=session_id,
+                user_id=user_id,
                 name=agent_name,
                 expertise=expertise,
                 goal=goal,
@@ -200,21 +201,46 @@ class LabAgentCommands(commands.Cog):
             session_data = session_result.get("data", {})
             session_id = session_data.get("id")
             
-            # Update the agent
+            # Build updates object
             updates = {}
             if expertise is not None:
                 updates["expertise"] = expertise
             if goal is not None:
-                updates["goal"] = goal
+                updates["description"] = goal
             if role is not None:
                 updates["role"] = role
             if model is not None:
                 updates["model"] = model
             
-            agent_result = await db_client.update_agent(
+            # First, get the agent's ID by name
+            lookup_result = await db_client.get_agent_by_name(
                 session_id=session_id,
-                agent_name=agent_name,
-                updates=updates
+                agent_name=agent_name
+            )
+            
+            if not lookup_result.get("isSuccess"):
+                await interaction.followup.send(
+                    f"Could not find agent '{agent_name}': {lookup_result.get('message', 'Unknown error')}",
+                    ephemeral=True
+                )
+                return
+            
+            agent_id = lookup_result.get("data", {}).get("id")
+            if not agent_id:
+                await interaction.followup.send(
+                    f"Invalid agent data retrieved for '{agent_name}'",
+                    ephemeral=True
+                )
+                return
+                
+            # Now update the agent using its ID
+            agent_result = await db_client.update_agent(
+                agent_id=agent_id,
+                name=agent_name if "name" in updates else None,
+                role=updates.get("role"),
+                description=updates.get("description"),
+                expertise=updates.get("expertise"),
+                model=updates.get("model")
             )
             
             if not agent_result.get("isSuccess"):
@@ -282,10 +308,30 @@ class LabAgentCommands(commands.Cog):
             session_data = session_result.get("data", {})
             session_id = session_data.get("id")
             
-            # Delete the agent
-            delete_result = await db_client.delete_agent(
+            # First, get the agent's ID by name
+            lookup_result = await db_client.get_agent_by_name(
                 session_id=session_id,
                 agent_name=agent_name
+            )
+            
+            if not lookup_result.get("isSuccess"):
+                await interaction.followup.send(
+                    f"Could not find agent '{agent_name}': {lookup_result.get('message', 'Unknown error')}",
+                    ephemeral=True
+                )
+                return
+            
+            agent_id = lookup_result.get("data", {}).get("id")
+            if not agent_id:
+                await interaction.followup.send(
+                    f"Invalid agent data retrieved for '{agent_name}'",
+                    ephemeral=True
+                )
+                return
+                
+            # Delete the agent using its ID
+            delete_result = await db_client.delete_agent(
+                agent_id=agent_id
             )
             
             if not delete_result.get("isSuccess"):

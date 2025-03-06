@@ -27,11 +27,31 @@ export async function GET(req: NextRequest) {
       )
     }
 
-    // Get parallel meetings for the session
+    // First, get the base meeting to determine its parallel group
+    const baseMeeting = await db.query.meetings.findFirst({
+      where: eq(meetingsTable.id, baseMeetingId)
+    })
+
+    if (!baseMeeting) {
+      return NextResponse.json(
+        { isSuccess: false, message: "Base meeting not found", data: null },
+        { status: 404 }
+      )
+    }
+
+    // If the base meeting has a parallelIndex, find all meetings in the same parallel group
+    const parallelIndex = baseMeeting.parallelIndex || 0
+
+    // Get all meetings with the same sessionId that are either:
+    // 1. This base meeting itself (include it in results)
+    // 2. Other parallel meetings with the same parallelIndex (if not 0)
+    // 3. Parallel meetings where isParallel is true (as a fallback)
     const meetings = await db.query.meetings.findMany({
       where: and(
         eq(meetingsTable.sessionId, sessionId),
-        eq(meetingsTable.isParallel, true)
+        parallelIndex === 0 
+          ? eq(meetingsTable.isParallel, true) // If parallelIndex is 0, find by isParallel
+          : eq(meetingsTable.parallelIndex, parallelIndex) // Otherwise find by parallelIndex
       ),
     })
 
