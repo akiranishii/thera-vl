@@ -102,35 +102,78 @@ class LabMeetingCommands(commands.Cog):
             
             # If auto_generate is true, create the agents
             if auto_generate:
+                # Generate variables for the PI based on the agenda
+                pi_variables = await llm_client.generate_agent_variables(
+                    topic=agenda,
+                    agent_type="principal_investigator"
+                )
+                
                 # Create PI
                 await db_client.create_agent(
                     session_id=session_id,
                     user_id=user_id,
                     name=ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE,
                     role="Lead",
-                    goal="Oversee experiment design and coordinate discussion",
+                    goal=pi_variables.get("goal"),
+                    expertise=pi_variables.get("expertise"),
                     model="openai"
                 )
                 
                 # Create Scientists with varied expertise for parallel runs
-                expertise_areas = [
-                    "Theoretical Analysis",
-                    "Experimental Design",
-                    "Data Analysis",
-                    "Implementation Strategy",
-                    "Risk Assessment",
-                    "Innovation Research"
-                ]
+                # Keep track of created agent names to avoid duplicates
+                created_agent_names = set()
                 
                 for i in range(auto_scientist_count):
-                    expertise = expertise_areas[i % len(expertise_areas)]
+                    # Generate variables for each scientist based on the agenda
+                    # Add additional context to ensure each scientist is unique
+                    diversity_context = [
+                        "Create a different type of scientist than previously generated.",
+                        "Ensure each scientist has a distinct specialty.",
+                        f"This is scientist #{i+1} of {auto_scientist_count}."
+                    ]
+                    
+                    # For the second and third scientists, specify that they should differ
+                    if i > 0:
+                        diversity_context.append(f"Previously created: {', '.join(created_agent_names)}")
+                        
+                    # Add position-specific guidance
+                    if i == 0:
+                        topic_focus = f"Focus on core aspects of {agenda}"
+                    elif i == 1:
+                        topic_focus = f"Focus on technical or methodological aspects of {agenda}"
+                    else:
+                        topic_focus = f"Focus on interdisciplinary or novel aspects of {agenda}"
+                        
+                    diversity_context.append(topic_focus)
+                    
+                    # Generate variables with the diversity context
+                    scientist_variables = await llm_client.generate_agent_variables(
+                        topic=agenda,
+                        agent_type="scientist",
+                        additional_context="\n".join(diversity_context)
+                    )
+                    
+                    # Get the agent name, ensuring it's unique
+                    agent_name = scientist_variables.get("agent_name", f"Scientist {i+1}")
+                    
+                    # If we somehow get a duplicate, modify the name to make it unique
+                    counter = 1
+                    original_name = agent_name
+                    while agent_name in created_agent_names:
+                        agent_name = f"{original_name} {counter}"
+                        counter += 1
+                    
+                    # Add to our tracking set
+                    created_agent_names.add(agent_name)
+                    
+                    # Create the agent
                     await db_client.create_agent(
                         session_id=session_id,
                         user_id=user_id,
-                        name=f"Scientist {i+1}",
+                        name=agent_name,
                         role=ModelConfig.SCIENTIST_ROLE,
-                        expertise=expertise,
-                        goal=f"Provide {expertise.lower()} insights",
+                        expertise=scientist_variables.get("expertise"),
+                        goal=scientist_variables.get("goal"),
                         model="openai"
                     )
                 

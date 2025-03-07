@@ -252,20 +252,16 @@ class DatabaseClient:
             Agent data or error information
         """
         data = {
-            "userId": user_id,
             "sessionId": session_id,
             "name": name,
-            "role": role
+            "role": role,
+            "userId": user_id,
+            "goal": goal,
+            "expertise": expertise,
+            "model": model
         }
         
-        if goal:
-            data["description"] = goal
-        if expertise:
-            data["expertise"] = expertise
-        if model:
-            data["model"] = model
-            
-        return await self._make_request("POST", "/discord/agents", data)
+        return await self._make_request("POST", "/discord/agents", data=data)
     
     # Meeting-related methods
     async def create_meeting(
@@ -540,6 +536,32 @@ class DatabaseClient:
             params["limit"] = limit
             
         return await self._make_request("GET", "/discord/transcripts", params=params)
+        
+    async def create_transcript(self, meeting_id: str, agent_name: str, round_number: int, content: str, agent_role: str = None) -> Dict[str, Any]:
+        """Create a transcript entry for a meeting.
+        
+        Args:
+            meeting_id: ID of the meeting
+            agent_name: Name of the agent who generated the transcript
+            round_number: Round number of the conversation
+            content: Content of the agent's message
+            agent_role: Role of the agent (optional, but may be required by API)
+            
+        Returns:
+            Created transcript data or error information
+        """
+        data = {
+            "meetingId": meeting_id,
+            "agentName": agent_name,
+            "roundNumber": round_number,
+            "content": content
+        }
+        
+        # Add agent role if provided
+        if agent_role:
+            data["role"] = agent_role
+        
+        return await self._make_request("POST", "/discord/transcripts", data=data)
 
     async def get_agent_by_name(self, session_id: str, agent_name: str) -> Dict[str, Any]:
         """Get an agent by name within a session.

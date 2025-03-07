@@ -93,12 +93,19 @@ class QuickstartCommand(commands.Cog):
             session_id = session_data.get("id")
             
             # Create Principal Investigator
+            # Generate variables for the PI based on the topic
+            pi_variables = await llm_client.generate_agent_variables(
+                topic=topic,
+                agent_type="principal_investigator"
+            )
+            
             await db_client.create_agent(
                 session_id=session_id,
                 user_id=user_id,
                 name=ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE,
                 role="Lead",
-                goal="Oversee experiment design and coordinate discussion",
+                goal=pi_variables.get("goal"),
+                expertise=pi_variables.get("expertise"),
                 model="openai"
             )
             
@@ -113,14 +120,19 @@ class QuickstartCommand(commands.Cog):
             ]
             
             for i in range(agent_count):
-                expertise = expertise_areas[i % len(expertise_areas)]
+                # Generate variables for each scientist based on the topic
+                scientist_variables = await llm_client.generate_agent_variables(
+                    topic=topic,
+                    agent_type="scientist"
+                )
+                
                 await db_client.create_agent(
                     session_id=session_id,
                     user_id=user_id,
-                    name=f"Scientist {i+1}",
+                    name=scientist_variables.get("agent_name", f"Scientist {i+1}"),
                     role=ModelConfig.SCIENTIST_ROLE,
-                    expertise=expertise,
-                    goal=f"Provide {expertise.lower()} insights",
+                    expertise=scientist_variables.get("expertise"),
+                    goal=scientist_variables.get("goal"),
                     model="openai"
                 )
             

@@ -2260,3 +2260,12 @@ discord.errors.LoginFailure: Improper token has been passed.
 2025-03-05 13:33:51,738 - __main__ - INFO - Syncing commands with Discord...
 2025-03-05 13:33:52,163 - __main__ - INFO - Slash commands synced globally
 2025-03-05 13:33:52,163 - __main__ - INFO - Bot is ready!
+2025-03-06 11:24:49,018 - config - INFO - Loading environment variables
+2025-03-06 11:24:49,018 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env
+2025-03-06 11:24:49,019 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/.env.local
+2025-03-06 11:24:49,020 - config - INFO - Loading environment variables from /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/local_env.yml
+2025-03-06 11:24:49,021 - config - INFO - Set log level to INFO
+2025-03-06 11:24:49,021 - db_client - INFO - DatabaseClient initialized with base URL: http://localhost:3000/api
+2025-03-06 11:26:53,091 - run - ERROR - The following keys are empty or unset in your .env file: DISCORD_BOT_TOKEN, DISCORD_GUILD_ID
+2025-03-06 11:26:53,091 - run - ERROR - Please edit /Users/akiranishii/Desktop/projects/thera-vl/python-discord-bot/.env and add the missing values.
+2025-03-06 11:26:53,091 - run - ERROR - Environment setup incomplete. Please fix the issues above.

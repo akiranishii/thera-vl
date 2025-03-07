@@ -15,7 +15,8 @@
     "analyze": "ANALYZE=true npm run build",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "npx drizzle-kit migrate",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "fix-session-ids": "ts-node --transpile-only -r tsconfig-paths/register scripts/fix-null-session-ids.ts"
   },
   "dependencies": {
     "@clerk/backend": "^1.20.1",
@@ -90,6 +91,7 @@
     "postcss": "^8",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

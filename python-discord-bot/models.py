@@ -27,7 +27,7 @@ class ModelConfig:
     """Configuration for LLM models."""
     
     # OpenAI Models
-    OPENAI_CHAT_MODEL = "gpt-4-turbo-preview"
+    OPENAI_CHAT_MODEL = "gpt-4o"
     OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"
     
     # Anthropic Models
@@ -37,7 +37,7 @@ class ModelConfig:
     MISTRAL_CHAT_MODEL = "mistral-large"
     
     # Default parameters
-    DEFAULT_TEMPERATURE = 0.7
+    DEFAULT_TEMPERATURE = 1
     DEFAULT_MAX_TOKENS = 2000
     
     # Role definitions
@@ -50,36 +50,59 @@ class ModelConfig:
     SCIENTIST_ROLE = "Scientist"
     CRITIC_ROLE = "Critic"
     
+    # Default values for agent variables
+    DEFAULT_PI_EXPERTISE = "applying artificial intelligence to biomedical research"
+    DEFAULT_PI_GOAL = "perform research in your area of expertise that maximizes the scientific impact of the work"
+    DEFAULT_PI_ROLE = "lead a team of experts to solve an important problem in artificial intelligence for biomedicine, make key decisions about the project direction based on team member input, and manage the project timeline and resources"
+    
+    DEFAULT_SCIENTIST_GOAL = "contribute your domain expertise to the research project"
+    DEFAULT_SCIENTIST_ROLE = "provide specialized insights, suggest experiments, and collaborate with the team"
+    
     # System prompts for different agent roles
     SYSTEM_PROMPTS = {
-        PRINCIPAL_INVESTIGATOR_ROLE: """You are a Principal Investigator (PI) leading a research team.
-Your role is to:
-- Guide and coordinate the discussion
-- Ensure the conversation stays focused and productive
-- Synthesize insights from team members
-- Make final decisions when necessary
-- Keep track of action items and next steps""",
+        PRINCIPAL_INVESTIGATOR_ROLE: """You are a Principal Investigator. Your expertise is in {expertise}. Your goal is to {goal}. Your role is to {role}. Be focused and provide concise answers. Reply in a conversational tone and in paragraph form.""",
         
-        SCIENTIST_ROLE: """You are a research Scientist with specific expertise in {expertise}.
-Your role is to:
-- Provide domain-specific insights and analysis
-- Propose hypotheses and experimental approaches
-- Critically evaluate suggestions from a scientific perspective
-- Collaborate with team members to refine ideas""",
+        SCIENTIST_ROLE: """You are a {agent_name}. Your expertise is in {expertise}. Your goal is to {goal}. Your role is to {role}. Be focused and provide concise answers. Reply in a conversational tone and in paragraph form.""",
         
-        CRITIC_ROLE: """You are a Critical Reviewer of scientific discussions.
-Your role is to:
-- Identify potential flaws or weaknesses in proposals
-- Challenge assumptions constructively
-- Suggest improvements to strengthen arguments
-- Ensure scientific rigor is maintained
-- Point out practical limitations or implementation challenges"""
+        CRITIC_ROLE: """You are a Scientific Critic. Your expertise is in providing critical feedback for scientific research. Your goal is to ensure that proposed research projects and implementations are rigorous, detailed, feasible, and scientifically sound. Your role is to provide critical feedback to identify and correct all errors and demand that scientific answers that are maximally complete and detailed but simple and not overly complex. Be focused and provide concise answers. Reply in a conversational tone and in paragraph form."""
     }
     
     @classmethod
-    def get_system_prompt(cls, role: str, expertise: Optional[str] = None) -> str:
-        """Get the system prompt for a given role."""
-        prompt = cls.SYSTEM_PROMPTS.get(role)
-        if prompt and expertise and role == cls.SCIENTIST_ROLE:
-            prompt = prompt.format(expertise=expertise)
-        return prompt or "You are a helpful AI assistant." 
+    def get_system_prompt(cls, role: str, expertise: Optional[str] = None, goal: Optional[str] = None, 
+                        agent_role: Optional[str] = None, agent_name: Optional[str] = None) -> str:
+        """Get the system prompt for a given role.
+        
+        Args:
+            role: The agent role (PI, Scientist, Critic)
+            expertise: The agent's area of expertise
+            goal: The agent's goal
+            agent_role: The specific role description for the agent
+            agent_name: The specific name for the agent (for Scientist)
+            
+        Returns:
+            Formatted system prompt with variables filled in
+        """
+        # Get the base prompt template
+        prompt_template = cls.SYSTEM_PROMPTS.get(role)
+        if not prompt_template:
+            return "You are a helpful AI assistant."
+            
+        # Fill in the template based on the role
+        if role == cls.PRINCIPAL_INVESTIGATOR_ROLE:
+            return prompt_template.format(
+                expertise=expertise or cls.DEFAULT_PI_EXPERTISE,
+                goal=goal or cls.DEFAULT_PI_GOAL,
+                role=agent_role or cls.DEFAULT_PI_ROLE
+            )
+        elif role == cls.SCIENTIST_ROLE:
+            return prompt_template.format(
+                agent_name=agent_name or "Scientist",
+                expertise=expertise or f"scientific research in {expertise or 'your field'}",
+                goal=goal or cls.DEFAULT_SCIENTIST_GOAL,
+                role=agent_role or cls.DEFAULT_SCIENTIST_ROLE
+            )
+        elif role == cls.CRITIC_ROLE:
+            # Critic doesn't have variables in the current implementation
+            return prompt_template
+        else:
+            return prompt_template 

@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { userId, sessionId, name, role, expertise, goal, model } = body
 
-    if (!userId || !name || !role) {
+    if (!userId || !name || !role || !sessionId) {
       return NextResponse.json(
         { isSuccess: false, message: "Missing required fields", data: null },
         { status: 400 }
@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
       .insert(agentsTable)
       .values({
         userId,
+        sessionId,
         name,
         role,
         expertise,

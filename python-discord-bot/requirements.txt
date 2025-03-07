@@ -12,6 +12,7 @@ pyyaml>=6.0.1
 openai==1.13.3
 mistralai==0.1.2
 anthropic==0.8.1
+litellm==1.37.19
 
 # Utilities
 python-dateutil>=2.8.2
