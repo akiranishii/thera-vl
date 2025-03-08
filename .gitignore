@@ -27,10 +27,14 @@ yarn-error.log*
 
 # local env files
 .env*
-
+/python-discord-bot/.env*
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+next-env.d.ts.cursor/
+
+#cursor r
+/.cursor
+.cursorrules
