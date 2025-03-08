@@ -6,7 +6,7 @@
 - [Data Augmentation Framework Documentation](https://github.com/thera-core/data-augmentation-framework)
 - [TheraLab Orchestrator & Discord Bot Scripts](./python-discord-bot/)
 
-Welcome to **Thera VL** (Thera Virtual Lab), a multi-agent research environment that integrates a **Discord Bot**, a **Context-Tracking Framework**, and a **Data Augmentation Framework** to enable dynamic, AI-driven workflows. This README focuses on how these major components fit together technically and how you can use them for your multi-agent sessions—without touching on payment or analytics systems.
+Welcome to **Thera VL** (Thera Virtual Lab), a multi-agent research environment that integrates a **Discord Bot**, a **Context-Tracking Framework**, and a **Data Augmentation Framework** to enable dynamic, AI-driven workflows. This README focuses on how these major components fit together technically and how you can use them for your multi-agent sessions.
 
 ---
 
@@ -40,7 +40,7 @@ Thera VL orchestrates these layers. In a typical usage flow:
 
 Although you may see them combined in a monorepo or submodules, conceptually these are three repos:
 
-1. **`thera-core/theralab`** (this product layer, including the Discord Bot and multi-agent orchestration)
+1. **`akiranishii/thera-vl`** (this product layer, including the Discord Bot and multi-agent orchestration)
 2. **`thera-core/context-framework`** (generic context-tracking library)
 3. **`thera-core/data-augmentation-framework`** (specialized transformation and augmentation code)
 
@@ -192,7 +192,7 @@ print(metadata)
 
 ---
 
-## Data Augmentation Framework
+## Data Augmentation Framework (WORK IN PROGRESS)
 
 ### Installation
 
@@ -257,5 +257,6 @@ In summary, Thera VL aims to provide **end-to-end AI-human collaborative researc
 ---
 
 
-For questions or issues, please open an issue in the relevant repository.  
+For questions or issues, please open an issue in the relevant repository or email akira.nishii@thera-ai.com
+
 Happy hacking with **Thera VL**!
