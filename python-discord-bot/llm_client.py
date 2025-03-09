@@ -135,9 +135,18 @@ class LLMClient:
         
         # Track which providers are available
         self.providers = {
-            LLMProvider.OPENAI: bool(os.getenv("OPENAI_API_KEY")),
-            LLMProvider.ANTHROPIC: bool(os.getenv("ANTHROPIC_API_KEY")),
-            LLMProvider.MISTRAL: bool(os.getenv("MISTRAL_API_KEY")),
+            LLMProvider.OPENAI: {
+                "is_available": bool(os.getenv("OPENAI_API_KEY")),
+                "default_model": MODEL_MAPPING[LLMProvider.OPENAI]["default"]
+            },
+            LLMProvider.ANTHROPIC: {
+                "is_available": bool(os.getenv("ANTHROPIC_API_KEY")),
+                "default_model": MODEL_MAPPING[LLMProvider.ANTHROPIC]["default"]
+            },
+            LLMProvider.MISTRAL: {
+                "is_available": bool(os.getenv("MISTRAL_API_KEY")),
+                "default_model": MODEL_MAPPING[LLMProvider.MISTRAL]["default"]
+            },
         }
     
     async def generate_response(
@@ -220,7 +229,7 @@ class LLMClient:
     
     def get_available_providers(self):
         """Get a dictionary of available providers."""
-        return {provider: available for provider, available in self.providers.items() if available}
+        return {provider: details for provider, details in self.providers.items() if details.get("is_available", False)}
 
     async def call_agent(
         self, 
@@ -338,6 +347,11 @@ class LLMClient:
               "role": "..."
             }
             
+            Definitions of each variable:
+            1. expertise: The scientific expertise the agent has (specific field or discipline)
+            2. goal: The ultimate goal of the agent in the context of the research project
+            3. role: The specific role that the agent will play in the research project (as a sentence)
+
             For expertise, provide a specific field of specialization WITHOUT including phrases like "Specializes in" or similar prefixes. Just provide the direct expertise area.
             Make each field 1-2 sentences, specific to the topic, and suitable for scientific research.
             DO NOT include any explanation or text outside the JSON object.
@@ -359,8 +373,14 @@ class LLMClient:
               "role": "..."
             }
             
+            Definitions of each variable:
+            . agent_name: The name of the agent
+            . expertise: The scientific expertise the agent has (specific field or discipline)
+            . goal: The ultimate goal of the agent in the context of the research project
+            . role: The specific role that the agent will play in the research project (as a sentence)
+
             Guidelines:
-            - For agent_name, create a HIGHLY SPECIFIC scientific discipline that is unique and distinct (e.g., "Quantum Neurobiologist", "Synthetic Ecology Engineer", "Nano-scale Fluid Dynamics Physicist")
+            - For agent_name, create a scientific discipline that is unique and distinct (e.g., " Neurobiologist", "Fluid Dynamics Physicist")
             - For expertise, provide a specific field of specialization WITHOUT including phrases like "Specializes in" or similar prefixes. Just provide the direct expertise area.
             - Make sure the expertise is clearly different from computational biology if that has been used before
             - Draw from diverse scientific domains including physics, chemistry, materials science, astrophysics, geology, etc.
@@ -371,8 +391,6 @@ class LLMClient:
             """
             
             user_prompt = f"""Generate Scientist variables for the topic: "{topic}"
-            
-            Create a scientist with expertise COMPLETELY DIFFERENT from typical computational biology or bioinformatics areas.
             
             ONLY return a valid JSON object - no markdown, no explanation, no extra text."""
         
