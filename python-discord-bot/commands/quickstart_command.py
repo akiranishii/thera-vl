@@ -99,40 +99,83 @@ class QuickstartCommand(commands.Cog):
                 agent_type="principal_investigator"
             )
             
+            # Store PI details for reference in scientist generation
+            pi_name = ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE
+            pi_expertise = pi_variables.get("expertise", "")
+            pi_goal = pi_variables.get("goal", "")
+            
             await db_client.create_agent(
                 session_id=session_id,
                 user_id=user_id,
-                name=ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE,
+                name=pi_name,
                 role="Lead",
-                goal=pi_variables.get("goal"),
-                expertise=pi_variables.get("expertise"),
+                goal=pi_goal,
+                expertise=pi_expertise,
                 model="openai"
             )
             
-            # Create Scientists with varied expertise
-            expertise_areas = [
-                "Theoretical Analysis",
-                "Experimental Design",
-                "Data Analysis",
-                "Implementation Strategy",
-                "Risk Assessment",
-                "Innovation Research"
-            ]
+            # Keep track of all created agents for diversity
+            created_agents_info = [{
+                "name": pi_name,
+                "role": "Lead",
+                "expertise": pi_expertise,
+                "goal": pi_goal
+            }]
             
             for i in range(agent_count):
-                # Generate variables for each scientist based on the topic
+                # Create diversity context with information about existing team
+                diversity_context = [
+                    "Create a scientist with expertise COMPLETELY DIFFERENT from previously generated team members.",
+                    f"This is scientist #{i+1} of {agent_count}."
+                ]
+                
+                # Include details of existing team for better complementary expertise
+                if created_agents_info:
+                    previous_agents_text = "\n\nCurrent research team:\n"
+                    for j, agent_info in enumerate(created_agents_info):
+                        previous_agents_text += f"{j+1}. {agent_info['name']} ({agent_info['role']}) - Expertise: {agent_info['expertise']}"
+                        if agent_info.get('goal'):
+                            previous_agents_text += f", Goal: {agent_info['goal']}"
+                        previous_agents_text += "\n"
+                    
+                    diversity_context.append(f"Current team composition: {previous_agents_text}")
+                    diversity_context.append("Your role must be complementary to the existing team and fill a knowledge gap.")
+                
+                # Add position-specific guidance for more diversity
+                if i == 0:
+                    diversity_context.append("Create a scientist from a PHYSICAL SCIENCES domain (physics, chemistry, materials science, etc.) rather than biology or computer science.")
+                elif i == 1:
+                    diversity_context.append("Create a scientist from an APPLIED SCIENCE field (engineering, robotics, energy systems, etc.) rather than theoretical domains.")
+                else:
+                    diversity_context.append("Create a scientist from a completely different discipline like geology, astronomy, mathematics, or social sciences that can bring a unique perspective.")
+                
+                # Generate variables with the diversity context
                 scientist_variables = await llm_client.generate_agent_variables(
                     topic=topic,
-                    agent_type="scientist"
+                    agent_type="scientist",
+                    additional_context="\n".join(diversity_context)
                 )
+                
+                # Get the agent details
+                agent_name = scientist_variables.get("agent_name", f"Scientist {i+1}")
+                agent_expertise = scientist_variables.get("expertise", "")
+                agent_goal = scientist_variables.get("goal", "")
+                
+                # Track this agent's details for future diversity
+                created_agents_info.append({
+                    "name": agent_name,
+                    "role": ModelConfig.SCIENTIST_ROLE,
+                    "expertise": agent_expertise,
+                    "goal": agent_goal
+                })
                 
                 await db_client.create_agent(
                     session_id=session_id,
                     user_id=user_id,
-                    name=scientist_variables.get("agent_name", f"Scientist {i+1}"),
+                    name=agent_name,
                     role=ModelConfig.SCIENTIST_ROLE,
-                    expertise=scientist_variables.get("expertise"),
-                    goal=scientist_variables.get("goal"),
+                    expertise=agent_expertise,
+                    goal=agent_goal,
                     model="openai"
                 )
             
@@ -143,7 +186,8 @@ class QuickstartCommand(commands.Cog):
                     user_id=user_id,
                     name="Critic",
                     role=ModelConfig.CRITIC_ROLE,
-                    goal="Challenge assumptions and identify potential issues",
+                    expertise="Critical analysis of scientific research, identification of methodological flaws, and evaluation of research validity",
+                    goal="Ensure scientific rigor and identify potential weaknesses in proposed research approaches",
                     model="openai"
                 )
             

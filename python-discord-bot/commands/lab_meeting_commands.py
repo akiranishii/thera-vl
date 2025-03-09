@@ -120,32 +120,37 @@ class LabMeetingCommands(commands.Cog):
                 )
                 
                 # Create Scientists with varied expertise for parallel runs
-                # Keep track of created agent names to avoid duplicates
-                created_agent_names = set()
+                # Keep track of created agent details for better diversity
+                created_agents_info = []
                 
                 for i in range(auto_scientist_count):
                     # Generate variables for each scientist based on the agenda
                     # Add additional context to ensure each scientist is unique
                     diversity_context = [
-                        "Create a different type of scientist than previously generated.",
-                        "Ensure each scientist has a distinct specialty.",
+                        "Create a scientist with expertise COMPLETELY DIFFERENT from previously generated scientists.",
                         f"This is scientist #{i+1} of {auto_scientist_count}."
                     ]
                     
-                    # For the second and third scientists, specify that they should differ
-                    if i > 0:
-                        diversity_context.append(f"Previously created: {', '.join(created_agent_names)}")
+                    # For the second and third scientists, specify that they should differ by including details of previous agents
+                    if created_agents_info:
+                        previous_agents_text = "\n\nPreviously created scientists:\n"
+                        for j, agent_info in enumerate(created_agents_info):
+                            previous_agents_text += f"{j+1}. {agent_info['name']} - Expertise: {agent_info['expertise']}" 
+                            if agent_info.get('goal'):
+                                previous_agents_text += f", Goal: {agent_info['goal']}"
+                            previous_agents_text += "\n"
                         
-                    # Add position-specific guidance
+                        diversity_context.append(f"Current team composition: {previous_agents_text}")
+                        diversity_context.append("Your role must be complementary to the existing team and fill a knowledge gap.")
+                        
+                    # Add position-specific guidance for more diversity
                     if i == 0:
-                        topic_focus = f"Focus on core aspects of {agenda}"
+                        diversity_context.append("Create a scientist from a PHYSICAL SCIENCES domain (physics, chemistry, materials science, etc.) rather than biology or computer science.")
                     elif i == 1:
-                        topic_focus = f"Focus on technical or methodological aspects of {agenda}"
+                        diversity_context.append("Create a scientist from an APPLIED SCIENCE field (engineering, robotics, energy systems, etc.) rather than theoretical domains.")
                     else:
-                        topic_focus = f"Focus on interdisciplinary or novel aspects of {agenda}"
+                        diversity_context.append("Create a scientist from a completely different discipline like geology, astronomy, mathematics, or social sciences that can bring a unique perspective.")
                         
-                    diversity_context.append(topic_focus)
-                    
                     # Generate variables with the diversity context
                     scientist_variables = await llm_client.generate_agent_variables(
                         topic=agenda,
@@ -155,16 +160,15 @@ class LabMeetingCommands(commands.Cog):
                     
                     # Get the agent name, ensuring it's unique
                     agent_name = scientist_variables.get("agent_name", f"Scientist {i+1}")
+                    agent_expertise = scientist_variables.get("expertise", "")
+                    agent_goal = scientist_variables.get("goal", "")
                     
-                    # If we somehow get a duplicate, modify the name to make it unique
-                    counter = 1
-                    original_name = agent_name
-                    while agent_name in created_agent_names:
-                        agent_name = f"{original_name} {counter}"
-                        counter += 1
-                    
-                    # Add to our tracking set
-                    created_agent_names.add(agent_name)
+                    # Track this agent's details for future diversity
+                    created_agents_info.append({
+                        "name": agent_name,
+                        "expertise": agent_expertise,
+                        "goal": agent_goal
+                    })
                     
                     # Create the agent
                     await db_client.create_agent(
@@ -172,8 +176,8 @@ class LabMeetingCommands(commands.Cog):
                         user_id=user_id,
                         name=agent_name,
                         role=ModelConfig.SCIENTIST_ROLE,
-                        expertise=scientist_variables.get("expertise"),
-                        goal=scientist_variables.get("goal"),
+                        expertise=agent_expertise,
+                        goal=agent_goal,
                         model="openai"
                     )
                 
@@ -184,7 +188,8 @@ class LabMeetingCommands(commands.Cog):
                         user_id=user_id,
                         name=ModelConfig.CRITIC_ROLE,
                         role="Critical Reviewer",
-                        goal="Challenge assumptions and ensure scientific rigor",
+                        expertise="Critical analysis of scientific research, identification of methodological flaws, and evaluation of research validity",
+                        goal="Ensure scientific rigor and identify potential weaknesses in proposed research approaches",
                         model="openai"
                     )
             

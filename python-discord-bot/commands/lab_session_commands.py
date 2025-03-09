@@ -609,20 +609,28 @@ class LabSessionCommands(commands.Cog):
             # Add other sessions
             other_sessions = [s for s in sessions if s.get("status") != "active"]
             if other_sessions:
-                other_list = []
-                for session in other_sessions:
-                    status_emoji = "🔴" if session.get("status") == "ended" else "⚪"
-                    other_list.append(
-                        f"{status_emoji} **{session.get('title')}**\n"
-                        f"ID: {session.get('id')}\n"
-                        f"Status: {session.get('status', 'Unknown').title()}\n"
-                        f"Privacy: {'Public' if session.get('is_public') else 'Private'}"
+                # Split sessions into chunks to avoid Discord's 1024 character limit per field
+                MAX_SESSIONS_PER_FIELD = 3  # Adjust this based on your average session description length
+                session_chunks = [other_sessions[i:i + MAX_SESSIONS_PER_FIELD] 
+                                 for i in range(0, len(other_sessions), MAX_SESSIONS_PER_FIELD)]
+                
+                for i, chunk in enumerate(session_chunks):
+                    other_list = []
+                    for session in chunk:
+                        status_emoji = "🔴" if session.get("status") == "ended" else "⚪"
+                        other_list.append(
+                            f"{status_emoji} **{session.get('title')}**\n"
+                            f"ID: {session.get('id')}\n"
+                            f"Status: {session.get('status', 'Unknown').title()}\n"
+                            f"Privacy: {'Public' if session.get('is_public') else 'Private'}"
+                        )
+                    
+                    field_name = "Other Sessions" if i == 0 else f"Other Sessions (continued {i+1})"
+                    embed.add_field(
+                        name=field_name,
+                        value="\n\n".join(other_list),
+                        inline=False
                     )
-                embed.add_field(
-                    name="Other Sessions",
-                    value="\n\n".join(other_list) if other_list else "No other sessions",
-                    inline=False
-                )
             
             await interaction.followup.send(
                 embed=embed,

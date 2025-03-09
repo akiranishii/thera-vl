@@ -98,56 +98,101 @@ class AgentOrchestrator:
         # Initial message to set up the conversation if in live mode
         if live_mode:
             # Send initial message
-            initial_message = f"**Lab Meeting Started**\n\nAgenda: {meeting_data.get('agenda', 'No agenda specified')}\n\n**Participants:**\n"
+            initial_message = f"**Lab Meeting Started**\n\nAgenda: {meeting_data.get('agenda', 'No agenda specified')}\n\n"
             
-            # Helper function to convert system prompt to first person
-            def to_first_person(prompt):
-                if not prompt:
-                    return ""
-                # Replace "You are" with "I am"
-                prompt = prompt.replace("You are", "I am").replace("you are", "I am")
-                # Replace "Your expertise" with "My expertise"
-                prompt = prompt.replace("Your expertise", "My expertise").replace("your expertise", "my expertise")
-                # Replace "Your goal" with "My goal"
-                prompt = prompt.replace("Your goal", "My goal").replace("your goal", "my goal")
-                # Replace "Your role" with "My role"
-                prompt = prompt.replace("Your role", "My role").replace("your role", "my role")
-                return prompt.strip()
+            # Show that we're generating participants
+            await interaction.followup.send(initial_message + "**Generating participants...**", ephemeral=False)
             
-            # Add each agent with their formatted description
+            # Add each agent in separate messages with clear formatting
             for agent in agents:
                 name = agent.get('name', 'Unknown Agent')
                 role = agent.get('role', 'Unknown Role')
                 
-                # Create a formatted prompt showing this agent's capabilities
-                prompt_parts = []
+                # Create a formatted card showing this agent's capabilities
+                agent_card = f"**Generated {name}** ({role})\n"
                 
-                # Start with the basic name and role
-                initial_message += f"**{name}** ({role})\n"
+                # Format fields with clear labels
+                field_parts = []
                 
                 # Add expertise if available
                 if agent.get('expertise'):
-                    prompt_parts.append(f"My expertise is in {agent.get('expertise')}")
+                    field_parts.append(f"**Expertise:** {agent.get('expertise')}")
                 
                 # Add goal if available
                 if agent.get('goal'):
-                    prompt_parts.append(f"My goal is to {agent.get('goal')}")
+                    field_parts.append(f"**Goal:** {agent.get('goal')}")
                 
-                # Add any specific role details
-                if agent.get('role') and "scientist" in agent.get('role', '').lower():
-                    prompt_parts.append(f"My role is to {agent.get('role')}")
+                # Add role if available (excluding the word "Scientist" if that's all it contains)
+                if agent.get('role') and agent.get('role') != "Scientist":
+                    field_parts.append(f"**Role:** {agent.get('role')}")
                 
-                # Add the formatted prompt parts if available
-                if prompt_parts:
-                    formatted_prompt = "\n".join(prompt_parts)
-                    initial_message += f"```\n{formatted_prompt}\n```\n\n"
-                else:
-                    initial_message += "\n"
+                # Add the formatted parts
+                if field_parts:
+                    formatted_fields = "\n".join(field_parts)
+                    agent_card += f"```\n{formatted_fields}\n```"
+                
+                # Send each agent as a separate message
+                await interaction.followup.send(agent_card, ephemeral=False)
             
-            await interaction.followup.send(initial_message, ephemeral=False)
+            # Send the final participants list message
+            participants_message = "**All participants ready! Starting lab meeting...**"
+            await interaction.followup.send(participants_message, ephemeral=False)
             
         # Set meeting to active
         meeting_data["is_active"] = True
+        
+        # Have the PI start the discussion with initial thoughts and guiding questions
+        try:
+            # Get the agenda and any existing context
+            agenda = meeting_data.get('agenda', 'No agenda specified')
+            
+            # Include the agenda and supplementary information in the conversation history
+            pi_context = f"Lab Meeting Topic: {agenda}\n\n"
+            
+            # Add any existing conversation history if available
+            if conversation_history:
+                pi_context += f"Prior discussion: {conversation_history}\n\n"
+                
+            # Construct a special prompt for the PI to start the meeting
+            pi_instructions = f"""You are the Principal Investigator leading this lab meeting.
+            
+            Please provide:
+            1. A brief introduction to the topic
+            2. Your initial thoughts on the approach
+            3. 1-3 specific guiding questions for your team to address (maximum 3 questions)
+            
+            Keep your response focused and concise."""
+            
+            # Combine context and instructions
+            pi_full_prompt = pi_context + pi_instructions
+            
+            # Call the PI with this special opening prompt
+            pi_opening = await self.llm_client.call_agent(
+                agent_key="principal_investigator",
+                conversation_history=pi_full_prompt,
+                expertise=pi_agent.get("expertise"),
+                goal=pi_agent.get("goal"),
+                agent_role=pi_agent.get("role")
+            )
+            
+            # Update conversation history with the PI's opening
+            conversation_history += f"\n\n[Principal Investigator (Opening)]: {pi_opening}"
+            meeting_data["conversation_history"] = conversation_history
+            
+            # Create a transcript entry for the PI's opening
+            await self.create_transcript(
+                meeting_id=meeting_id,
+                agent_name="Principal Investigator (Opening)",
+                round_number=0,  # Round 0 indicates pre-rounds
+                content=pi_opening
+            )
+            
+            # Send the PI's opening in Discord
+            if live_mode:
+                await interaction.followup.send(f"**[Principal Investigator (Opening)]**: {pi_opening}", ephemeral=False)
+            
+        except Exception as e:
+            logger.error(f"Error getting PI opening statement: {e}")
         
         # Loop through rounds
         for round_index in range(1, round_count + 1):
