@@ -10,19 +10,16 @@ const GalleryGrid = dynamic(() => import("./gallery-grid"), { ssr: false })
 interface GalleryClientProps {
   initialSort: string
   initialSearch: string
-  initialAgentType: string
 }
 
 export default function GalleryClient({
   initialSort,
-  initialSearch,
-  initialAgentType
+  initialSearch
 }: GalleryClientProps) {
   return (
     <GalleryFilters
       initialSort={initialSort}
       initialSearch={initialSearch}
-      initialAgentType={initialAgentType}
     />
   )
 }

@@ -117,13 +117,30 @@ export async function getPublicSessionsAction(
     const totalPages = Math.ceil(totalCount / pageSize);
     
     // Get the paginated and sorted sessions
+    let orderByClause;
+    
+    switch (sort) {
+      case 'popular':
+        // For popular, we would ideally sort by number of votes or views
+        // This is a placeholder - in a real app, you'd join with votes table and count
+        orderByClause = [desc(sessionsTable.createdAt)]; // Placeholder
+        break;
+      case 'trending':
+        // For trending, we'd ideally sort by recent activity or engagement
+        // This is a placeholder - in a real app, you'd likely use a more complex algorithm
+        orderByClause = [desc(sessionsTable.createdAt)]; // Placeholder
+        break;
+      case 'recent':
+      default:
+        orderByClause = [desc(sessionsTable.createdAt)];
+        break;
+    }
+    
     const sessions = await db.query.sessions.findMany({
       where: and(...conditions),
       limit: pageSize,
       offset: (page - 1) * pageSize,
-      orderBy: sort === 'recent' 
-        ? [desc(sessionsTable.createdAt)] 
-        : [desc(sessionsTable.createdAt)] // For now use same sort for all options
+      orderBy: orderByClause
     });
     
     return {

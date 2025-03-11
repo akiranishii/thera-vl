@@ -10,7 +10,6 @@ interface GalleryPageProps {
     page?: string
     sort?: "recent" | "popular" | "trending"
     search?: string
-    agentType?: string
   }>
 }
 
@@ -49,7 +48,6 @@ export default async function GalleryPage({ searchParams }: GalleryPageProps) {
         <GalleryClient 
           initialSort={params.sort || "recent"} 
           initialSearch={params.search || ""}
-          initialAgentType={params.agentType || ""}
         />
       </div>
       
@@ -72,8 +70,7 @@ async function SessionsContent({ searchParams }: { searchParams: GalleryPageProp
     page,
     pageSize: 12,
     sort: params.sort,
-    search: params.search,
-    agentType: params.agentType
+    search: params.search
   })
   
   if (!isSuccess || !data) {
@@ -108,7 +105,7 @@ async function SessionsContent({ searchParams }: { searchParams: GalleryPageProp
               size="sm"
               asChild
             >
-              <a href={`/gallery?page=${currentPage - 1}&sort=${params.sort || ""}&search=${params.search || ""}&agentType=${params.agentType || ""}`}>
+              <a href={`/gallery?page=${currentPage - 1}&sort=${params.sort || ""}&search=${params.search || ""}`}>
                 Previous
               </a>
             </Button>
@@ -124,7 +121,7 @@ async function SessionsContent({ searchParams }: { searchParams: GalleryPageProp
               size="sm"
               asChild
             >
-              <a href={`/gallery?page=${currentPage + 1}&sort=${params.sort || ""}&search=${params.search || ""}&agentType=${params.agentType || ""}`}>
+              <a href={`/gallery?page=${currentPage + 1}&sort=${params.sort || ""}&search=${params.search || ""}`}>
                 Next
               </a>
             </Button>

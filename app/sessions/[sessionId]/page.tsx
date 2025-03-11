@@ -7,12 +7,13 @@ import { Separator } from "@/components/ui/separator"
 import { getSessionAction } from "@/actions/db/sessions-actions"
 import { getMeetingsAction } from "@/actions/db/meetings-actions" 
 import { Button } from "@/components/ui/button"
-import { Eye } from "lucide-react"
+import { Eye, ThumbsUp, ThumbsDown } from "lucide-react"
 import Link from "next/link"
 import SessionHeader from "./_components/session-header"
 import SessionTranscriptSkeleton from "./loading"
 import SessionTranscripts from "./_components/session-transcripts"
 import SessionTranscriptsSkeleton from "./_components/session-transcripts-skeleton"
+import VoteButtons from "@/components/session/vote-buttons"
 
 interface SessionTranscriptPageProps {
   params: Promise<{ sessionId: string }>
@@ -112,12 +113,24 @@ async function SessionContent({
       
       <div className="flex justify-center py-4">
         <div className="flex gap-4">
-          <button disabled className="rounded-full px-4 py-2 bg-primary text-primary-foreground">
-            Upvote (0)
-          </button>
-          <button disabled className="rounded-full px-4 py-2 bg-muted text-muted-foreground">
-            Downvote (0)
-          </button>
+          {userId ? (
+            <VoteButtons 
+              sessionId={sessionId}
+              size="lg"
+              showCounts={true}
+            />
+          ) : (
+            <div className="flex gap-4">
+              <Button disabled variant="outline" className="flex items-center gap-1.5">
+                <ThumbsUp className="h-4 w-4" />
+                Upvote
+              </Button>
+              <Button disabled variant="outline" className="flex items-center gap-1.5">
+                <ThumbsDown className="h-4 w-4" />
+                Downvote
+              </Button>
+            </div>
+          )}
         </div>
       </div>
       

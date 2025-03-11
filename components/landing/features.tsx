@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import {
-  AppWindow,
-  Database,
-  DollarSign,
+  Brain,
+  BookOpen,
+  LineChart,
   LucideIcon,
-  Shield
+  Users
 } from "lucide-react"
 
 interface FeatureProps {
@@ -29,24 +29,24 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
   {
-    title: "Frontend",
-    description: "Next.js, Tailwind, Shadcn, Framer Motion",
-    icon: AppWindow
+    title: "Contextual Research",
+    description: "Digest the daily deluge of AI papers and repositories with meaningful context",
+    icon: BookOpen
   },
   {
-    title: "Backend",
-    description: "Postgres, Supabase, Drizzle ORM, Server Actions",
-    icon: Database
+    title: "Rapid Experimentation",
+    description: "Shorten the feedback loop from days to hours for faster breakthroughs",
+    icon: LineChart
   },
   {
-    title: "Auth",
-    description: "Clerk",
-    icon: Shield
+    title: "Human-AI Collaboration",
+    description: "Partner with AI co-scientists for more flexible, creative research",
+    icon: Users
   },
   {
-    title: "Payments",
-    description: "Stripe",
-    icon: DollarSign
+    title: "Process Preservation",
+    description: "Share not just findings, but the entire scientific journey behind them",
+    icon: Brain
   }
 ]
 
@@ -75,7 +75,7 @@ export const FeaturesSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h2 className="mb-12 text-center text-4xl font-bold">Tech Stack</h2>
+          <h2 className="mb-12 text-center text-4xl font-bold">Our Solutions</h2>
           <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {features.map((feature, index) => (
               <FeatureCard key={index} {...feature} />

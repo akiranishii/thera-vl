@@ -14,7 +14,8 @@ export default async function HomePage() {
     <div className="pb-20">
       <HeroSection />
       {/* social proof */}
-      <FeaturesSection />
+      {/* FeaturesSection commented out as requested */}
+      {/* <FeaturesSection /> */}
       {/* pricing */}
       {/* faq */}
       {/* blog */}

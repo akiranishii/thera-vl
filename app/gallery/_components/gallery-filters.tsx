@@ -34,7 +34,6 @@ import {
 
 const filterSchema = z.object({
   sort: z.enum(["recent", "popular", "trending"]).default("recent"),
-  agentType: z.string().optional(),
   search: z.string().optional()
 })
 
@@ -43,13 +42,11 @@ type FilterValues = z.infer<typeof filterSchema>
 interface GalleryFiltersProps {
   initialSort: string
   initialSearch: string
-  initialAgentType: string
 }
 
 export default function GalleryFilters({
   initialSort = "recent",
-  initialSearch = "",
-  initialAgentType = ""
+  initialSearch = ""
 }: GalleryFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -59,7 +56,6 @@ export default function GalleryFilters({
   
   // Count active filters
   const activeFilters = [
-    initialAgentType ? 1 : 0,
     initialSearch ? 1 : 0
   ].reduce((sum, count) => sum + count, 0)
   
@@ -67,7 +63,6 @@ export default function GalleryFilters({
     resolver: zodResolver(filterSchema),
     defaultValues: {
       sort: (initialSort as "recent" | "popular" | "trending") || "recent",
-      agentType: initialAgentType || "",
       search: initialSearch || ""
     }
   })
@@ -102,13 +97,6 @@ export default function GalleryFilters({
         params.delete("sort")
       }
       
-      // Update agent type
-      if (values.agentType) {
-        params.set("agentType", values.agentType)
-      } else {
-        params.delete("agentType")
-      }
-      
       // Keep search parameter
       if (values.search) {
         params.set("search", values.search)
@@ -127,7 +115,7 @@ export default function GalleryFilters({
     startTransition(() => {
       const params = new URLSearchParams(searchParams.toString())
       
-      if (value && value !== "recent") {
+      if (value) {
         params.set("sort", value)
       } else {
         params.delete("sort")
@@ -153,7 +141,6 @@ export default function GalleryFilters({
       router.push(`/gallery?${params.toString()}`)
       form.reset({
         sort: (sort as "recent" | "popular" | "trending") || "recent",
-        agentType: "",
         search: ""
       })
       setSearch("")
@@ -232,33 +219,6 @@ export default function GalleryFilters({
                         <SelectItem value="recent">Recent</SelectItem>
                         <SelectItem value="popular">Popular</SelectItem>
                         <SelectItem value="trending">Trending</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="agentType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Agent Type</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select agent type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="">All</SelectItem>
-                        <SelectItem value="task">Task-oriented</SelectItem>
-                        <SelectItem value="chat">Conversational</SelectItem>
-                        <SelectItem value="creative">Creative</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

@@ -9,15 +9,15 @@ This client component provides the hero section for the landing page.
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
-import { ChevronRight, Rocket, Github } from "lucide-react"
+import { ChevronRight, Rocket, Github, BookOpen } from "lucide-react"
 import Link from "next/link"
 import posthog from "posthog-js"
 import AnimatedGradientText from "../magicui/animated-gradient-text"
 import HeroVideoDialog from "../magicui/hero-video-dialog"
 
 export const HeroSection = () => {
-  const handleGetStartedClick = () => {
-    posthog.capture("clicked_get_started")
+  const handleExploreClick = () => {
+    posthog.capture("clicked_explore_research")
   }
 
   return (
@@ -49,7 +49,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
           className="text-balance text-6xl font-bold"
         >
-          Save time and start building.
+          Reimagining Scientific Innovation
         </motion.div>
 
         <motion.div
@@ -58,8 +58,8 @@ export const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
           className="max-w-xl text-balance text-xl"
         >
-          Use Akira's app template to save time and get started with your next
-          project.
+          Thera bridges the gap between AI research and practical implementation,
+          accelerating the pace of scientific breakthroughs.
         </motion.div>
 
         <motion.div
@@ -68,12 +68,12 @@ export const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
         >
           <Link
-            href="https://github.com/akiranishii/thera-vl"
-            onClick={handleGetStartedClick}
+            href="/gallery"
+            onClick={handleExploreClick}
           >
             <Button className="bg-blue-500 text-lg hover:bg-blue-600">
-              <Rocket className="mr-2 size-5" />
-              Get Started &rarr;
+              <BookOpen className="mr-2 size-5" />
+              Explore Research &rarr;
             </Button>
           </Link>
         </motion.div>
@@ -89,7 +89,7 @@ export const HeroSection = () => {
           animationStyle="top-in-bottom-out"
           videoSrc="https://www.youtube.com/embed/9yS0dR0kP-s"
           thumbnailSrc="hero.png"
-          thumbnailAlt="Hero Video"
+          thumbnailAlt="Thera AI Demo"
         />
       </motion.div>
     </div>

@@ -103,12 +103,12 @@ export default function GalleryGrid({
                   <div className="flex items-center">
                     <ThumbsUp className="mr-1 h-4 w-4 text-muted-foreground" />
                     <span className="text-sm text-muted-foreground">
-                      {/* Placeholder for vote count */}
+                      {/* Display vote total (positive number means more upvotes, negative means more downvotes) */}
                       {sessionStats[session.id]?.votes || 0}
                     </span>
                     <MessageSquare className="ml-4 mr-1 h-4 w-4 text-muted-foreground" />
                     <span className="text-sm text-muted-foreground">
-                      {/* Placeholder for message count */}
+                      {/* Display message count */}
                       {sessionStats[session.id]?.messages || 0}
                     </span>
                   </div>

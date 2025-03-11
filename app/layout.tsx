@@ -23,8 +23,8 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Akira's App Template",
-  description: "A full-stack web app template."
+  title: "Thera | Reimagining Scientific Innovation",
+  description: "An applied research lab bridging the gap between AI research and implementation."
 }
 
 export default async function RootLayout({
