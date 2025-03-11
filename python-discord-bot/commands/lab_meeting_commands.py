@@ -574,6 +574,21 @@ class LabMeetingCommands(commands.Cog):
                     inline=False
                 )
             
+            # Start combined summary generation if needed
+            # We need to do this before sending final response to avoid early return
+            combined_summary_task = None
+            if (len(parallel_groups) > 1 or force_combined_summary) and interaction.channel:
+                logger.info(f"Creating combined summary task for {len(ended_meetings)} meetings (forced: {force_combined_summary})")
+                combined_summary_task = asyncio.create_task(
+                    self._generate_combined_summary_for_ended_meetings(
+                        interaction=interaction,
+                        ended_meetings=ended_meetings,
+                        channel=interaction.channel
+                    )
+                )
+            elif len(parallel_groups) > 1 or force_combined_summary:
+                logger.error("Cannot generate combined summary - no channel available")
+            
             # Send final response (private to user)
             try:
                 # Try to edit the initial response instead of sending a new one
@@ -581,17 +596,18 @@ class LabMeetingCommands(commands.Cog):
                     try:
                         await initial_response.edit(content=None, embed=embed)
                         logger.info("Successfully edited initial response with final results")
-                        return
+                        # Don't return here, as we may need to wait for the combined summary task
                     except Exception as edit_error:
                         logger.warning(f"Could not edit initial response: {edit_error}")
                         # Fall through to other methods
                 
-                # Try to send a new followup if editing failed
-                await interaction.followup.send(
-                    embed=embed,
-                    ephemeral=True
-                )
-                logger.info("Successfully sent final response as a new followup")
+                # Try to send a new followup if editing failed or no initial response
+                if 'initial_response' not in locals() or 'edit_error' in locals():
+                    await interaction.followup.send(
+                        embed=embed,
+                        ephemeral=True
+                    )
+                    logger.info("Successfully sent final response as a new followup")
             except discord.NotFound as webhook_error:
                 logger.warning(f"Webhook expired: {webhook_error}")
                 # Interaction webhook expired, send to channel instead
@@ -611,21 +627,8 @@ class LabMeetingCommands(commands.Cog):
                     )
                     logger.info("Sent fallback message to channel after error")
             
-            # Generate combined summary if there are multiple parallel meetings or forced
-            if len(parallel_groups) > 1 or force_combined_summary:
-                # Run the combined summary generation in a separate "fire and forget" task
-                # This prevents the Discord interaction from timing out
-                channel = interaction.channel
-                if channel:
-                    asyncio.create_task(
-                        self._generate_combined_summary_for_ended_meetings(
-                            interaction=interaction,
-                            ended_meetings=ended_meetings,
-                            channel=channel
-                        )
-                    )
-                else:
-                    logger.error("Cannot generate combined summary - no channel available")
+            # Note: We're no longer generating the summary here since we do it before sending the final response
+            # This ensures the task is created even if we have early returns
             
         except Exception as e:
             logger.error(f"Error in end_team_meeting command: {e}")

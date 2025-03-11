@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button"
 import GalleryClient, { GalleryGridClient } from "./_components/gallery-client"
 
 interface GalleryPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string
     sort?: "recent" | "popular" | "trending"
     search?: string
     agentType?: string
-  }
+  }>
 }
 
 function SessionsSkeleton() {
@@ -41,33 +41,39 @@ function SessionsSkeleton() {
 }
 
 export default async function GalleryPage({ searchParams }: GalleryPageProps) {
+  const params = await searchParams
+  
   return (
     <div>
       <div className="mb-8">
         <GalleryClient 
-          initialSort={searchParams.sort || "recent"} 
-          initialSearch={searchParams.search || ""}
-          initialAgentType={searchParams.agentType || ""}
+          initialSort={params.sort || "recent"} 
+          initialSearch={params.search || ""}
+          initialAgentType={params.agentType || ""}
         />
       </div>
       
       <Suspense fallback={<SessionsSkeleton />}>
-        <SessionsContent searchParams={searchParams} />
+        <SessionsContent searchParams={params} />
       </Suspense>
     </div>
   )
 }
 
-async function SessionsContent({ searchParams }: { searchParams: GalleryPageProps["searchParams"] }) {
+async function SessionsContent({ searchParams }: { searchParams: GalleryPageProps["searchParams"] | Awaited<GalleryPageProps["searchParams"]> }) {
   const { userId } = await auth()
-  const page = searchParams.page ? parseInt(searchParams.page) : 1
+  
+  // Ensure searchParams is awaited
+  const params = searchParams instanceof Promise ? await searchParams : searchParams
+  
+  const page = params.page ? parseInt(params.page) : 1
   
   const { data, isSuccess } = await getPublicSessionsAction({
     page,
     pageSize: 12,
-    sort: searchParams.sort,
-    search: searchParams.search,
-    agentType: searchParams.agentType
+    sort: params.sort,
+    search: params.search,
+    agentType: params.agentType
   })
   
   if (!isSuccess || !data) {
@@ -102,7 +108,7 @@ async function SessionsContent({ searchParams }: { searchParams: GalleryPageProp
               size="sm"
               asChild
             >
-              <a href={`/gallery?page=${currentPage - 1}&sort=${searchParams.sort || ""}&search=${searchParams.search || ""}&agentType=${searchParams.agentType || ""}`}>
+              <a href={`/gallery?page=${currentPage - 1}&sort=${params.sort || ""}&search=${params.search || ""}&agentType=${params.agentType || ""}`}>
                 Previous
               </a>
             </Button>
@@ -118,7 +124,7 @@ async function SessionsContent({ searchParams }: { searchParams: GalleryPageProp
               size="sm"
               asChild
             >
-              <a href={`/gallery?page=${currentPage + 1}&sort=${searchParams.sort || ""}&search=${searchParams.search || ""}&agentType=${searchParams.agentType || ""}`}>
+              <a href={`/gallery?page=${currentPage + 1}&sort=${params.sort || ""}&search=${params.search || ""}&agentType=${params.agentType || ""}`}>
                 Next
               </a>
             </Button>

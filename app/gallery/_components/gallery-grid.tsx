@@ -1,13 +1,17 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { SelectSession } from "@/db/schema/sessions-schema"
 import { AnimatePresence, motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Calendar, MessageSquare, ThumbsUp } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatDistanceToNow } from "date-fns"
+import { getVoteCountAction } from "@/actions/db/votes-actions"
+import { getSessionTranscriptCountAction } from "@/actions/db/transcripts-actions"
+import Link from "next/link"
 
 interface GalleryGridProps {
   sessions: SelectSession[]
@@ -21,6 +25,29 @@ export default function GalleryGrid({
   className
 }: GalleryGridProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [sessionStats, setSessionStats] = useState<Record<string, { votes: number, messages: number }>>({})
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const stats: Record<string, { votes: number, messages: number }> = {}
+      
+      for (const session of sessions) {
+        // Fetch vote counts
+        const voteResult = await getVoteCountAction(session.id)
+        const votes = voteResult.isSuccess ? voteResult.data.total : 0
+        
+        // Fetch message counts
+        const messageResult = await getSessionTranscriptCountAction(session.id)
+        const messages = messageResult.isSuccess ? messageResult.data : 0
+        
+        stats[session.id] = { votes, messages }
+      }
+      
+      setSessionStats(stats)
+    }
+    
+    fetchStats()
+  }, [sessions])
 
   return (
     <div
@@ -77,12 +104,12 @@ export default function GalleryGrid({
                     <ThumbsUp className="mr-1 h-4 w-4 text-muted-foreground" />
                     <span className="text-sm text-muted-foreground">
                       {/* Placeholder for vote count */}
-                      12
+                      {sessionStats[session.id]?.votes || 0}
                     </span>
                     <MessageSquare className="ml-4 mr-1 h-4 w-4 text-muted-foreground" />
                     <span className="text-sm text-muted-foreground">
                       {/* Placeholder for message count */}
-                      5
+                      {sessionStats[session.id]?.messages || 0}
                     </span>
                   </div>
                   <Button size="sm" asChild>

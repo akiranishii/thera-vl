@@ -11,7 +11,8 @@ import { InsertMeeting, MeetingWithSession, SelectMeeting, meetingsTable, meetin
 import { sessionsTable } from "@/db/schema/sessions-schema"
 import { ActionState } from "@/types"
 import { auth } from "@clerk/nextjs/server"
-import { and, eq } from "drizzle-orm"
+import { and, eq, count } from "drizzle-orm"
+import { sql } from "drizzle-orm"
 
 export async function createMeetingAction(
   meeting: InsertMeeting
@@ -55,28 +56,49 @@ export async function getMeetingsAction(
   sessionId: string
 ): Promise<ActionState<SelectMeeting[]>> {
   try {
+    console.log(`getMeetingsAction: Starting for sessionId ${sessionId}`);
     const { userId } = await auth()
     
-    if (!userId) {
-      return { isSuccess: false, message: "Unauthorized" }
-    }
-
+    console.log(`getMeetingsAction: Auth check - userId: ${userId || 'null'}`);
+    
     // Verify the user owns the session or it's public
     const session = await db.query.sessions.findFirst({
       where: eq(sessionsTable.id, sessionId)
     })
 
     if (!session) {
+      console.log(`getMeetingsAction: Session not found for ID ${sessionId}`);
       return { isSuccess: false, message: "Session not found" }
     }
 
-    if (!session.isPublic && session.userId !== userId) {
+    console.log(`getMeetingsAction: Found session. Public: ${session.isPublic}, Owner: ${session.userId}, Current user: ${userId || 'null'}`);
+
+    // Allow access if session is public, even without authentication
+    if (!session.isPublic && userId !== session.userId) {
+      console.log(`getMeetingsAction: Unauthorized access attempt`);
       return { isSuccess: false, message: "Unauthorized to access this session" }
     }
 
+    // Log SQL query to help debug
+    console.log(`getMeetingsAction: Querying meetings with sessionId = ${sessionId}`);
+    
     const meetings = await db.query.meetings.findMany({
       where: eq(meetingsTable.sessionId, sessionId)
     })
+
+    console.log(`getMeetingsAction: Found ${meetings.length} meetings`);
+    
+    // If no meetings, log some additional debug info
+    if (meetings.length === 0) {
+      // Check if meetings exist at all
+      const allMeetingsCount = await db.select({ count: count() }).from(meetingsTable);
+      console.log(`getMeetingsAction: Total meetings in database: ${allMeetingsCount[0]?.count || 0}`);
+      
+      // Check for meetings with similar IDs (in case of ID format issues)
+      console.log(`getMeetingsAction: Checking meetings table structure for debugging`);
+      const meetingColumns = Object.keys(meetingsTable);
+      console.log(`getMeetingsAction: Meeting table columns: ${meetingColumns.join(', ')}`);
+    }
 
     return {
       isSuccess: true,
@@ -85,7 +107,7 @@ export async function getMeetingsAction(
     }
   } catch (error) {
     console.error("Error getting meetings:", error)
-    return { isSuccess: false, message: "Failed to get meetings" }
+    return { isSuccess: false, message: `Failed to get meetings: ${error instanceof Error ? error.message : String(error)}` }
   }
 }
 
