@@ -4,14 +4,14 @@ import { meetingsTable } from "@/db/schema"
 import { eq } from "drizzle-orm"
 
 export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Await params before accessing properties
-    const { id } = await params
+    const resolvedParams = await params
+    const meetingId = resolvedParams.id
 
-    if (!id) {
+    if (!meetingId) {
       return NextResponse.json(
         { isSuccess: false, message: "Meeting ID is required", data: null },
         { status: 400 }
@@ -28,7 +28,7 @@ export async function PUT(
         status: "completed",
         completedAt: now 
       })
-      .where(eq(meetingsTable.id, id))
+      .where(eq(meetingsTable.id, meetingId))
       .returning()
 
     if (!updatedMeeting) {

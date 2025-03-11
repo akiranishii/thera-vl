@@ -1,13 +1,18 @@
+import asyncio
+import logging
+import re
+import time
+from typing import Dict, List, Optional, Set
+
 import discord
 from discord import app_commands
 from discord.ext import commands
-import logging
-from typing import Optional, List
+from discord.interactions import Interaction
 
 from db_client import db_client
+from orchestrator import AgentOrchestrator
 from llm_client import LLMClient, llm_client
 from models import ModelConfig, LLMMessage, LLMProvider
-from orchestrator import AgentOrchestrator
 
 logger = logging.getLogger(__name__)
 
@@ -36,27 +41,24 @@ class LabMeetingCommands(commands.Cog):
         else:
             logger.info("Using existing lab command group")
         
-        # Add meeting commands to the lab group
+        # Add meeting commands directly to avoid intermediate callbacks
+        # This helps prevent discord interaction timeouts
         self.lab_group.add_command(app_commands.Command(
             name="team_meeting",
             description="Start a team meeting in the current lab session",
-            callback=self.start_team_meeting_callback,
+            callback=self.team_meeting,
             extras={"cog": self}
         ))
         
         self.lab_group.add_command(app_commands.Command(
             name="end_team_meeting",
             description="End the current team meeting",
-            callback=self.end_team_meeting_callback,
+            callback=self.end_team_meeting,
             extras={"cog": self}
         ))
         
         logger.info("Registered lab meeting commands")
 
-    @app_commands.command(
-        name="team_meeting",
-        description="Start a multi-agent conversation in the current lab session"
-    )
     @app_commands.describe(
         agenda="The main topic or question for discussion",
         rounds="Number of conversation rounds (default: 3)",
@@ -224,7 +226,11 @@ class LabMeetingCommands(commands.Cog):
             
             # Check for PI
             has_pi = any(
-                agent.get("name") == ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE 
+                agent.get("name") == ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE or
+                agent.get("role") == ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE or
+                agent.get("role") == "Lead" or
+                "PI" in agent.get("name", "") or
+                "Principal" in agent.get("name", "")
                 for agent in agents
             )
             
@@ -267,7 +273,8 @@ class LabMeetingCommands(commands.Cog):
                     agents=agents,
                     agenda=agenda,
                     round_count=rounds,
-                    parallel_index=i
+                    parallel_index=i,
+                    total_parallel_meetings=parallel_meetings
                 )
                 
                 # Start the conversation
@@ -338,38 +345,59 @@ class LabMeetingCommands(commands.Cog):
                 ephemeral=True
             )
 
-    @app_commands.command(
-        name="end_team_meeting",
-        description="End an ongoing team meeting"
-    )
     @app_commands.describe(
         meeting_id="Optional meeting ID if multiple meetings are active",
-        end_all_parallel="End all parallel runs of the meeting (default: true)"
+        end_all_parallel="End all parallel runs of the meeting (default: true)",
+        force_combined_summary="Force generation of a combined summary even for single meetings (for testing)"
     )
     async def end_team_meeting(
         self,
         interaction: discord.Interaction,
         meeting_id: Optional[str] = None,
-        end_all_parallel: Optional[bool] = True
+        end_all_parallel: Optional[bool] = True,
+        force_combined_summary: Optional[bool] = False
     ):
         """End an ongoing team meeting."""
-        await interaction.response.defer(ephemeral=True, thinking=True)
+        # Immediately defer the response to prevent timeout
+        try:
+            await interaction.response.defer(ephemeral=True, thinking=True)
+        except Exception as e:
+            logger.warning(f"Could not defer response: {e}")
+            # Continue anyway - we'll try to handle errors below
         
         user_id = str(interaction.user.id)
+        logger.info(f"User {user_id} initiated end_team_meeting command")
         
         try:
+            # Send immediate confirmation to user so they know the command is processing
+            try:
+                await interaction.followup.send(
+                    "Processing your command to end meetings... Please wait.",
+                    ephemeral=True
+                )
+            except Exception as e:
+                logger.warning(f"Could not send followup: {e}")
+                # Continue anyway - this is not critical
+            
             # Get active session
             session_result = await db_client.get_active_session(user_id=user_id)
             
             if not session_result.get("isSuccess") or not session_result.get("data"):
-                await interaction.followup.send(
-                    "You don't have an active session.",
-                    ephemeral=True
-                )
+                try:
+                    await interaction.followup.send(
+                        "You don't have an active session.",
+                        ephemeral=True
+                    )
+                except:
+                    if interaction.channel:
+                        await interaction.channel.send(
+                            f"<@{user_id}> You don't have an active session."
+                        )
                 return
             
             session_data = session_result.get("data", {})
             session_id = session_data.get("id")
+            logger.info(f"Found active session {session_id} for user {user_id}")
             
             # Get active meetings
             if meeting_id:
@@ -389,25 +417,40 @@ class LabMeetingCommands(commands.Cog):
                 meetings = meetings_result.get("data", []) if meetings_result.get("isSuccess") else []
             
             if not meetings:
-                await interaction.followup.send(
-                    "No active meetings found to end.",
-                    ephemeral=True
-                )
+                try:
+                    await interaction.followup.send(
+                        "No active meetings found to end.",
+                        ephemeral=True
+                    )
+                except:
+                    if interaction.channel:
+                        await interaction.channel.send(
+                            f"<@{user_id}> No active meetings found to end."
+                        )
                 return
+            
+            logger.info(f"Found {len(meetings)} active meetings to end")
             
             # End each meeting
             ended_meetings = []
             for meeting in meetings:
                 meeting_id = meeting.get("id")
                 
-                # Stop the orchestrator
-                await self.orchestrator.end_conversation(meeting_id=meeting_id)
-                
-                # Update meeting status
-                end_result = await db_client.end_meeting(meeting_id=meeting_id)
-                
-                if end_result.get("isSuccess"):
-                    ended_meetings.append(meeting)
+                try:
+                    # Stop the orchestrator
+                    logger.info(f"Ending meeting {meeting_id} in orchestrator")
+                    await self.orchestrator.end_conversation(meeting_id=meeting_id)
+                    
+                    # Update meeting status
+                    end_result = await db_client.end_meeting(meeting_id=meeting_id)
+                    
+                    if end_result.get("isSuccess"):
+                        ended_meetings.append(meeting)
+                        logger.info(f"Successfully ended meeting {meeting_id}")
+                    else:
+                        logger.error(f"Failed to end meeting {meeting_id}: {end_result.get('message')}")
+                except Exception as e:
+                    logger.error(f"Error ending meeting {meeting_id}: {e}")
             
             # Create response embed
             embed = discord.Embed(
@@ -419,7 +462,7 @@ class LabMeetingCommands(commands.Cog):
             # Group meetings by parallel index
             parallel_groups = {}
             for meeting in ended_meetings:
-                parallel_index = meeting.get("parallel_index", 0)
+                parallel_index = meeting.get("parallelIndex", 0)  # Note: API uses camelCase
                 if parallel_index not in parallel_groups:
                     parallel_groups[parallel_index] = []
                 parallel_groups[parallel_index].append(meeting)
@@ -429,7 +472,7 @@ class LabMeetingCommands(commands.Cog):
                     name=f"Parallel Run {parallel_index + 1}",
                     value="\n".join([
                         f"Meeting {m.get('id')}: {m.get('agenda')}\n"
-                        f"Rounds completed: {m.get('round_count')}"
+                        f"Rounds completed: {m.get('roundCount', 0)}"  # Note: API uses camelCase
                         for m in group
                     ]),
                     inline=False
@@ -441,35 +484,476 @@ class LabMeetingCommands(commands.Cog):
                 inline=False
             )
             
-            if len(parallel_groups) > 1:
+            if len(parallel_groups) > 1 or force_combined_summary:
                 embed.add_field(
                     name="Combined Summary",
-                    value="A combined summary of all parallel runs will be generated and posted in a new thread.",
+                    value="A combined summary of all runs will be generated now...",
                     inline=False
                 )
             
-            await interaction.followup.send(
-                embed=embed,
-                ephemeral=True
-            )
+            # Send final response (private to user)
+            try:
+                await interaction.followup.send(
+                    embed=embed,
+                    ephemeral=True
+                )
+            except Exception as e:
+                logger.warning(f"Could not send final followup: {e}")
+                # If interaction is expired, try to send to channel
+                if interaction.channel:
+                    await interaction.channel.send(
+                        f"<@{user_id}> Meetings ended successfully."
+                    )
+            
+            # Generate combined summary if there are multiple parallel meetings or forced
+            if len(parallel_groups) > 1 or force_combined_summary:
+                # Run the combined summary generation in a separate "fire and forget" task
+                # This prevents the Discord interaction from timing out
+                channel = interaction.channel
+                if channel:
+                    asyncio.create_task(
+                        self._generate_combined_summary_for_ended_meetings(
+                            interaction=interaction,
+                            ended_meetings=ended_meetings,
+                            channel=channel
+                        )
+                    )
+                else:
+                    logger.error("Cannot generate combined summary - no channel available")
             
         except Exception as e:
             logger.error(f"Error in end_team_meeting command: {e}")
-            await interaction.followup.send(
-                "An error occurred while ending the team meeting. Please try again later.",
-                ephemeral=True
-            )
+            # Try to send an error message any way we can
+            try:
+                await interaction.followup.send(
+                    "An error occurred while ending the team meeting. Please try again later.",
+                    ephemeral=True
+                )
+            except:
+                if interaction.channel:
+                    await interaction.channel.send(
+                        f"<@{user_id}> An error occurred while ending the team meeting. Please try again later."
+                    )
 
-    async def start_team_meeting_callback(self, interaction: discord.Interaction, agenda: str, rounds: Optional[int] = 3, parallel_meetings: Optional[int] = 1, 
-                                 agent_list: Optional[str] = None, auto_generate: Optional[bool] = False, auto_scientist_count: Optional[int] = 3, 
-                                 auto_include_critic: Optional[bool] = True, temperature_variation: Optional[bool] = True, live_mode: Optional[bool] = True):
-        """Callback for the team_meeting command."""
-        await self.team_meeting(interaction, agenda, rounds, parallel_meetings, agent_list, 
-                               auto_generate, auto_scientist_count, auto_include_critic, temperature_variation, live_mode)
+    async def _generate_combined_summary_for_ended_meetings(self, interaction, ended_meetings, channel):
+        """Helper method to generate combined summary after meetings end.
         
-    async def end_team_meeting_callback(self, interaction: discord.Interaction, meeting_id: Optional[str] = None, end_all_parallel: Optional[bool] = True):
-        """Callback for the end_team_meeting command."""
-        await self.end_team_meeting(interaction, meeting_id, end_all_parallel)
+        This runs as a separate task to prevent Discord interaction timeouts.
+        """
+        try:
+            # IMPORTANT: Send this message to everyone in the channel
+            await channel.send(
+                "🔄 **Generating combined summary of all runs. This might take a moment...**"
+            )
+            
+            # Log all meetings for debugging
+            logger.info(f"Found {len(ended_meetings)} ended meetings")
+            for meeting in ended_meetings:
+                logger.info(f"Meeting ID: {meeting.get('id')}, Parallel Index: {meeting.get('parallelIndex', 0)}, Agenda: {meeting.get('agenda', 'Unknown')}")
+            
+            # Collect meeting summaries directly - we'll try multiple methods
+            meeting_summaries = []
+            
+            # First method: Try to get summaries from orchestrator's active_meetings
+            for meeting in ended_meetings:
+                meeting_id = meeting.get("id")
+                parallel_idx = meeting.get("parallelIndex", 0)
+                
+                # Get meeting data from orchestrator
+                meeting_data = self.orchestrator.active_meetings.get(meeting_id)
+                if meeting_data and meeting_data.get("summary"):
+                    logger.info(f"Found summary in orchestrator for meeting {meeting_id}")
+                    meeting_summaries.append({
+                        "index": parallel_idx + 1,  # 1-based for display
+                        "summary": meeting_data.get("summary")
+                    })
+            
+            # Second method: If we couldn't get all summaries from orchestrator, try to get them from transcripts
+            if len(meeting_summaries) < len(ended_meetings):
+                logger.info(f"Missing some summaries from orchestrator. Found {len(meeting_summaries)}/{len(ended_meetings)}")
+                for meeting in ended_meetings:
+                    meeting_id = meeting.get("id")
+                    parallel_idx = meeting.get("parallelIndex", 0)
+                    
+                    # Skip if we already have summary for this meeting
+                    if any(s["index"] == parallel_idx + 1 for s in meeting_summaries):
+                        continue
+                        
+                    # Try to get from transcripts
+                    try:
+                        transcripts_result = await db_client.get_meeting_transcripts(meeting_id=meeting_id)
+                        if transcripts_result.get("isSuccess") and transcripts_result.get("data"):
+                            # Find the summary transcript (usually has round number 9999 or -1)
+                            summary_transcript = next(
+                                (t for t in transcripts_result.get("data", []) 
+                                 if t.get("agentName") == "Summary Agent" or 
+                                    t.get("roundNumber") in [9999, -1, 999]),
+                                None
+                            )
+                            
+                            if summary_transcript:
+                                logger.info(f"Found summary in transcript for meeting {meeting_id}")
+                                meeting_summaries.append({
+                                    "index": parallel_idx + 1,
+                                    "summary": summary_transcript.get("content")
+                                })
+                    except Exception as e:
+                        logger.error(f"Error getting transcripts for meeting {meeting_id}: {e}")
+            
+            # Third method (fallback): Check if we can extract summaries from final messages in the orchestrator
+            if len(meeting_summaries) < len(ended_meetings):
+                logger.info(f"Still missing summaries. Found {len(meeting_summaries)}/{len(ended_meetings)}")
+                for meeting in ended_meetings:
+                    meeting_id = meeting.get("id")
+                    parallel_idx = meeting.get("parallelIndex", 0)
+                    
+                    # Skip if we already have summary for this meeting
+                    if any(s["index"] == parallel_idx + 1 for s in meeting_summaries):
+                        continue
+                    
+                    # Try to extract from conversation history
+                    meeting_data = self.orchestrator.active_meetings.get(meeting_id)
+                    if meeting_data and meeting_data.get("conversation_history"):
+                        logger.info(f"Attempting to extract summary from conversation history for meeting {meeting_id}")
+                        history = meeting_data.get("conversation_history", "")
+                        
+                        # Look for final summary marker
+                        final_summary_match = re.search(r"=== FINAL SUMMARY ===\s*(.*?)($|\n\n)", history, re.DOTALL)
+                        if final_summary_match:
+                            logger.info(f"Extracted summary from conversation history for meeting {meeting_id}")
+                            summary_text = final_summary_match.group(1).strip()
+                            meeting_summaries.append({
+                                "index": parallel_idx + 1,
+                                "summary": summary_text
+                            })
+            
+            logger.info(f"Found {len(meeting_summaries)} meeting summaries for combined summary")
+            
+            # Generate combined summary if we have at least 1 meeting summary
+            # Changed from 2 to 1 to handle forced combined summary for single meetings
+            if len(meeting_summaries) >= 1:
+                try:
+                    # Format summaries
+                    formatted_summaries = []
+                    for summary_data in sorted(meeting_summaries, key=lambda x: x["index"]):
+                        if len(meeting_summaries) > 1:
+                            # Multiple meetings - use run labels
+                            formatted_summaries.append(f"RUN #{summary_data['index']} SUMMARY:\n{summary_data['summary']}")
+                        else:
+                            # Single meeting - omit the run label
+                            formatted_summaries.append(summary_data['summary'])
+                    
+                    # Create prompt
+                    messages = [
+                        LLMMessage(
+                            role="system",
+                            content="You are an expert research synthesizer. Your task is to combine multiple parallel brainstorming sessions into a cohesive summary."
+                        ),
+                        LLMMessage(
+                            role="user",
+                            content=(
+                                f"Topic: {ended_meetings[0].get('agenda', 'Unknown Topic')}\n\n"
+                                f"Individual Run Summaries:\n{'-'*50}\n" + 
+                                f"\n{'-'*50}\n".join(formatted_summaries) + 
+                                f"\n{'-'*50}\n\n"
+                                "Provide a synthesis that includes:\n"
+                                "1. Common themes and consensus across runs\n"
+                                "2. Unique insights and novel approaches from each run\n"
+                                "3. Contrasting perspectives and alternative solutions\n"
+                                "4. Integrated conclusions and recommendations\n"
+                                "5. Key areas for further investigation"
+                            )
+                        )
+                    ]
+                    
+                    # Generate combined summary
+                    logger.info("Calling LLM directly to generate combined summary")
+                    response = await llm_client.generate_response(
+                        provider=LLMProvider.OPENAI,
+                        messages=messages,
+                        temperature=0.7,
+                        max_tokens=2000
+                    )
+                    
+                    combined_summary = response.content
+                    logger.info(f"Combined summary generated: {len(combined_summary)} chars")
+                    
+                    # Send the combined summary
+                    # First message with header and separator
+                    await channel.send("───────────────────────────────────────────────")
+                    await channel.send("## 🌟 **FINAL SYNERGIZED SUMMARY** 🌟")
+                    await channel.send("───────────────────────────────────────────────")
+                    
+                    header_embed = discord.Embed(
+                        title="Combined Insights from All Meetings",
+                        description=f"Topic: {ended_meetings[0].get('agenda', 'Unknown')}",
+                        color=discord.Color.brand_green()  # Use a distinctive color
+                    )
+                    
+                    # Add debug info about which meetings were included
+                    if len(meeting_summaries) > 1:
+                        run_info = "\n".join([f"Run #{s['index']}" for s in meeting_summaries])
+                        header_embed.add_field(
+                            name="Synthesized from",
+                            value=run_info,
+                            inline=False
+                        )
+                    
+                    # Send the header to the channel
+                    await channel.send(embed=header_embed)
+                    
+                    # Split long summaries into chunks if needed
+                    MAX_DISCORD_MESSAGE_LENGTH = 1900  # Discord limit is 2000, leaving some room
+                    summary_chunks = [combined_summary[i:i+MAX_DISCORD_MESSAGE_LENGTH] 
+                                    for i in range(0, len(combined_summary), MAX_DISCORD_MESSAGE_LENGTH)]
+                    
+                    # Send each chunk in a separate message
+                    for i, chunk in enumerate(summary_chunks):
+                        # Add part numbers if multiple chunks
+                        prefix = f"**Part {i+1}/{len(summary_chunks)}:**\n" if len(summary_chunks) > 1 else ""
+                        
+                        # Create an embed for the content to make it stand out more
+                        content_embed = discord.Embed(
+                            description=prefix + chunk,
+                            color=discord.Color.brand_green()  # Match the header color
+                        )
+                        
+                        # Send to channel as an embed for better formatting
+                        await channel.send(embed=content_embed)
+                        
+                    # Add a final separator
+                    await channel.send("───────────────────────────────────────────────")
+                
+                except Exception as e:
+                    logger.error(f"Error generating combined summary: {e}")
+                    await channel.send(
+                        "❌ An error occurred while generating the combined summary. Please check the individual meeting summaries in each thread."
+                    )
+            else:
+                logger.warning(f"Not enough meeting summaries found ({len(meeting_summaries)}/{len(ended_meetings)})")
+                await channel.send(
+                    "⚠️ Unable to generate combined summary - couldn't find enough meeting summaries. Please check the individual summaries in each meeting thread."
+                )
+        
+        except Exception as e:
+            logger.error(f"Error in _generate_combined_summary_for_ended_meetings: {e}")
+            try:
+                await channel.send(
+                    "❌ An error occurred while generating the combined summary. You can try manually ending the meetings with `/lab end_team_meeting force_combined_summary:true`."
+                )
+            except:
+                logger.error("Could not send error message to channel")
+
+    async def generate_and_post_combined_summary(self, interaction, ended_meetings, orchestrator):
+        """Generate and post a combined summary of all parallel meetings.
+        
+        This method is called by the orchestrator when all parallel meetings in a group have completed.
+        It extracts summaries from the meetings and generates a combined summary that is posted
+        to the Discord channel.
+        
+        Args:
+            interaction: The Discord interaction object
+            ended_meetings: List of meeting data objects that have ended
+            orchestrator: Reference to the orchestrator that called this method
+        """
+        try:
+            logger.info(f"Generating combined summary for {len(ended_meetings)} meetings")
+            
+            # Get the channel to send messages to
+            channel = interaction.channel
+            
+            # Log all meetings for debugging
+            for meeting in ended_meetings:
+                logger.info(f"Meeting ID: {meeting.get('id')}, Parallel Index: {meeting.get('parallelIndex', 0)}, Agenda: {meeting.get('agenda', 'Unknown')}")
+            
+            # Collect meeting summaries directly - we'll try multiple methods
+            meeting_summaries = []
+            
+            # First method: Try to get summaries from orchestrator's active_meetings
+            for meeting in ended_meetings:
+                meeting_id = meeting.get("id")
+                parallel_idx = meeting.get("parallelIndex", 0)
+                
+                # Get meeting data from orchestrator
+                meeting_data = orchestrator.active_meetings.get(meeting_id)
+                if meeting_data and meeting_data.get("summary"):
+                    logger.info(f"Found summary in orchestrator for meeting {meeting_id}")
+                    meeting_summaries.append({
+                        "index": parallel_idx + 1,  # 1-based for display
+                        "summary": meeting_data.get("summary")
+                    })
+            
+            # Second method: If we couldn't get all summaries from orchestrator, try to get them from transcripts
+            if len(meeting_summaries) < len(ended_meetings):
+                logger.info(f"Missing some summaries from orchestrator. Found {len(meeting_summaries)}/{len(ended_meetings)}")
+                for meeting in ended_meetings:
+                    meeting_id = meeting.get("id")
+                    parallel_idx = meeting.get("parallelIndex", 0)
+                    
+                    # Skip if we already have summary for this meeting
+                    if any(s["index"] == parallel_idx + 1 for s in meeting_summaries):
+                        continue
+                        
+                    # Try to get from transcripts
+                    try:
+                        transcripts_result = await db_client.get_meeting_transcripts(meeting_id=meeting_id)
+                        if transcripts_result.get("isSuccess") and transcripts_result.get("data"):
+                            # Find the summary transcript (usually has round number 9999 or -1)
+                            summary_transcript = next(
+                                (t for t in transcripts_result.get("data", []) 
+                                    if t.get("agentName") == "Summary Agent" or 
+                                    t.get("roundNumber") in [9999, -1, 999]),
+                                None
+                            )
+                            
+                            if summary_transcript:
+                                logger.info(f"Found summary in transcript for meeting {meeting_id}")
+                                meeting_summaries.append({
+                                    "index": parallel_idx + 1,
+                                    "summary": summary_transcript.get("content")
+                                })
+                    except Exception as e:
+                        logger.error(f"Error getting transcripts for meeting {meeting_id}: {e}")
+            
+            # Third method (fallback): Check if we can extract summaries from final messages in the orchestrator
+            if len(meeting_summaries) < len(ended_meetings):
+                logger.info(f"Still missing summaries. Found {len(meeting_summaries)}/{len(ended_meetings)}")
+                for meeting in ended_meetings:
+                    meeting_id = meeting.get("id")
+                    parallel_idx = meeting.get("parallelIndex", 0)
+                    
+                    # Skip if we already have summary for this meeting
+                    if any(s["index"] == parallel_idx + 1 for s in meeting_summaries):
+                        continue
+                    
+                    # Try to extract from conversation history
+                    meeting_data = orchestrator.active_meetings.get(meeting_id)
+                    if meeting_data and meeting_data.get("conversation_history"):
+                        logger.info(f"Attempting to extract summary from conversation history for meeting {meeting_id}")
+                        history = meeting_data.get("conversation_history", "")
+                        
+                        # Look for final summary marker
+                        final_summary_match = re.search(r"=== FINAL SUMMARY ===\s*(.*?)($|\n\n)", history, re.DOTALL)
+                        if final_summary_match:
+                            logger.info(f"Extracted summary from conversation history for meeting {meeting_id}")
+                            summary_text = final_summary_match.group(1).strip()
+                            meeting_summaries.append({
+                                "index": parallel_idx + 1,
+                                "summary": summary_text
+                            })
+            
+            logger.info(f"Found {len(meeting_summaries)} meeting summaries for combined summary")
+            
+            # Generate combined summary if we have at least 2 meeting summaries
+            if len(meeting_summaries) >= 2:
+                try:
+                    # Format summaries
+                    formatted_summaries = []
+                    for summary_data in sorted(meeting_summaries, key=lambda x: x["index"]):
+                        formatted_summaries.append(f"RUN #{summary_data['index']} SUMMARY:\n{summary_data['summary']}")
+                    
+                    # Create prompt
+                    messages = [
+                        LLMMessage(
+                            role="system",
+                            content="You are an expert research synthesizer. Your task is to combine multiple parallel brainstorming sessions into a cohesive summary."
+                        ),
+                        LLMMessage(
+                            role="user",
+                            content=(
+                                f"Topic: {ended_meetings[0].get('agenda', 'Unknown Topic')}\n\n"
+                                f"Individual Run Summaries:\n{'-'*50}\n" + 
+                                f"\n{'-'*50}\n".join(formatted_summaries) + 
+                                f"\n{'-'*50}\n\n"
+                                "Provide a synthesis that includes:\n"
+                                "1. Common themes and consensus across runs\n"
+                                "2. Unique insights and novel approaches from each run\n"
+                                "3. Contrasting perspectives and alternative solutions\n"
+                                "4. Integrated conclusions and recommendations\n"
+                                "5. Key areas for further investigation"
+                            )
+                        )
+                    ]
+                    
+                    # Generate combined summary
+                    logger.info("Calling LLM directly to generate combined summary")
+                    response = await llm_client.generate_response(
+                        provider=LLMProvider.OPENAI,
+                        messages=messages,
+                        temperature=0.7,
+                        max_tokens=2000
+                    )
+                    
+                    combined_summary = response.content
+                    logger.info(f"Combined summary generated: {len(combined_summary)} chars")
+                    
+                    # Send the combined summary
+                    # First message with header and separator
+                    await channel.send("───────────────────────────────────────────────")
+                    await channel.send("## 🌟 **FINAL SYNERGIZED SUMMARY** 🌟")
+                    await channel.send("───────────────────────────────────────────────")
+                    
+                    header_embed = discord.Embed(
+                        title="Combined Insights from All Meetings",
+                        description=f"Topic: {ended_meetings[0].get('agenda', 'Unknown')}",
+                        color=discord.Color.brand_green()  # Use a distinctive color
+                    )
+                    
+                    # Add info about which meetings were included
+                    run_info = "\n".join([f"Run #{s['index']}" for s in meeting_summaries])
+                    header_embed.add_field(
+                        name="Synthesized from",
+                        value=run_info,
+                        inline=False
+                    )
+                    
+                    # Send the header to the channel
+                    await channel.send(embed=header_embed)
+                    
+                    # Split long summaries into chunks if needed
+                    MAX_DISCORD_MESSAGE_LENGTH = 1900  # Discord limit is 2000, leaving some room
+                    summary_chunks = [combined_summary[i:i+MAX_DISCORD_MESSAGE_LENGTH] 
+                                    for i in range(0, len(combined_summary), MAX_DISCORD_MESSAGE_LENGTH)]
+                    
+                    # Send each chunk in a separate message
+                    for i, chunk in enumerate(summary_chunks):
+                        # Add part numbers if multiple chunks
+                        prefix = f"**Part {i+1}/{len(summary_chunks)}:**\n" if len(summary_chunks) > 1 else ""
+                        
+                        # Create an embed for the content to make it stand out more
+                        content_embed = discord.Embed(
+                            description=prefix + chunk,
+                            color=discord.Color.brand_green()  # Match the header color
+                        )
+                        
+                        # Send to channel as an embed for better formatting
+                        await channel.send(embed=content_embed)
+                        
+                    # Add a final separator
+                    await channel.send("───────────────────────────────────────────────")
+                
+                except Exception as e:
+                    logger.error(f"Error generating combined summary: {e}")
+                    await channel.send(
+                        "❌ An error occurred while generating the combined summary. Please check the individual meeting summaries in each thread."
+                    )
+            else:
+                logger.warning(f"Not enough meeting summaries found ({len(meeting_summaries)}/{len(ended_meetings)})")
+                await channel.send(
+                    "⚠️ Unable to generate combined summary - couldn't find enough meeting summaries. Please check the individual summaries in each meeting thread."
+                )
+        
+        except Exception as e:
+            logger.error(f"Error in generate_and_post_combined_summary: {e}")
+            try:
+                # Try to send a message to the channel if available
+                if hasattr(interaction, "channel") and interaction.channel:
+                    await interaction.channel.send(
+                        "❌ An error occurred while generating the combined summary. You can try manually ending the meetings with `/lab end_team_meeting force_combined_summary:true`."
+                    )
+            except Exception:
+                # If we can't send a message, just log it
+                logger.error("Could not send error message to channel")
 
 async def setup(bot: commands.Bot):
     """Add the cog to the bot."""

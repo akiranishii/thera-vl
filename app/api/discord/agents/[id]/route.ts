@@ -9,12 +9,13 @@ import { eq } from "drizzle-orm"
  */
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const agentId = params.id
+    const resolvedParams = await params
+    const id = resolvedParams.id
 
-    if (!agentId) {
+    if (!id) {
       return NextResponse.json(
         { isSuccess: false, message: "Agent ID is required", data: null },
         { status: 400 }
@@ -23,7 +24,7 @@ export async function GET(
 
     // Get the agent
     const agent = await db.query.agents.findFirst({
-      where: eq(agentsTable.id, agentId),
+      where: eq(agentsTable.id, id),
     })
 
     if (!agent) {
@@ -53,12 +54,13 @@ export async function GET(
  */
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const agentId = params.id
+    const resolvedParams = await params
+    const id = resolvedParams.id
 
-    if (!agentId) {
+    if (!id) {
       return NextResponse.json(
         { isSuccess: false, message: "Agent ID is required", data: null },
         { status: 400 }
@@ -82,7 +84,7 @@ export async function PUT(
 
     // Check if the agent exists
     const existingAgent = await db.query.agents.findFirst({
-      where: eq(agentsTable.id, agentId),
+      where: eq(agentsTable.id, id),
     })
 
     if (!existingAgent) {
@@ -96,7 +98,7 @@ export async function PUT(
     const [updatedAgent] = await db
       .update(agentsTable)
       .set(updateData)
-      .where(eq(agentsTable.id, agentId))
+      .where(eq(agentsTable.id, id))
       .returning()
 
     return NextResponse.json({
@@ -119,12 +121,13 @@ export async function PUT(
  */
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const agentId = params.id
+    const resolvedParams = await params
+    const id = resolvedParams.id
 
-    if (!agentId) {
+    if (!id) {
       return NextResponse.json(
         { isSuccess: false, message: "Agent ID is required", data: null },
         { status: 400 }
@@ -133,7 +136,7 @@ export async function DELETE(
 
     // Check if the agent exists
     const existingAgent = await db.query.agents.findFirst({
-      where: eq(agentsTable.id, agentId),
+      where: eq(agentsTable.id, id),
     })
 
     if (!existingAgent) {
@@ -146,7 +149,7 @@ export async function DELETE(
     // Delete the agent
     await db
       .delete(agentsTable)
-      .where(eq(agentsTable.id, agentId))
+      .where(eq(agentsTable.id, id))
 
     return NextResponse.json({
       isSuccess: true,

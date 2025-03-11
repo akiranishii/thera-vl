@@ -19,10 +19,11 @@ function streamResponse(res: ReadableStream) {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { meetingId: string } }
+  { params }: { params: Promise<{ meetingId: string }> }
 ) {
   // Get the meeting ID from the URL
-  const { meetingId } = params
+  const resolvedParams = await params
+  const meetingId = resolvedParams.meetingId
   
   if (!meetingId) {
     return NextResponse.json(

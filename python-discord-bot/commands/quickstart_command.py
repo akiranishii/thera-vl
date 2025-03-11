@@ -92,6 +92,12 @@ class QuickstartCommand(commands.Cog):
             session_data = session_result.get("data", {})
             session_id = session_data.get("id")
             
+            # Send initial progress message
+            progress_message = await interaction.followup.send(
+                "Creating your research team for brainstorming session...",
+                ephemeral=True
+            )
+            
             # Create Principal Investigator
             # Generate variables for the PI based on the topic
             pi_variables = await llm_client.generate_agent_variables(
@@ -103,6 +109,14 @@ class QuickstartCommand(commands.Cog):
             pi_name = ModelConfig.PRINCIPAL_INVESTIGATOR_ROLE
             pi_expertise = pi_variables.get("expertise", "")
             pi_goal = pi_variables.get("goal", "")
+            
+            # Update progress with PI info
+            await progress_message.edit(content=(
+                "Creating your research team for brainstorming session...\n\n"
+                f"🔬 **{pi_name}**\n"
+                f"• Expertise: {pi_expertise}\n"
+                f"• Goal: {pi_goal}"
+            ))
             
             await db_client.create_agent(
                 session_id=session_id,
@@ -169,6 +183,15 @@ class QuickstartCommand(commands.Cog):
                     "goal": agent_goal
                 })
                 
+                # Update progress with this scientist's info
+                current_content = progress_message.content
+                await progress_message.edit(content=(
+                    current_content + "\n\n"
+                    f"🔬 **{agent_name}**\n"
+                    f"• Expertise: {agent_expertise}\n"
+                    f"• Goal: {agent_goal}"
+                ))
+                
                 await db_client.create_agent(
                     session_id=session_id,
                     user_id=user_id,
@@ -181,13 +204,25 @@ class QuickstartCommand(commands.Cog):
             
             # Create Critic if requested
             if include_critic:
+                critic_expertise = "Critical analysis of scientific research, identification of methodological flaws, and evaluation of research validity"
+                critic_goal = "Ensure scientific rigor and identify potential weaknesses in proposed research approaches"
+                
+                # Update progress with critic info
+                current_content = progress_message.content
+                await progress_message.edit(content=(
+                    current_content + "\n\n"
+                    f"🔬 **Critic**\n"
+                    f"• Expertise: {critic_expertise}\n"
+                    f"• Goal: {critic_goal}"
+                ))
+                
                 await db_client.create_agent(
                     session_id=session_id,
                     user_id=user_id,
                     name="Critic",
                     role=ModelConfig.CRITIC_ROLE,
-                    expertise="Critical analysis of scientific research, identification of methodological flaws, and evaluation of research validity",
-                    goal="Ensure scientific rigor and identify potential weaknesses in proposed research approaches",
+                    expertise=critic_expertise,
+                    goal=critic_goal,
                     model="openai"
                 )
             
@@ -244,6 +279,12 @@ class QuickstartCommand(commands.Cog):
             agent_total = agent_count + 1  # Scientists + Principal Investigator
             if include_critic:
                 agent_total += 1  # Add Critic if included
+            
+            # Update progress message one last time to indicate completion
+            await progress_message.edit(content=(
+                progress_message.content + "\n\n"
+                "✅ All agents have been created. Starting the brainstorming session now..."
+            ))
                 
             # Create response embed
             embed = discord.Embed(

@@ -6,16 +6,16 @@ import { agentsTable } from "@/db/schema"
 import { eq } from "drizzle-orm"
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Await params before accessing properties
-    const { id } = await params
-    const { searchParams } = new URL(request.url)
+    const resolvedParams = await params
+    const sessionId = resolvedParams.id
+    const { searchParams } = new URL(req.url)
     const userId = searchParams.get("userId")
 
-    if (!id) {
+    if (!sessionId) {
       return NextResponse.json(
         { isSuccess: false, message: "Session ID is required", data: null },
         { status: 400 }

@@ -3,10 +3,6 @@ import { db } from "@/db/db"
 import { meetingsTable } from "@/db/schema"
 import { eq } from "drizzle-orm"
 
-/**
- * API route for getting a specific meeting by ID
- * GET /api/discord/meetings/[id]
- */
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -22,9 +18,8 @@ export async function GET(
       )
     }
 
-    // Get the meeting
     const meeting = await db.query.meetings.findFirst({
-      where: eq(meetingsTable.id, meetingId),
+      where: eq(meetingsTable.id, meetingId)
     })
 
     if (!meeting) {
@@ -40,9 +35,13 @@ export async function GET(
       data: meeting
     })
   } catch (error) {
-    console.error("Error getting meeting:", error)
+    console.error("Error retrieving meeting:", error)
     return NextResponse.json(
-      { isSuccess: false, message: "Failed to get meeting", data: null },
+      {
+        isSuccess: false,
+        message: "Failed to retrieve meeting",
+        data: null
+      },
       { status: 500 }
     )
   }

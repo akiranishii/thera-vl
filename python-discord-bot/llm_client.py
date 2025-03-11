@@ -251,7 +251,7 @@ class LLMClient:
             conversation_history: The conversation to respond to
             expertise: The agent's area of expertise (optional)
             goal: The agent's goal (optional)
-            agent_role: The specific role description (optional)
+            agent_role: The specific role description (optional, using default if not provided)
             agent_name: The specific name for scientist agents (optional)
             model: Specific model to use (defaults to gpt-4o if not specified)
             
@@ -268,6 +268,12 @@ class LLMClient:
         agent_model = model or agent_config.get("model", "openai/gpt-4o")
         
         # Fill in the template variables if needed
+        # Get default role descriptions if not provided
+        if agent_key == "principal_investigator" and not agent_role:
+            agent_role = "lead a team of experts to solve an important problem, make key decisions, and manage the project"
+        elif agent_key == "scientist" and not agent_role:
+            agent_role = "provide specialized insights, suggest experiments, and collaborate with the team"
+        
         if "{" in agent_system_prompt_template:
             # Defaults based on agent type
             defaults = {
@@ -322,7 +328,7 @@ class LLMClient:
 
     async def generate_agent_variables(self, topic: str, agent_type: str, additional_context: str = "") -> Dict[str, str]:
         """
-        Generate agent variables (expertise, goal, role) based on a topic.
+        Generate agent variables (expertise, goal) based on a topic.
         
         Args:
             topic: The research topic or question
@@ -330,7 +336,7 @@ class LLMClient:
             additional_context: Optional additional context to guide the generation (e.g., to ensure diversity)
             
         Returns:
-            Dictionary with keys: expertise, goal, role, and for scientists: agent_name
+            Dictionary with keys: expertise, goal, and for scientists: agent_name
         """
         if agent_type not in ["principal_investigator", "scientist"]:
             raise ValueError(f"Unsupported agent type: {agent_type}")
@@ -343,14 +349,12 @@ class LLMClient:
             IMPORTANT: You must format your response as a valid JSON object with ONLY these keys:
             {
               "expertise": "...",
-              "goal": "...",
-              "role": "..."
+              "goal": "..."
             }
             
             Definitions of each variable:
             1. expertise: The scientific expertise the agent has (specific field or discipline)
-            2. goal: The ultimate goal of the agent in the context of the research project
-            3. role: The specific role that the agent will play in the research project (as a sentence)
+            2. goal: The ultimate goal of the agent in the context of the research project and the role of the agent in the discussion
 
             For expertise, provide a specific field of specialization WITHOUT including phrases like "Specializes in" or similar prefixes. Just provide the direct expertise area.
             Make each field 1-2 sentences, specific to the topic, and suitable for scientific research.
@@ -369,15 +373,13 @@ class LLMClient:
             {
               "agent_name": "...",
               "expertise": "...",
-              "goal": "...",
-              "role": "..."
+              "goal": "..."
             }
             
             Definitions of each variable:
             . agent_name: The name of the agent
             . expertise: The scientific expertise the agent has (specific field or discipline)
-            . goal: The ultimate goal of the agent in the context of the research project
-            . role: The specific role that the agent will play in the research project (as a sentence)
+            . goal: The ultimate goal of the agent in the context of the research project and the role of the agent in the discussion
 
             Guidelines:
             - For agent_name, create a scientific discipline that is unique and distinct (e.g., " Neurobiologist", "Fluid Dynamics Physicist")
@@ -439,7 +441,7 @@ class LLMClient:
                     raise
             
             # Validate the expected keys
-            expected_keys = ["expertise", "goal", "role"]
+            expected_keys = ["expertise", "goal"]
             if agent_type == "scientist":
                 expected_keys.append("agent_name")
                 
@@ -449,15 +451,13 @@ class LLMClient:
                 if agent_type == "principal_investigator":
                     result.update({
                         "expertise": "applying artificial intelligence to biomedical research" if "expertise" not in result else result["expertise"],
-                        "goal": "perform research that maximizes scientific impact" if "goal" not in result else result["goal"],
-                        "role": "lead a team of experts to solve important problems" if "role" not in result else result["role"]
+                        "goal": "perform research that maximizes scientific impact" if "goal" not in result else result["goal"]
                     })
                 else:  # scientist
                     result.update({
                         "agent_name": "Domain Scientist" if "agent_name" not in result else result["agent_name"],
                         "expertise": f"scientific research related to {topic}" if "expertise" not in result else result["expertise"],
-                        "goal": "contribute domain expertise to the research project" if "goal" not in result else result["goal"],
-                        "role": "provide specialized insights and collaborate with the team" if "role" not in result else result["role"]
+                        "goal": "contribute domain expertise to the research project" if "goal" not in result else result["goal"]
                     })
             
             return result
@@ -468,15 +468,13 @@ class LLMClient:
             if agent_type == "principal_investigator":
                 return {
                     "expertise": "applying artificial intelligence to biomedical research",
-                    "goal": "perform research that maximizes scientific impact",
-                    "role": "lead a team of experts to solve important problems"
+                    "goal": "perform research that maximizes scientific impact"
                 }
             else:  # scientist
                 return {
                     "agent_name": "Domain Scientist",
                     "expertise": f"scientific research related to {topic}",
-                    "goal": "contribute domain expertise to the research project",
-                    "role": "provide specialized insights and collaborate with the team"
+                    "goal": "contribute domain expertise to the research project"
                 }
 
 # Create a singleton instance
