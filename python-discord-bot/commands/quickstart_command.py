@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 import logging
 from typing import Optional
+import asyncio
 
 from db_client import db_client
 from models import ModelConfig
@@ -17,6 +18,7 @@ class QuickstartCommand(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.orchestrator = AgentOrchestrator(llm_client)
+        self.conversation_tasks = {}  # Dictionary to track conversation tasks
         logger.info("Initialized quickstart command")
 
     @app_commands.command(
@@ -28,7 +30,9 @@ class QuickstartCommand(commands.Cog):
         agent_count="Number of Scientist agents to create (default: 3)",
         include_critic="Whether to include a Critic agent (default: true)",
         public="Whether the session should be publicly viewable (default: false)",
-        live_mode="Show agent responses in real-time (default: true)"
+        live_mode="Show agent responses in real-time (default: true)",
+        rounds="Number of conversation rounds (default: 3)",
+        speakers_per_round="Number of agent speakers selected per round (default: all agents excluding PI)"
     )
     async def quickstart(
         self,
@@ -37,7 +41,9 @@ class QuickstartCommand(commands.Cog):
         agent_count: Optional[int] = 3,
         include_critic: Optional[bool] = True,
         public: Optional[bool] = False,
-        live_mode: Optional[bool] = True
+        live_mode: Optional[bool] = True,
+        rounds: Optional[int] = 3,
+        speakers_per_round: Optional[int] = None
     ):
         """Quickly create a lab session with agents and start a meeting."""
         # IMMEDIATELY acknowledge the interaction to prevent timeout
@@ -265,15 +271,24 @@ class QuickstartCommand(commands.Cog):
                 session_id=session_id,
                 agents=agents,
                 agenda=topic,
-                round_count=3
+                round_count=rounds
             )
             
-            # Start the conversation asynchronously
-            await self.orchestrator.start_conversation(
-                meeting_id=meeting_id,
-                interaction=interaction,
-                live_mode=live_mode
+            # Start the conversation in a background task
+            task = asyncio.create_task(
+                self.orchestrator.start_conversation(
+                    meeting_id=meeting_id,
+                    interaction=interaction,
+                    live_mode=live_mode,
+                    conversation_length=speakers_per_round
+                )
             )
+            
+            # Store the task with the meeting ID as the key
+            self.conversation_tasks[meeting_id] = task
+            
+            # Add a done callback to clean up the task when it completes
+            task.add_done_callback(lambda t, mid=meeting_id: self._cleanup_conversation_task(mid, t))
             
             # Calculate the total number of agents
             agent_total = agent_count + 1  # Scientists + Principal Investigator
@@ -310,7 +325,7 @@ class QuickstartCommand(commands.Cog):
                 name="Meeting",
                 value=(
                     f"**ID**: {meeting_id}\n"
-                    f"**Rounds**: 3\n"
+                    f"**Rounds**: {rounds}\n"
                     f"**Status**: In Progress\n"
                     f"**Live Mode**: {'On' if live_mode else 'Off'}"
                 ),
@@ -334,6 +349,20 @@ class QuickstartCommand(commands.Cog):
                 "An error occurred while setting up your session. Please try again later.",
                 ephemeral=True
             )
+
+    async def _cleanup_conversation_task(self, meeting_id, task):
+        """Callback method to clean up conversation tasks."""
+        try:
+            # Remove the task from the conversation_tasks dictionary
+            self.conversation_tasks.pop(meeting_id, None)
+            
+            # Check if the task completed successfully
+            if task.exception():
+                logger.error(f"Conversation task for meeting {meeting_id} failed with exception: {task.exception()}")
+            else:
+                logger.info(f"Conversation task for meeting {meeting_id} completed successfully")
+        except Exception as e:
+            logger.error(f"Error cleaning up conversation task for meeting {meeting_id}: {e}")
 
 async def setup(bot: commands.Bot):
     """Add the cog to the bot."""

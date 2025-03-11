@@ -22,6 +22,7 @@ class LabMeetingCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.orchestrator = AgentOrchestrator(llm_client)
+        self.conversation_tasks = {}  # Dictionary to track conversation tasks
         # Find the existing lab group or create a new one if it doesn't exist
         self.lab_group = None
         for command in bot.tree.get_commands():
@@ -68,7 +69,8 @@ class LabMeetingCommands(commands.Cog):
         auto_scientist_count="Number of scientists to generate if auto_generate is true (default: 3)",
         auto_include_critic="Include a critic agent if auto_generate is true (default: true)",
         temperature_variation="Increase temperature variation for parallel runs (default: true)",
-        live_mode="Show agent responses in real-time (default: true)"
+        live_mode="Show agent responses in real-time (default: true)",
+        speakers_per_round="Number of agent speakers selected per round (default: all agents excluding PI)"
     )
     async def team_meeting(
         self,
@@ -81,7 +83,8 @@ class LabMeetingCommands(commands.Cog):
         auto_scientist_count: Optional[int] = 3,
         auto_include_critic: Optional[bool] = True,
         temperature_variation: Optional[bool] = True,
-        live_mode: Optional[bool] = True
+        live_mode: Optional[bool] = True,
+        speakers_per_round: Optional[int] = None
     ):
         """Start a multi-agent team meeting."""
         await interaction.response.defer(ephemeral=True, thinking=True)
@@ -277,12 +280,21 @@ class LabMeetingCommands(commands.Cog):
                     total_parallel_meetings=parallel_meetings
                 )
                 
-                # Start the conversation
-                await self.orchestrator.start_conversation(
-                    meeting_id=meeting_id,
-                    interaction=interaction,
-                    live_mode=live_mode
+                # Start the conversation in a background task
+                task = asyncio.create_task(
+                    self.orchestrator.start_conversation(
+                        meeting_id=meeting_id,
+                        interaction=interaction,
+                        live_mode=live_mode,
+                        conversation_length=speakers_per_round
+                    )
                 )
+                
+                # Store the task with the meeting ID as the key
+                self.conversation_tasks[meeting_id] = task
+                
+                # Add a done callback to clean up the task when it completes
+                task.add_done_callback(lambda t, mid=meeting_id: self._cleanup_conversation_task(mid, t))
             
             # Create response embed
             embed = discord.Embed(
@@ -333,6 +345,17 @@ class LabMeetingCommands(commands.Cog):
                     inline=False
                 )
             
+            embed.add_field(
+                name="Meeting Details",
+                value=(
+                    f"**Rounds**: {rounds}\n"
+                    f"**Parallel Runs**: {parallel_meetings}\n"
+                    f"**Speakers Per Round**: {speakers_per_round if speakers_per_round is not None else 'All'}\n"
+                    f"**Live Mode**: {'On' if live_mode else 'Off'}"
+                ),
+                inline=False
+            )
+            
             await interaction.followup.send(
                 embed=embed,
                 ephemeral=True
@@ -348,37 +371,36 @@ class LabMeetingCommands(commands.Cog):
     @app_commands.describe(
         meeting_id="Optional meeting ID if multiple meetings are active",
         end_all_parallel="End all parallel runs of the meeting (default: true)",
-        force_combined_summary="Force generation of a combined summary even for single meetings (for testing)"
+        force_combined_summary="Force generation of a combined summary even for single meetings (for testing)",
+        is_public="Make the session public after ending the meeting (default: false)"
     )
     async def end_team_meeting(
         self,
         interaction: discord.Interaction,
         meeting_id: Optional[str] = None,
         end_all_parallel: Optional[bool] = True,
-        force_combined_summary: Optional[bool] = False
+        force_combined_summary: Optional[bool] = False,
+        is_public: Optional[bool] = False
     ):
         """End an ongoing team meeting."""
         # Immediately defer the response to prevent timeout
         try:
-            await interaction.response.defer(ephemeral=True, thinking=True)
+            # Immediately acknowledge that we're processing the command
+            await interaction.response.defer(ephemeral=True)
+            
+            # Send a quick follow-up to let the user know we're working
+            initial_response = await interaction.followup.send(
+                "Processing your request to end the meeting(s)... This might take a moment.",
+                ephemeral=True
+            )
         except Exception as e:
-            logger.warning(f"Could not defer response: {e}")
+            logger.warning(f"Could not defer response or send immediate followup: {e}")
             # Continue anyway - we'll try to handle errors below
         
         user_id = str(interaction.user.id)
         logger.info(f"User {user_id} initiated end_team_meeting command")
         
         try:
-            # Send immediate confirmation to user so they know the command is processing
-            try:
-                await interaction.followup.send(
-                    "Processing your command to end meetings... Please wait.",
-                    ephemeral=True
-                )
-            except Exception as e:
-                logger.warning(f"Could not send followup: {e}")
-                # Continue anyway - this is not critical
-            
             # Get active session
             session_result = await db_client.get_active_session(user_id=user_id)
             
@@ -399,7 +421,16 @@ class LabMeetingCommands(commands.Cog):
             session_id = session_data.get("id")
             logger.info(f"Found active session {session_id} for user {user_id}")
             
-            # Get active meetings
+            # Update session visibility if requested
+            if is_public:
+                logger.info(f"Marking session {session_id} as public")
+                await db_client.update_session(
+                    session_id=session_id,
+                    updates={"isPublic": True}  # Use camelCase to match Next.js API expectations
+                )
+            
+            # Get active meetings from the database
+            db_meetings = []
             if meeting_id:
                 # Get specific meeting and its parallel runs if requested
                 meeting_result = await db_client.get_meeting(meeting_id=meeting_id)
@@ -408,13 +439,35 @@ class LabMeetingCommands(commands.Cog):
                         session_id=session_id,
                         base_meeting_id=meeting_result.get("data", {}).get("id")
                     )
-                    meetings = parallel_result.get("data", []) if parallel_result.get("isSuccess") else []
+                    db_meetings = parallel_result.get("data", []) if parallel_result.get("isSuccess") else []
                 else:
-                    meetings = [meeting_result.get("data")] if meeting_result.get("isSuccess") else []
+                    db_meetings = [meeting_result.get("data")] if meeting_result.get("isSuccess") else []
             else:
                 # Get all active meetings for the session
                 meetings_result = await db_client.get_active_meetings(session_id=session_id)
-                meetings = meetings_result.get("data", []) if meetings_result.get("isSuccess") else []
+                db_meetings = meetings_result.get("data", []) if meetings_result.get("isSuccess") else []
+            
+            # Also check the orchestrator's active meetings
+            orchestrator_meetings = []
+            db_meeting_ids = [m.get("id") for m in db_meetings if m and m.get("id")]
+            
+            # Get meetings from orchestrator that match this session
+            for orch_meeting_id, orch_meeting_data in self.orchestrator.active_meetings.items():
+                if orch_meeting_data.get("session_id") == session_id:
+                    # Check if this meeting ID is already in our DB results
+                    if orch_meeting_id not in db_meeting_ids:
+                        logger.info(f"Found active meeting {orch_meeting_id} in orchestrator that's not in DB results")
+                        # Create a meeting dict similar to what the DB would return
+                        orchestrator_meetings.append({
+                            "id": orch_meeting_id,
+                            "sessionId": session_id,
+                            "agenda": orch_meeting_data.get("agenda", "No agenda"),
+                            "roundCount": orch_meeting_data.get("current_round", 0),
+                            "parallelIndex": orch_meeting_data.get("parallel_index", 0)
+                        })
+            
+            # Combine database and orchestrator meetings
+            meetings = db_meetings + orchestrator_meetings
             
             if not meetings:
                 try:
@@ -437,6 +490,29 @@ class LabMeetingCommands(commands.Cog):
                 meeting_id = meeting.get("id")
                 
                 try:
+                    # Cancel any running conversation tasks in LabMeetingCommands
+                    if meeting_id in self.conversation_tasks:
+                        logger.info(f"Cancelling conversation task for meeting {meeting_id} in LabMeetingCommands")
+                        task = self.conversation_tasks[meeting_id]
+                        if not task.done():
+                            task.cancel()
+                        self.conversation_tasks.pop(meeting_id, None)
+                    
+                    # Also check for tasks in QuickstartCommand
+                    quickstart_command = None
+                    for cog in self.bot.cogs.values():
+                        if cog.__class__.__name__ == "QuickstartCommand":
+                            quickstart_command = cog
+                            break
+                    
+                    if quickstart_command and hasattr(quickstart_command, 'conversation_tasks'):
+                        if meeting_id in quickstart_command.conversation_tasks:
+                            logger.info(f"Cancelling conversation task for meeting {meeting_id} in QuickstartCommand")
+                            task = quickstart_command.conversation_tasks[meeting_id]
+                            if not task.done():
+                                task.cancel()
+                            quickstart_command.conversation_tasks.pop(meeting_id, None)
+                
                     # Stop the orchestrator
                     logger.info(f"Ending meeting {meeting_id} in orchestrator")
                     await self.orchestrator.end_conversation(meeting_id=meeting_id)
@@ -484,6 +560,13 @@ class LabMeetingCommands(commands.Cog):
                 inline=False
             )
             
+            # Add session visibility information
+            embed.add_field(
+                name="Session Status",
+                value=f"Privacy: {'Public' if is_public else 'Private'}",
+                inline=False
+            )
+            
             if len(parallel_groups) > 1 or force_combined_summary:
                 embed.add_field(
                     name="Combined Summary",
@@ -493,17 +576,40 @@ class LabMeetingCommands(commands.Cog):
             
             # Send final response (private to user)
             try:
+                # Try to edit the initial response instead of sending a new one
+                if 'initial_response' in locals():
+                    try:
+                        await initial_response.edit(content=None, embed=embed)
+                        logger.info("Successfully edited initial response with final results")
+                        return
+                    except Exception as edit_error:
+                        logger.warning(f"Could not edit initial response: {edit_error}")
+                        # Fall through to other methods
+                
+                # Try to send a new followup if editing failed
                 await interaction.followup.send(
                     embed=embed,
                     ephemeral=True
                 )
+                logger.info("Successfully sent final response as a new followup")
+            except discord.NotFound as webhook_error:
+                logger.warning(f"Webhook expired: {webhook_error}")
+                # Interaction webhook expired, send to channel instead
+                if interaction.channel:
+                    await interaction.channel.send(
+                        f"<@{user_id}> Meetings ended successfully.",
+                        embed=embed
+                    )
+                    logger.info("Sent fallback message to channel after webhook expired")
             except Exception as e:
                 logger.warning(f"Could not send final followup: {e}")
                 # If interaction is expired, try to send to channel
                 if interaction.channel:
                     await interaction.channel.send(
-                        f"<@{user_id}> Meetings ended successfully."
+                        f"<@{user_id}> Meetings ended successfully.",
+                        embed=embed
                     )
+                    logger.info("Sent fallback message to channel after error")
             
             # Generate combined summary if there are multiple parallel meetings or forced
             if len(parallel_groups) > 1 or force_combined_summary:
@@ -526,14 +632,15 @@ class LabMeetingCommands(commands.Cog):
             # Try to send an error message any way we can
             try:
                 await interaction.followup.send(
-                    "An error occurred while ending the team meeting. Please try again later.",
+                    f"An error occurred while ending the meeting: {e}",
                     ephemeral=True
                 )
             except:
                 if interaction.channel:
                     await interaction.channel.send(
-                        f"<@{user_id}> An error occurred while ending the team meeting. Please try again later."
+                        f"<@{user_id}> An error occurred while ending the meeting: {e}"
                     )
+                    logger.info("Sent error message to channel after followup failed")
 
     async def _generate_combined_summary_for_ended_meetings(self, interaction, ended_meetings, channel):
         """Helper method to generate combined summary after meetings end.
@@ -954,6 +1061,20 @@ class LabMeetingCommands(commands.Cog):
             except Exception:
                 # If we can't send a message, just log it
                 logger.error("Could not send error message to channel")
+
+    async def _cleanup_conversation_task(self, meeting_id, task):
+        """Callback method to clean up conversation tasks."""
+        try:
+            # Remove the task from the conversation_tasks dictionary
+            self.conversation_tasks.pop(meeting_id, None)
+            
+            # Check if the task completed successfully
+            if task.exception():
+                logger.error(f"Conversation task for meeting {meeting_id} failed with exception: {task.exception()}")
+            else:
+                logger.info(f"Conversation task for meeting {meeting_id} completed successfully")
+        except Exception as e:
+            logger.error(f"Error cleaning up conversation task for meeting {meeting_id}: {e}")
 
 async def setup(bot: commands.Bot):
     """Add the cog to the bot."""

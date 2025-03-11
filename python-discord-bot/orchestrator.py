@@ -85,18 +85,15 @@ class AgentOrchestrator:
         logger.info("Initialized meeting " + str(meeting_id) + " (parallel index " + str(parallel_index) + ") for session " + str(session_id))
         return True
     
-    async def start_conversation(self, meeting_id: str, interaction: discord.Interaction, live_mode: bool = True, conversation_length: int = 2):
+    async def start_conversation(self, meeting_id: str, interaction: discord.Interaction, live_mode: bool = True, conversation_length: int = None):
         """
-        Run a conversation with the agents.
+        Start a multi-agent conversation with rounds.
         
         Args:
-            meeting_id: The ID of the meeting
-            interaction: The Discord interaction
-            live_mode: Whether to send updates to Discord
-            conversation_length: Number of agent exchanges per round
-            
-        Returns:
-            True if successful, False otherwise
+            meeting_id: ID of the meeting
+            interaction: Discord interaction object
+            live_mode: Whether to show agent responses in real-time (default: True)
+            conversation_length: Number of speakers per round (default: all agents excluding PI)
         """
         # Get meeting data
         meeting_data = self.active_meetings.get(meeting_id)
@@ -149,6 +146,18 @@ class AgentOrchestrator:
             logger.error(f"No PI found for meeting {meeting_id}")
             return False
             
+        # If conversation_length is None, default to all non-PI agents
+        if conversation_length is None:
+            # Count all agents except the PI
+            non_pi_count = sum(1 for a in agents if a["name"] != "Principal Investigator")
+            conversation_length = non_pi_count
+            logger.info(f"Using default conversation_length of {conversation_length} (all non-PI agents)")
+        else:
+            logger.info(f"Using specified conversation_length of {conversation_length}")
+            
+        # Store conversation_length in meeting data
+        meeting_data["conversation_length"] = conversation_length
+        
         # Initial message to set up the conversation if in live mode
         if live_mode:
             try:
@@ -388,7 +397,8 @@ class AgentOrchestrator:
                 
             # Inner loop: up to 'conversation_length' calls (the orchestrator chooses who speaks)
             calls_this_round = 0
-            while calls_this_round < conversation_length:
+            max_calls = meeting_data.get("conversation_length", 2)  # Get from meeting data with fallback to 2
+            while calls_this_round < max_calls:
                 if not meeting_data["is_active"]:
                     logger.info(f"Meeting {meeting_id} was deactivated, stopping conversation")
                     return False
@@ -627,6 +637,10 @@ Only output valid JSON and nothing else.
         if not meeting_data:
             logger.error(f"Meeting {meeting_id} not found for ending")
             return False
+            
+        # Mark the meeting as inactive 
+        meeting_data["is_active"] = False
+        logger.info(f"Marked meeting {meeting_id} as inactive")
             
         # If meeting is part of a parallel group, check if it's the last one to finish
         # and generate a combined summary if it is
