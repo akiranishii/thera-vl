@@ -74,6 +74,22 @@ async def on_ready():
     else:
         logger.info("No guild ID specified. Commands will be registered globally.")
 
+    logger.info("Syncing commands with Discord...")
+    
+    # Debug: print command names in the tree
+    logger.info("Commands in bot.tree:")
+    for command in bot.tree.get_commands():
+        logger.info(f"- {command.name}")
+    
+    # Sync to all connected guilds individually for faster updates
+    print(bot.guilds)
+    for guild in bot.guilds:
+        try:
+            guild_commands = await bot.tree.sync(guild=discord.Object(id=guild.id))
+            logger.info(f"Synced {len(guild_commands)} command(s) to guild: {guild.name}")
+        except Exception as e:
+            logger.error(f"Error syncing commands to guild {guild.name}: {e}")
+
     # After connection is established, sync slash commands
     try:
         logger.info("Syncing commands with Discord...")
