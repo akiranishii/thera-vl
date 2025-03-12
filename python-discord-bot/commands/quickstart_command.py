@@ -231,7 +231,27 @@ class QuickstartCommand(commands.Cog):
                     goal=critic_goal,
                     model="openai"
                 )
-            
+
+            # always create tools agent
+            await db_client.create_agent(
+                session_id=session_id,
+                user_id=user_id,
+                name="Tool Agent",
+                role="Tool",
+                expertise="Performing external literature searches in PubMed/ArXiv/semantic scholar",
+                goal="Retrieve references from external sources whenever relevant",
+                model="openai"
+            )
+
+            # Optionally update your progress_message or a log statement
+            current_content = progress_message.content
+            await progress_message.edit(content=(
+                current_content + "\n\n"
+                "🔧 **Tool Agent**\n"
+                "• Expertise: External literature searches\n"
+                "• Goal: Provide references from PubMed/ArXiv/etc. on-demand"
+            ))
+
             # Get all created agents
             agents_result = await db_client.get_session_agents(
                 session_id=session_id,

@@ -470,6 +470,8 @@ Only output valid JSON and nothing else.
                         agent_key = "scientific_critic"
                     elif "Lead" in agent_role or "PI" in agent_role or "Principal" in agent_role:
                         agent_key = "principal_investigator"
+                    elif "Tool" in agent_role:
+                        agent_key = "tool_agent"
                     else:
                         # Default to scientist for unknown roles
                         agent_key = "scientist"

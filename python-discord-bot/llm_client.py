@@ -96,6 +96,20 @@ AGENTS = {
         Be focused and provide concise answers. 
         Strive to answer within 1 paragraph.
         Reply in a conversational tone."""
+    },
+    "tool_agent": {
+        "name": "Tool Agent",
+        "model": "openai/gpt-4o", 
+        "system_prompt": """You are a specialized agent that retrieves external references from PubMed, ArXiv, or Semantic Scholar whenever asked.
+        
+Your job is to:
+ - Read the conversation so far
+ - Identify the most relevant keywords for further research
+ - Query external paper sources
+ - Return a short summary of relevant references along with sources
+
+Reply in a concise, factual style. 
+If no relevant papers or data can be found, respond with an error message or short explanation."""
     }
 }
 
@@ -260,6 +274,14 @@ class LLMClient:
         """
         if agent_key not in AGENTS:
             raise ValueError(f"Unknown agent: {agent_key}")
+        
+        # 1) If the agent is tool_agent, directly call Python function
+        if agent_key == "tool_agent":
+            from tool_agent_file import tool_agent
+            # Here, pass the entire conversation_history to your `tool_agent` function
+            # which will do queries, retrieve references, etc.
+            response_str = tool_agent(conversation_history)
+            return response_str
             
         agent_config = AGENTS[agent_key]
         agent_system_prompt_template = agent_config["system_prompt"]

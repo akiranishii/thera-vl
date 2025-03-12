@@ -197,6 +197,17 @@ class LabMeetingCommands(commands.Cog):
                         goal="Ensure scientific rigor and identify potential weaknesses in proposed research approaches",
                         model="openai"
                     )
+                
+                # create a tool agent
+                await db_client.create_agent(
+                    session_id=session_id,
+                    user_id=user_id,
+                    name="Tool Agent",
+                    role="Tool",
+                    expertise="Performing external literature searches in PubMed/ArXiv/SemanticScholar",
+                    goal="Retrieve references from external sources whenever relevant",
+                    model="openai"
+                    )
             
             # Get agents for the meeting
             if agent_list:
