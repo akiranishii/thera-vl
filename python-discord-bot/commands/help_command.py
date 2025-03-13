@@ -139,6 +139,13 @@ class HelpCommand(commands.Cog):
                 value="**`/admin_sync`** - Clear and sync all slash commands\n• `global_commands` - Sync globally or just for this server (default: true)\n• `password` - Required password for authorization",
                 inline=False
             )
+            
+            # Documentation Link
+            embed.add_field(
+                name="📚 Documentation",
+                value="For more detailed examples and documentation, visit:\n[Co-Scientist Discord Bot Documentation](https://github.com/akiranishii/Co-Scientist-Discord-Bot-Documentation)",
+                inline=False
+            )
 
             await interaction.followup.send(embed=embed, ephemeral=False)
         except Exception as e:
@@ -205,12 +212,11 @@ class HelpCommand(commands.Cog):
                 "lab reopen": {
                     "title": "Lab Reopen Command",
                     "description": "Reopen a previously ended session.",
-                    "usage": "/lab reopen session_id:\"id\" [confirm:false]",
+                    "usage": "/lab reopen session_id:\"id\"",
                     "parameters": {
-                        "session_id": "ID of the session to reopen (required)",
-                        "confirm": "Confirm reopening the session (default: false)"
+                        "session_id": "ID of the session to reopen (required)"
                     },
-                    "example": "/lab reopen session_id:1234 confirm:true",
+                    "example": "/lab reopen session_id:1234",
                     "color": discord.Color.green()
                 },
                 "lab agent_create": {
@@ -381,6 +387,13 @@ class HelpCommand(commands.Cog):
             embed.add_field(
                 name="💡 Example",
                 value=details["example"],
+                inline=False
+            )
+            
+            # Add documentation link
+            embed.add_field(
+                name="📚 Documentation",
+                value="For more detailed examples and documentation, visit:\n[Co-Scientist Discord Bot Documentation](https://github.com/akiranishii/Co-Scientist-Discord-Bot-Documentation)",
                 inline=False
             )
 

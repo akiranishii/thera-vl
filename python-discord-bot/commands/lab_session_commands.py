@@ -681,18 +681,10 @@ class LabSessionCommands(commands.Cog):
     async def reopen_session_callback(
         self,
         interaction: discord.Interaction,
-        session_id: str,
-        confirm: Optional[bool] = False
+        session_id: str
     ):
         """Callback for the reopen_session command."""
         await interaction.response.defer(ephemeral=True, thinking=True)
-        
-        if not confirm:
-            await interaction.followup.send(
-                "Please confirm that you want to reopen this session by using `confirm:true`",
-                ephemeral=True
-            )
-            return
         
         user_id = str(interaction.user.id)
         
