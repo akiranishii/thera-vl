@@ -39,3 +39,10 @@ next-env.d.ts.cursor/
 /.cursor
 .cursorrules
 /prompts
+
+# Ignore Python cache directories and files
+__pycache__/
+*.pyc
+
+# Ignore log files
+*.log
