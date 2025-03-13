@@ -370,19 +370,19 @@ class QuickstartCommand(commands.Cog):
                 ephemeral=True
             )
 
-    async def _cleanup_conversation_task(self, meeting_id, task):
-        """Callback method to clean up conversation tasks."""
-        try:
-            # Remove the task from the conversation_tasks dictionary
-            self.conversation_tasks.pop(meeting_id, None)
+    # async def _cleanup_conversation_task(self, meeting_id, task):
+    #     """Callback method to clean up conversation tasks."""
+    #     try:
+    #         # Remove the task from the conversation_tasks dictionary
+    #         self.conversation_tasks.pop(meeting_id, None)
             
-            # Check if the task completed successfully
-            if task.exception():
-                logger.error(f"Conversation task for meeting {meeting_id} failed with exception: {task.exception()}")
-            else:
-                logger.info(f"Conversation task for meeting {meeting_id} completed successfully")
-        except Exception as e:
-            logger.error(f"Error cleaning up conversation task for meeting {meeting_id}: {e}")
+    #         # Check if the task completed successfully
+    #         if task.exception():
+    #             logger.error(f"Conversation task for meeting {meeting_id} failed with exception: {task.exception()}")
+    #         else:
+    #             logger.info(f"Conversation task for meeting {meeting_id} completed successfully")
+    #     except Exception as e:
+    #         logger.error(f"Error cleaning up conversation task for meeting {meeting_id}: {e}")
 
 async def setup(bot: commands.Bot):
     """Add the cog to the bot."""
