@@ -68,10 +68,13 @@ class HelpCommand(commands.Cog):
                 value=(
                     "**`/quickstart`**\n"
                     "Quick way to start a session with AI agents.\n"
-                    "• `topic` - Topic to discuss\n"
+                    "• `topic` - Topic to discuss (required)\n"
                     "• `agent_count` - Number of scientists (default: 3)\n"
                     "• `include_critic` - Add a critic (default: true)\n"
-                    "• `public` - Make session public (default: false)"
+                    "• `public` - Make session public (default: false)\n"
+                    "• `live_mode` - Show agent responses in real-time (default: true)\n"
+                    "• `rounds` - Number of conversation rounds (default: 3)\n"
+                    "• `speakers_per_round` - Number of agents speaking per round (default: all agents)"
                 ),
                 inline=False
             )
@@ -92,10 +95,10 @@ class HelpCommand(commands.Cog):
             embed.add_field(
                 name="🤖 Agent Management",
                 value=(
-                    "**`/lab agent_create`** - Create a new agent\n"
-                    "**`/lab agent_update`** - Update an agent\n"
-                    "**`/lab agent_delete`** - Delete an agent\n"
-                    "**`/lab agent_list`** - List all agents"
+                    "**`/lab agent_create`** - Create a new agent with specific expertise and role\n"
+                    "**`/lab agent_update`** - Update an existing agent's properties\n"
+                    "**`/lab agent_delete`** - Delete an agent from current session\n"
+                    "**`/lab agent_list`** - List all agents in current session"
                 ),
                 inline=False
             )
@@ -104,7 +107,7 @@ class HelpCommand(commands.Cog):
             embed.add_field(
                 name="🗣️ Team Meetings",
                 value=(
-                    "**`/lab team_meeting`** - Start a team discussion\n"
+                    "**`/lab team_meeting`** - Start a team discussion with selected agents\n"
                     "**`/lab end_team_meeting`** - End ongoing meeting"
                 ),
                 inline=False
@@ -114,8 +117,8 @@ class HelpCommand(commands.Cog):
             embed.add_field(
                 name="📝 Transcripts",
                 value=(
-                    "**`/lab transcript_list`** - List available transcripts\n"
-                    "**`/lab transcript_view`** - View a specific transcript"
+                    "**`/lab transcript_list`** - List all meeting transcripts for current session\n"
+                    "**`/lab transcript_view`** - View transcript for a specific meeting"
                 ),
                 inline=False
             )
@@ -123,7 +126,10 @@ class HelpCommand(commands.Cog):
             # Help Command
             embed.add_field(
                 name="❓ Help",
-                value="**`/help`** - Show this help message\n",
+                value=(
+                    "**`/help`** - Show this help message\n"
+                    "**`/help command:\"command_name\"`** - Show details for a specific command"
+                ),
                 inline=False
             )
 
@@ -150,14 +156,17 @@ class HelpCommand(commands.Cog):
                 "quickstart": {
                     "title": "Quickstart Command",
                     "description": "Quickly create a lab session with agents and start a brainstorming session.",
-                    "usage": "/quickstart topic:\"Your topic\" [agent_count:3] [include_critic:true] [public:false]",
+                    "usage": "/quickstart topic:\"Your topic\" [agent_count:3] [include_critic:true] [public:false] [live_mode:true] [rounds:3] [speakers_per_round:null]",
                     "parameters": {
                         "topic": "The topic or question to discuss (required)",
                         "agent_count": "Number of Scientist agents to create (default: 3)",
                         "include_critic": "Whether to include a Critic agent (default: true)",
-                        "public": "Whether the session should be publicly viewable (default: false)"
+                        "public": "Whether the session should be publicly viewable (default: false)",
+                        "live_mode": "Show agent responses in real-time (default: true)",
+                        "rounds": "Number of conversation rounds (default: 3)",
+                        "speakers_per_round": "Number of agent speakers selected per round (default: all agents excluding PI)"
                     },
-                    "example": "/quickstart topic:\"How can we improve renewable energy storage?\" agent_count:4 include_critic:true",
+                    "example": "/quickstart topic:\"How can we improve renewable energy storage?\" agent_count:4 include_critic:true rounds:4",
                     "color": discord.Color.green()
                 },
                 "lab start": {
@@ -177,11 +186,21 @@ class HelpCommand(commands.Cog):
                     "description": "End or archive the current lab session.",
                     "usage": "/lab end [confirm:false] [public:false]",
                     "parameters": {
-                        "confirm": "Confirm ending the session (default: false)",
-                        "public": "Make the session public after ending (default: false)"
+                        "session id": "ID of the session to end (default: current session)"
                     },
                     "example": "/lab end confirm:true public:true",
                     "color": discord.Color.red()
+                },
+                "lab list": {
+                    "title": "Lab List Command",
+                    "description": "List all your lab sessions and session ids, both active and archived.",
+                    "usage": "/lab list [limit:10]",
+                    "parameters": {
+                        "limit": "Maximum number of sessions to display (default: 10)",
+                        "include_closed": "Include closed sessions in the list (default: true)"
+                    },
+                    "example": "/lab list limit:20",
+                    "color": discord.Color.blue()
                 },
                 "lab reopen": {
                     "title": "Lab Reopen Command",
@@ -194,34 +213,111 @@ class HelpCommand(commands.Cog):
                     "example": "/lab reopen session_id:1234 confirm:true",
                     "color": discord.Color.green()
                 },
+                "lab agent_create": {
+                    "title": "Agent Create Command",
+                    "description": "Create a new AI agent in the current lab session.",
+                    "usage": "/lab agent_create agent_name:\"Name\" [expertise:\"Field\"] [goal:\"Objective\"] [role:\"Role\"] [model:\"LLM\"]",
+                    "parameters": {
+                        "agent_name": "Name of the agent to create (required)",
+                        "expertise": "Agent's area of expertise (e.g., 'Structural biology')",
+                        "goal": "Agent's main objective (e.g., 'Propose novel protein scaffolds')",
+                        "role": "Agent's functional role (Principal Investigator, Scientist, or Critic)",
+                        "model": "LLM model to use (OpenAI, Anthropic, or Mistral)"
+                    },
+                    "example": "/lab agent_create agent_name:\"Dr. Smith\" expertise:\"Quantum physics\" goal:\"Explore quantum entanglement\" role:\"Scientist\"",
+                    "color": discord.Color.green()
+                },
+                "lab agent_update": {
+                    "title": "Agent Update Command",
+                    "description": "Update an existing agent in the current lab session.",
+                    "usage": "/lab agent_update agent_name:\"Name\" [expertise:\"Field\"] [goal:\"Objective\"] [role:\"Role\"] [model:\"LLM\"]",
+                    "parameters": {
+                        "agent_name": "Name of the agent to update (required)",
+                        "expertise": "Agent's area of expertise (e.g., 'Structural biology')",
+                        "goal": "Agent's main objective (e.g., 'Propose novel protein scaffolds')",
+                        "role": "Agent's functional role (Principal Investigator, Scientist, or Critic)",
+                        "model": "LLM model to use (OpenAI, Anthropic, or Mistral)"
+                    },
+                    "example": "/lab agent_update agent_name:\"Dr. Smith\" expertise:\"Advanced quantum physics\" role:\"Principal Investigator\"",
+                    "color": discord.Color.blue()
+                },
+                "lab agent_delete": {
+                    "title": "Agent Delete Command",
+                    "description": "Delete an agent from the current lab session.",
+                    "usage": "/lab agent_delete agent_name:\"Name\"",
+                    "parameters": {
+                        "agent_name": "Name of the agent to delete (required)"
+                    },
+                    "example": "/lab agent_delete agent_name:\"Dr. Smith\"",
+                    "color": discord.Color.red()
+                },
+                "lab agent_list": {
+                    "title": "Agent List Command",
+                    "description": "List all agents in the current lab session.",
+                    "usage": "/lab agent_list",
+                    "parameters": {},
+                    "example": "/lab agent_list",
+                    "color": discord.Color.blue()
+                },
                 "lab team_meeting": {
                     "title": "Team Meeting Command",
                     "description": "Start a multi-agent conversation in the active session.",
-                    "usage": "/lab team_meeting agenda:\"topic\" [rounds:3] [parallel_meetings:1] [agent_list:\"Agent1,Agent2\"] [auto_generate:false]",
+                    "usage": "/lab team_meeting agenda:\"topic\" [rounds:3] [parallel_meetings:1] [agent_list:\"Agent1,Agent2\"] [auto_generate:false] [auto_scientist_count:3] [auto_include_critic:true] [temperature_variation:true] [live_mode:true] [speakers_per_round:null]",
                     "parameters": {
                         "agenda": "The main topic or question (required)",
                         "rounds": "Number of conversation rounds (default: 3)",
                         "parallel_meetings": "Number of parallel runs (default: 1)",
-                        "agent_list": "Names of agents to include (optional)",
-                        "auto_generate": "Auto-generate agents (default: false)",
+                        "agent_list": "Names of agents to include, comma-separated (optional)",
+                        "auto_generate": "Auto-generate agents if none exist (default: false)",
                         "auto_scientist_count": "Number of scientists if auto-generating (default: 3)",
-                        "auto_include_critic": "Include critic if auto-generating (default: true)"
+                        "auto_include_critic": "Include critic if auto-generating (default: true)",
+                        "temperature_variation": "Increase temperature variation for parallel runs to get more diverse responses (default: true)",
+                        "live_mode": "Show agent responses in real-time (default: true)",
+                        "speakers_per_round": "Number of agent speakers per round (default: all agents)"
                     },
                     "example": "/lab team_meeting agenda:\"Novel immunotherapy approaches\" rounds:4 agent_list:\"PI,Scientist1,Critic\"",
                     "color": discord.Color.gold()
                 },
-                "lab transcript": {
-                    "title": "Transcript Commands",
-                    "description": "View and manage meeting transcripts.",
-                    "usage": [
-                        "/lab transcript_list",
-                        "/lab transcript_view transcript_id:\"id\""
-                    ],
+                "lab end_team_meeting": {
+                    "title": "End Team Meeting Command",
+                    "description": "End an ongoing team meeting in the current lab session.",
+                    "usage": "/lab end_team_meeting [meeting_id:\"id\"] [end_all_parallel:true] [force_combined_summary:false] [is_public:false]",
                     "parameters": {
-                        "transcript_id": "ID of the transcript to view (required for view)"
+                        "meeting_id": "ID of the meeting to end (optional, defaults to most recent active meeting)",
+                        "end_all_parallel": "End all parallel runs of the meeting (default: true)",
+                        "force_combined_summary": "Force generation of a combined summary even for single meetings (default: false)",
+                        "is_public": "Make the session public after ending the meeting (default: false)"
                     },
-                    "example": "/lab transcript view transcript_id:12345",
+                    "example": "/lab end_team_meeting end_all_parallel:true",
+                    "color": discord.Color.red()
+                },
+                "lab transcript_list": {
+                    "title": "Transcript List Command",
+                    "description": "List all meeting transcripts for the current session.",
+                    "usage": "/lab transcript_list",
+                    "parameters": {},
+                    "example": "/lab transcript_list",
                     "color": discord.Color.purple()
+                },
+                "lab transcript_view": {
+                    "title": "Transcript View Command",
+                    "description": "View the transcript for a specific meeting.",
+                    "usage": "/lab transcript_view meeting_id:\"id\"",
+                    "parameters": {
+                        "meeting_id": "ID of the meeting transcript to view (required)"
+                    },
+                    "example": "/lab transcript_view meeting_id:12345",
+                    "color": discord.Color.purple()
+                },
+                "help": {
+                    "title": "Help Command",
+                    "description": "Get help information about available commands.",
+                    "usage": "/help [command:\"command_name\"]",
+                    "parameters": {
+                        "command": "The specific command to get help for (optional)"
+                    },
+                    "example": "/help command:\"quickstart\"",
+                    "color": discord.Color.blue()
                 },
                 "admin_sync": {
                     "title": "Admin Sync Command",
@@ -267,12 +363,19 @@ class HelpCommand(commands.Cog):
                 )
 
             # Add parameters
-            params = "\n".join([f"• `{param}` - {desc}" for param, desc in details["parameters"].items()])
-            embed.add_field(
-                name="⚙️ Parameters",
-                value=params,
-                inline=False
-            )
+            if details["parameters"]:
+                params = "\n".join([f"• `{param}` - {desc}" for param, desc in details["parameters"].items()])
+                embed.add_field(
+                    name="⚙️ Parameters",
+                    value=params,
+                    inline=False
+                )
+            else:
+                embed.add_field(
+                    name="⚙️ Parameters",
+                    value="This command has no parameters.",
+                    inline=False
+                )
 
             # Add example
             embed.add_field(

@@ -632,21 +632,29 @@ class DatabaseClient:
         role: Optional[str] = None,
         description: Optional[str] = None,
         expertise: Optional[str] = None,
-        model: Optional[str] = None
+        model: Optional[str] = None,
+        updates: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """Update an existing agent.
         
         Args:
             agent_id: ID of the agent to update
-            name: New name for the agent
-            role: New role for the agent
-            description: New description/goal for the agent
-            expertise: New expertise for the agent
-            model: New model for the agent
+            name: New name for the agent (legacy parameter)
+            role: New role for the agent (legacy parameter)
+            description: New description/goal for the agent (legacy parameter)
+            expertise: New expertise for the agent (legacy parameter)
+            model: New model for the agent (legacy parameter)
+            updates: Dictionary of fields to update (preferred method)
             
         Returns:
             Updated agent data or error information
         """
+        # If updates dictionary is provided, use it directly
+        if updates is not None:
+            response = await self._make_request("PUT", f"/discord/agents/{agent_id}", updates)
+            return self._transform_agent_response(response)
+        
+        # Otherwise, build the data from individual parameters (legacy support)
         data = {}
         
         if name:
