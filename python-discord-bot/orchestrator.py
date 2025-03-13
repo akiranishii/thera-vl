@@ -62,19 +62,21 @@ class AgentOrchestrator:
         for agent in agents:
             if agent.get("role", "").lower() == "lead" or "principal investigator" in agent.get("name", "").lower():
                 # Set up the PI's opening message
-                try:
-                    opening_message = await self.llm_client.generate_opening(
-                        agent_key="pi",
-                        agenda=agenda,
-                        agents=[agent.get("name") for agent in agents]
-                    )
+                # try:
+                #     opening_message = await self.llm_client.generate_opening(
+                #         agent_key="pi",
+                #         agenda=agenda,
+                #         agents=[agent.get("name") for agent in agents]
+                #     )
                     
-                    # Store the opening message
-                    self.active_meetings[meeting_id]["opening_message"] = opening_message
-                except Exception as e:
-                    logger.error(f"Error generating opening message: {e}")
-                    self.active_meetings[meeting_id]["opening_message"] = f"Welcome to our discussion on {agenda}. Let's begin our collaborative exploration of this topic."
-                
+                #     # Store the opening message
+                #     self.active_meetings[meeting_id]["opening_message"] = opening_message
+                # except Exception as e:
+                #     logger.error(f"Error generating opening message: {e}")
+                    
+                # break
+
+                self.active_meetings[meeting_id]["opening_message"] = f"Welcome to our discussion on {agenda}. Let's begin our collaborative exploration of this topic."
                 break
         
         # Track parallel meetings

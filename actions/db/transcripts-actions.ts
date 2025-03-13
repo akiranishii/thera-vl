@@ -7,12 +7,17 @@ Contains server actions related to transcripts in the DB.
 "use server"
 
 import { db } from "@/db/db"
-import { meetingsTable } from "@/db/schema/meetings-schema"
+import { meetingsTable, SelectMeeting, MeetingWithSession } from "@/db/schema/meetings-schema"
 import { sessionsTable, SelectSession } from "@/db/schema/sessions-schema"
 import { InsertTranscript, SelectTranscript, transcriptsTable } from "@/db/schema/transcripts-schema"
 import { ActionState } from "@/types"
 import { auth } from "@clerk/nextjs/server"
 import { and, eq, desc, count, sql } from "drizzle-orm"
+
+// Define additional types for Drizzle query results that include relations
+interface TranscriptWithMeeting extends SelectTranscript {
+  meeting: MeetingWithSession;
+}
 
 export async function createTranscriptAction(
   transcript: InsertTranscript
@@ -24,19 +29,25 @@ export async function createTranscriptAction(
       return { isSuccess: false, message: "Unauthorized" }
     }
 
-    // Verify the user owns the meeting's session
+    // Get the meeting first to verify ownership
     const meeting = await db.query.meetings.findFirst({
       where: eq(meetingsTable.id, transcript.meetingId),
-      with: {
-        session: true
-      }
-    })
+    });
 
     if (!meeting) {
       return { isSuccess: false, message: "Meeting not found" }
     }
+    
+    // Get the session to check permissions
+    const session = await db.query.sessions.findFirst({
+      where: eq(sessionsTable.id, meeting.sessionId)
+    });
+    
+    if (!session) {
+      return { isSuccess: false, message: "Session not found" }
+    }
 
-    if (meeting.session.userId !== userId) {
+    if (session.userId !== userId) {
       return { isSuccess: false, message: "Unauthorized to add transcript to this meeting" }
     }
 
@@ -66,23 +77,32 @@ export async function getTranscriptAction(
       return { isSuccess: false, message: "Unauthorized" }
     }
 
+    // Get the transcript
     const transcript = await db.query.transcripts.findFirst({
       where: eq(transcriptsTable.id, id),
       with: {
-        meeting: {
-          with: {
-            session: true
-          }
-        }
+        meeting: true
       }
-    })
+    });
 
     if (!transcript) {
       return { isSuccess: false, message: "Transcript not found" }
     }
+    
+    // Get the meeting's session to check permissions
+    const meeting = await db.query.meetings.findFirst({
+      where: eq(meetingsTable.id, transcript.meeting.id),
+      with: {
+        session: true
+      }
+    });
+    
+    if (!meeting) {
+      return { isSuccess: false, message: "Meeting not found" }
+    }
 
     // Check if user has access to this transcript's session
-    if (!transcript.meeting.session.isPublic && transcript.meeting.session.userId !== userId) {
+    if (!meeting.session.isPublic && meeting.session.userId !== userId) {
       return { isSuccess: false, message: "Unauthorized to access this transcript" }
     }
 
@@ -101,65 +121,49 @@ export async function getTranscriptsForMeetingAction(
   meetingId: string
 ): Promise<ActionState<SelectTranscript[]>> {
   try {
-    console.log(`getTranscriptsForMeetingAction: Starting fetch for meeting ${meetingId}`)
+    console.log("getTranscriptsForMeetingAction: starting, meeting ID:", meetingId);
     const { userId } = await auth()
     
-    console.log(`getTranscriptsForMeetingAction: Auth check - userId: ${userId || 'null'}`);
-    
-    // First fetch the meeting without the relation
+    // First fetch the meeting without the session relation to avoid ORM issues
     const meeting = await db.query.meetings.findFirst({
       where: eq(meetingsTable.id, meetingId)
-    })
+    });
 
     if (!meeting) {
-      console.log(`getTranscriptsForMeetingAction: Meeting not found for ID ${meetingId}`)
+      console.log("getTranscriptsForMeetingAction: Meeting not found");
       return { isSuccess: false, message: "Meeting not found" }
     }
-    
-    // Separately fetch the session to avoid ORM relationship issues
+
+    // Then fetch the session separately
     const session = await db.query.sessions.findFirst({
       where: eq(sessionsTable.id, meeting.sessionId)
-    })
-    
+    });
+
     if (!session) {
-      console.log(`getTranscriptsForMeetingAction: Session not found for meeting ${meetingId}`)
-      return { isSuccess: false, message: "Session not found for this meeting" }
+      console.log("getTranscriptsForMeetingAction: Session not found");
+      return { isSuccess: false, message: "Session not found" }
     }
 
-    // Allow access if the session is public, even without authentication
-    if (!session.isPublic && userId !== session.userId) {
-      console.log(`getTranscriptsForMeetingAction: User ${userId || 'anonymous'} not authorized to access meeting ${meetingId}`)
-      return { isSuccess: false, message: "Unauthorized to access this meeting's transcripts" }
+    // Check if user has access to this session
+    if (!session.isPublic && (!userId || session.userId !== userId)) {
+      console.log("getTranscriptsForMeetingAction: Unauthorized, user ID:", userId, "session public:", session.isPublic, "session user ID:", session.userId);
+      return { isSuccess: false, message: "Unauthorized to access transcripts for this meeting" }
     }
-    
-    console.log(`getTranscriptsForMeetingAction: Fetching transcripts for meeting ${meetingId}, status: ${meeting.status}`)
 
-    // Fetch all transcripts, don't filter by any status
     const transcripts = await db.query.transcripts.findMany({
-      where: eq(transcriptsTable.meetingId, meetingId)
+      where: eq(transcriptsTable.meetingId, meetingId),
+      orderBy: [desc(transcriptsTable.createdAt)]
     })
-    
-    console.log(`getTranscriptsForMeetingAction: Found ${transcripts.length} transcripts for meeting ${meetingId}`)
-    
-    // If no transcripts found, log some additional debug info
-    if (transcripts.length === 0) {
-      console.log(`getTranscriptsForMeetingAction: No transcripts found. Meeting details:`, {
-        id: meeting.id,
-        title: meeting.title,
-        status: meeting.status,
-        currentRound: meeting.currentRound,
-        maxRounds: meeting.maxRounds
-      })
-    }
 
+    console.log(`getTranscriptsForMeetingAction: Found ${transcripts.length} transcripts`);
     return {
       isSuccess: true,
       message: "Transcripts retrieved successfully",
       data: transcripts
     }
   } catch (error) {
-    console.error("Error getting transcripts:", error)
-    return { isSuccess: false, message: `Failed to get transcripts: ${error instanceof Error ? error.message : String(error)}` }
+    console.error("Error getting transcripts for meeting:", error)
+    return { isSuccess: false, message: "Failed to get transcripts for meeting" }
   }
 }
 
@@ -167,62 +171,68 @@ export async function getSessionTranscriptCountAction(
   sessionId: string
 ): Promise<ActionState<number>> {
   try {
-    const { userId } = await auth()
+    console.log("getSessionTranscriptCountAction: Starting for session:", sessionId);
+    const { userId } = await auth();
     
-    // First check if the session exists and if the user has access to it
+    // Check if the session exists and if the user has access to it
     const session = await db.query.sessions.findFirst({
       where: eq(sessionsTable.id, sessionId)
-    })
-
+    });
+    
     if (!session) {
-      return { isSuccess: false, message: "Session not found" }
+      console.log("getSessionTranscriptCountAction: Session not found");
+      return { isSuccess: false, message: "Session not found" };
     }
-
-    // Check if the user has access to this session
-    if (!session.isPublic && userId !== session.userId) {
-      return { isSuccess: false, message: "Unauthorized to access this session's transcripts" }
+    
+    // Check user access
+    if (!session.isPublic && (!userId || session.userId !== userId)) {
+      console.log("getSessionTranscriptCountAction: Unauthorized access attempt");
+      return { isSuccess: false, message: "Unauthorized to access this session's transcript count" };
     }
-
-    // Use count directly instead of complex joins
-    // First, get all meeting IDs for this session
+    
+    // Get all meeting IDs for this session
     const meetings = await db.query.meetings.findMany({
       where: eq(meetingsTable.sessionId, sessionId),
-      columns: {
-        id: true
-      }
-    })
+      columns: { id: true }
+    });
+    
+    console.log(`getSessionTranscriptCountAction: Found ${meetings.length} meetings`);
     
     if (meetings.length === 0) {
-      return {
-        isSuccess: true,
+      return { 
+        isSuccess: true, 
         message: "No meetings found for this session",
         data: 0
-      }
+      };
     }
     
-    // Then count transcripts for each meeting and sum them up
+    // Count transcripts for each meeting and sum them up
     let totalCount = 0;
     for (const meeting of meetings) {
-      const result = await db.select({ count: count() }).from(transcriptsTable).where(eq(transcriptsTable.meetingId, meeting.id));
-      totalCount += result[0]?.count || 0;
+      const result = await db.select({ 
+        count: count() 
+      }).from(transcriptsTable)
+        .where(eq(transcriptsTable.meetingId, meeting.id));
+      
+      totalCount += Number(result[0].count || 0);
     }
-
+    
+    console.log(`getSessionTranscriptCountAction: Total transcript count: ${totalCount}`);
+    
     return {
       isSuccess: true,
       message: "Transcript count retrieved successfully",
       data: totalCount
-    }
+    };
   } catch (error) {
-    console.error("Error getting session transcript count:", error)
-    return { isSuccess: false, message: "Failed to get session transcript count" }
+    console.error("Error getting session transcript count:", error);
+    return { isSuccess: false, message: "Failed to get session transcript count" };
   }
 }
 
 export async function createSampleTranscriptsAction(
-  meetingId: string,
-  roundCount: number = 2,
-  messagesPerRound: number = 3
-): Promise<ActionState<{ created: number }>> {
+  meetingId: string
+): Promise<ActionState<SelectTranscript[]>> {
   try {
     const { userId } = await auth()
     
@@ -230,71 +240,70 @@ export async function createSampleTranscriptsAction(
       return { isSuccess: false, message: "Unauthorized" }
     }
 
-    // First fetch the meeting without the relation
+    // First fetch the meeting without the session relation
     const meeting = await db.query.meetings.findFirst({
       where: eq(meetingsTable.id, meetingId)
-    })
+    });
 
     if (!meeting) {
       return { isSuccess: false, message: "Meeting not found" }
     }
-    
-    // Separately fetch the session to avoid ORM relationship issues
+
+    // Then fetch the session separately
     const session = await db.query.sessions.findFirst({
       where: eq(sessionsTable.id, meeting.sessionId)
-    })
-    
+    });
+
     if (!session) {
-      return { isSuccess: false, message: "Session not found for this meeting" }
+      return { isSuccess: false, message: "Session not found" }
     }
 
+    // Verify the user owns the meeting's session
     if (session.userId !== userId) {
       return { isSuccess: false, message: "Unauthorized to add sample transcripts to this meeting" }
     }
 
-    // Create sample transcripts
-    const sampleRoles = ["user", "assistant"] as const
-    const sampleAgentNames = ["Dr. Smith", "Dr. Johnson", "Dr. Williams", "Dr. Brown", "Dr. Miller"]
-    let created = 0
+    // Create sample transcripts with correct schema
+    const sampleTranscripts = [
+      {
+        meetingId,
+        content: "Hello, let's start the meeting.",
+        role: "user" as const,
+        agentName: "Host",
+        roundNumber: 1,
+        sequenceNumber: 1,
+      },
+      {
+        meetingId,
+        content: "Yes, let's start by discussing our first agenda item.",
+        role: "assistant" as const,
+        agentName: "Participant 1",
+        roundNumber: 1,
+        sequenceNumber: 2,
+      },
+      {
+        meetingId,
+        content: "I think we should focus on improving our product.",
+        role: "user" as const,
+        agentName: "Participant 2",
+        roundNumber: 1,
+        sequenceNumber: 3,
+      },
+    ] as InsertTranscript[]
 
-    for (let round = 1; round <= roundCount; round++) {
-      for (let seq = 1; seq <= messagesPerRound; seq++) {
-        // Alternate between user and assistant
-        const role = sampleRoles[seq % 2]
-        const agentName = role === "assistant" ? sampleAgentNames[seq % sampleAgentNames.length] : "User"
-        
-        const content = role === "assistant" 
-          ? `This is a sample assistant message in round ${round}, sequence ${seq}.\n\nIt contains multiple paragraphs to demonstrate formatting.`
-          : `This is a sample user message in round ${round}, sequence ${seq}.`
-
-        const transcript: InsertTranscript = {
-          meetingId,
-          role,
-          agentName,
-          content,
-          roundNumber: round,
-          sequenceNumber: seq,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-
-        await db.insert(transcriptsTable).values(transcript)
-        created++
-      }
+    const createdTranscripts = []
+    for (const transcript of sampleTranscripts) {
+      const [newTranscript] = await db
+        .insert(transcriptsTable)
+        .values(transcript)
+        .returning()
+      createdTranscripts.push(newTranscript)
     }
-
-    // Update the meeting to reflect the number of rounds
-    await db.update(meetingsTable)
-      .set({ 
-        currentRound: roundCount,
-        status: "completed" 
-      })
-      .where(eq(meetingsTable.id, meetingId))
 
     return {
       isSuccess: true,
-      message: `Created ${created} sample transcripts`,
-      data: { created }
+      message: "Sample transcripts created successfully",
+      data: createdTranscripts,
     }
   } catch (error) {
     console.error("Error creating sample transcripts:", error)
